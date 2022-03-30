@@ -1,4 +1,4 @@
-﻿namespace WorkReport.Utility.Filters.AuthorizationPolicy
+﻿namespace WorkReport.Utility.Filters.Attributes
 {
     public class CustomAllowAnonymousAttribute:Attribute
     {

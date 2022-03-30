@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.MvcResult;
 
-namespace WorkReport.Utility.Filters.AuthorizationPolicy
+namespace WorkReport.Utility.Filters.Attributes
 {
     /// <summary>
     /// 异常处理

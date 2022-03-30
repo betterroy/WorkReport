@@ -13,7 +13,7 @@ using WorkReport.Utility.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using WorkReport.Utility.Filters.AuthorizationPolicy;
+using WorkReport.Utility.Filters.Attributes;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WorkReport

@@ -8,7 +8,7 @@ using WorkReport.Models.ViewModel;
 using WorkReport.Interface.IService;
 using WorkReport.Models;
 using WorkReport.Repositories.Models;
-using WorkReport.Utility.Filters.AuthorizationPolicy;
+using WorkReport.Utility.Filters.Attributes;
 using WorkReport.Commons.EncryptHelper;
 using WorkReport.Commons.Extensions;
 using WorkReport.Commons.MvcResult;

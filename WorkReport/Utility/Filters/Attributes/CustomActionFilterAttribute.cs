@@ -7,7 +7,7 @@ using WorkReport.Interface.IService;
 using WorkReport.Models.Enum;
 using WorkReport.Repositories.Models;
 
-namespace WorkReport.Utility.Filters.AuthorizationPolicy
+namespace WorkReport.Utility.Filters.Attributes
 {
     public class CustomActionFilterAttribute : Attribute, IActionFilter
     {

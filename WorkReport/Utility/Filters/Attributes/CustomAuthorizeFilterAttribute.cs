@@ -6,7 +6,7 @@ using WorkReport.Commons.MvcResult;
 using WorkReport.Models;
 using WorkReport.Utility.Filters.WebHelper;
 
-namespace WorkReport.Utility.Filters.AuthorizationPolicy
+namespace WorkReport.Utility.Filters.Attributes
 {
     public class CustomAuthorizeFilterAttribute : Attribute, IAuthorizationFilter
     {
