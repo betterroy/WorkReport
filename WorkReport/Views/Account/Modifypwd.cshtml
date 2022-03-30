@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "/Views/Shared/_LayoutEdit.cshtml";
+}
+
+<form class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">新密码：</label>
+        <div class="layui-input-block">
+            <input type="password" id="password" name="password" lay-verify="password" lay-reqtext="请输入密码？" autocomplete="off" placeholder="密码" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">确认密码：</label>
+        <div class="layui-input-block">
+            <input type="password" id="confirmPassword" name="confirmPassword" lay-verify="confirmPassword" 
+                lay-reqtext="请输入确认密码？" placeholder="确认密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+      <div class="layui-form-item">
+
+    <div class="layui-input-block">
+      <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
+    </div>
+  </div>
+</form>
+
+@section Scripts{
+    <script>
+
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+        ,layer = layui.layer
+        ,layedit = layui.layedit
+        ,laydate = layui.laydate;
+        form.verify({     //自定义验证规则
+            password: [       //密码验证规则
+            /^[\S]{6,12}$/
+            ,'密码必须6到12位，且不能出现空格'
+          ]
+          ,confirmPassword: function(value){
+              var _password = $("#password").val();
+              if(_password!=value){
+                  return '确认密码与密码不一致。'
+              }
+          }
+        });
+                    
+        form.on('submit(ok)', function (data) {
+            console.log(data.field)
+            $.ajax({
+                url: "/Account/UpdatePassWord",
+                dataType: 'json',
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data.field),
+                method: "post",
+                success: function (response) {
+                    console.log(response);
+                    if (response.Code==200) {
+                        var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+                        parent.layer.close(index);//关闭弹出层
+                    } else {
+                        layer.msg("数据保存失败");
+                        return;
+                    }
+                },
+                error: function () {
+                    layer.msg("数据保存失败");
+                        return;
+                }
+            });
+            return false;
+        });
+
+    });
+            function SetData(){
+
+            }
+              
+        </Script>
+    }

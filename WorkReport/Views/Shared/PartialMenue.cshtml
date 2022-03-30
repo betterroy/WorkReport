@@ -1,0 +1,43 @@
+﻿@using WorkReport.Interface.IService;
+@inject ISMenuService _iSMenuService
+@{
+    int userId = 0;
+    var s_menus = _iSMenuService.GetSMenuList(userId);
+}
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
+
+            @foreach (var smenu in s_menus)
+            {
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">@smenu.Name</a>
+                    <dl class="layui-nav-child">
+                        @foreach (var menu in smenu.SubSMenu)
+                        {
+                            <dd><a data-id="@menu.ID" data-url="@menu.Url" href="javascript:;" data-text="@menu.Name">@menu.Name</a></dd>
+                        }
+                    </dl>
+                </li>
+            }
+            @*<li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">设置</a>
+                <dl class="layui-nav-child">
+                    <dd><a data-id="1" data-url="/SUser" href="javascript:;" data-text="用户设置">用户设置</a></dd>
+                    <dd><a data-id="2" data-url="/SDepartment" href="javascript:;" data-text="部门设置">部门设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">日志管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a data-id="3" data-url="/UReport" href="javascript:;" data-text="日志">日志</a></dd>
+                </dl>
+            </li>*@
+            @*<li class="layui-nav-item"><a href="javascript:;">click menu item</a></li>
+                <li class="layui-nav-item"><a href="">the links</a></li>*@
+        </ul>
+    </div>
+</div>
+

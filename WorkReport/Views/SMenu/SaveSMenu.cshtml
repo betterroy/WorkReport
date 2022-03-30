@@ -1,0 +1,111 @@
+﻿@*
+
+*@
+@{
+    Layout = "/Views/Shared/_LayoutEdit.cshtml";
+}
+
+<form class="layui-form" lay-filter="example" style="margin-right:20px">
+
+    <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级ID：</label>
+        <div class="layui-input-block">
+            <input type="text" name="PID" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Url" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Sort" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function init() {
+            layui.use(['form'], function () {
+                var form = layui.form;
+
+                form.on('submit(ok)', function (data) {
+                    console.log(data);
+                    $.ajax({
+                        url: "/SMenu/SaveSMenu",
+                        dataType: 'json',
+                        async: false,
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data.field),
+                        method: "post",
+                        success: function (response) {
+                            if (response.Code==200) {
+                                var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg("数据保存失败");
+                                return;
+                            }
+                        },
+                        error: function () {
+                            layer.msg("数据保存失败");
+                            return;
+                        }
+                    });
+                    return false;
+                });
+
+                if (_data && _data.hasOwnProperty('ID')) {
+                    form.val('example', {
+                        "ID": _result.ID
+                        , "Name": _result.Name
+                        , "PID": _result.PID
+                        , "Url": _result.Url
+                        , "Sort": _result.Sort
+                    });
+                }
+            });
+
+        }
+        var _result;
+        var _data;
+        function SetData(data) {
+            _data = data;
+            if (data && _data.hasOwnProperty('ID')) {
+                $.ajax({
+                    url: "/SMenu/GetSMenuByID/" + data.ID,
+                    data: { ID: data.ID },
+                    method: "GET",
+                    async: false,
+                    success: function (result) {
+                        _result = result;
+                    }
+                });
+            }
+            init();
+        }
+    </script>
+}

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkReport.Commons\WorkReport.Commons.csproj" />
+    <ProjectReference Include="..\WorkReport.Models\WorkReport.Models.csproj" />
+    <ProjectReference Include="..\WorkReport.Repositories\WorkReport.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>

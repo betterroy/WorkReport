@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WorkReport</title>
+    <link rel="stylesheet" href="~/lib/layui/css/layui.css" />
+    <link rel="stylesheet" href="~/lib/pace/themes/pink/pace-theme-flash.css" />
+    <link rel="stylesheet" href="~/css/common/layui_extend.css" />
+    <link rel="stylesheet" href="~/css/common/main.css" />
+</head>
+<body>
+    
+        @RenderBody()
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/layui/layui.js"></script>
+    <script src="~/lib/pace/pace.js"></script>
+    <script src="~/js/common/date.js"></script>
+    <script src="~/js/common/lay_extend.js"></script>
+    <script src="~/js/common/jquery_extend.js?t=20220326"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

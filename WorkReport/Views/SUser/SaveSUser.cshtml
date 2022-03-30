@@ -1,0 +1,190 @@
+﻿@*
+
+*@
+@using WorkReport.Commons.Extensions
+@using WorkReport.Interface.IService;
+@inject ISDepartmentService _iSDepartmentService
+@{
+    Layout = "/Views/Shared/_LayoutEdit.cshtml";
+    var s_departments = _iSDepartmentService.GetSDepartmentList();
+}
+
+<form class="layui-form" lay-filter="example">
+
+    <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">登陆名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="UserCode" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Name" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="UserType" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-inline">
+                <select name="DeptId" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    @foreach (var sdepartment in s_departments)
+                    {
+                        <option value="@sdepartment.DeptId">@sdepartment.DeptName</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-inline">
+                <input type="text" name="RoleID" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">用户状态</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Status" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="Mobile" lay-verify="phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Email" lay-verify="email" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">QQ</label>
+            <div class="layui-input-inline">
+                <input type="text" name="QQ" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">微信</label>
+            <div class="layui-input-inline">
+                <input type="text" name="WeChat" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                @*<input type="text" name="Sex" lay-verify="" autocomplete="off" class="layui-input">*@
+                <div class="layui-input-inline">
+                    <input type="radio" name="Sex" value="true" title="男">
+                    <input type="radio" name="Sex" value="false" title="女">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    <script type="text/javascript">
+        function init() {
+            layui.use(['form'], function () {
+                var form = layui.form;
+
+                form.on('submit(ok)', function (data) {
+                    console.log(data);
+                    $.ajax({
+                        url: "/SUser/SaveSUser",
+                        dataType: 'json',
+                        async: false,
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data.field),
+                        method: "post",
+                        success: function (response) {
+                            if (response.Code==200) {
+                                var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg("数据保存失败");
+                                return;
+                            }
+                        },
+                        error: function () {
+                            layer.msg("数据保存失败");
+                            return;
+                        }
+                    });
+                    return false;
+                });
+
+                if (_data && _data.hasOwnProperty('ID')) {
+                    form.val('example', {
+                        "ID": _result.ID
+                        , "UserCode": _result.UserCode
+                        , "Name": _result.Name
+                        , "UserType": _result.UserType
+                        , "DeptId": isNullReturnStr(_result.DeptId)
+                        , "RoleID": _result.RoleID
+                        , "Mobile": _result.Mobile
+                        , "Email": _result.Email
+                        , "QQ": _result.QQ
+                        , "WeChat": _result.WeChat
+                        , "Sex": isNullReturnStr(_result.Sex)
+                    });
+                } else {
+                    form.val('example', {
+                        "Sex": "true"
+                    });
+                }
+            });
+        }
+        var _result;
+        var _data;
+        function SetData(data) {
+            _data = data;
+            if (data && _data.hasOwnProperty('ID')) {
+                $.ajax({
+                    url: "/SUser/GetSUserByID/" + data.ID,
+                    data: { ID: data.ID },
+                    method: "GET",
+                    async: false,
+                    success: function (result) {
+                        _result = result;
+                    }
+                });
+            }
+            init();
+        }
+    </script>
+}

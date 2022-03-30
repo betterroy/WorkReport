@@ -1,0 +1,243 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Security.Claims
+@using WorkReport.Commons.Extensions
+@{
+    ViewData["Title"] = "日志";
+}
+
+<style type="text/css">
+    .home-header-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background-color: #fff;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 3px;
+        height: 40px;
+        display: block;
+        overflow: hidden;
+        display: block;
+        /*padding: 35px 0;*/
+    }
+
+    .content-Message {
+        margin-top: 60px;
+    }
+
+</style>
+
+<div id="header" class="home-header-fixed">
+    <form class="layui-form" id="query_form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-normal" onclick="preview()">打印日志</button>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">日期</label>
+                <div class="layui-inline" id="dayform">
+                    <div class="layui-input-inline">
+                        <input type="text" id="stime" name="stime" class="layui-input" placeholder="开始日期">
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline">
+                        <input type="text" id="etime" name="etime" class="layui-input" placeholder="结束日期">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <button class="layui-btn" type="button" onclick="query()"><i class="layui-icon">&#xe615;</i>查询</button>
+                    <button class="layui-btn" type="button" onclick="add()"><i class="layui-icon">&#xe654;</i>新增</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--startprint-->
+<div id="reportMessage" class="content-Message">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>2022年03月05日-日志</legend>
+    </fieldset>
+</div>
+<!--endprint-->
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var currentUserID=@Context.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Sid).Value.ToInt();        
+        var layer;
+        var laydate;
+            layui.use(['laydate','layer'], function(){ //独立版的layer无需执行这一句
+              layer = layui.layer; //独立版的layer无需执行这一句
+                laydate = layui.laydate;
+            });
+          $(function () {
+              layui.use('laydate', function(){
+                  var laydate = layui.laydate;
+                  //日期范围
+                  laydate.render({
+                    elem: '#dayform',
+                    type: 'date',
+                    range: ['#stime', '#etime']
+                  });
+              });
+
+              $('#stime').val(getRecentDay(-3));
+              $('#etime').val(getRecentDay(1));
+
+              query();
+          })
+
+          function query(){
+              $("#reportMessage").children().remove();
+              var query={};
+              query.stime = $("#stime").val();
+              query.etime = $("#etime").val();
+              //query.UserID = 1;
+              //query.PageSize = 10;
+              //query.PageIndex = 1;
+
+              $.ajax({
+                  url: "/UReport/GetCurrentComment",
+                  data: query,
+                  method: "get",
+                  success: function (response) {
+                      if(response.Code==200){
+                          var data=response.Data;
+                          var str='<ul class="layui-timeline">';
+                          for(var i=0;i<data.length;i++){
+                              var model=data[i];
+                              str+=joinData(model);
+                          }
+                          str+="</ul>";
+                          $("#reportMessage").append(str);
+                      }else{
+                          layer.msg("加载失败");
+                      }
+                  }
+              });
+          }
+
+          //添加内容与时间块内容
+          function joinData(model){
+              var str='<li class="layui-timeline-item">\
+                          <i class="layui-icon layui-timeline-axis"></i>\
+                          <div class="layui-timeline-content layui-text">\
+                              <h3 class="layui-timeline-title"><b>'+model.Name+'</b>—'+new Date(model.ReportTime).Format("yyyy年MM月dd日")+'</h3>\
+                              <p>'+model.Content+'\
+                              </p>\
+                              '+joinButton(model)+'\
+                          </div>\
+                      </li>';
+              return str;
+          }
+
+          //添加按钮
+          function joinButton(model){
+              var flag = isCurrent(model);
+              var classStr=getClass(flag);
+              var disabledStr=getDisabled(flag);
+              var str='\
+                      <div class="layui-btn-container">\
+                          <button type="button" class="layui-btn layui-btn-primary layui-btn-sm '+classStr+'" '+disabledStr+' title="修改"\
+                                    onclick="edit('+model.ID+')"><i class="layui-icon layui-icon-edit"></i></button>\
+                          <button type="button" class="layui-btn layui-btn-primary layui-btn-sm '+classStr+'" '+disabledStr+' title="删除"\
+                                    onclick="del('+model.ID+')"><i class="layui-icon layui-icon-delete"></i>  </button>\
+                      </div>\
+                ';
+              return str;
+          }
+
+          function getClass(flag){
+              //console.log(flag);
+              if(!flag){
+                  return " layui-btn-disabled ";
+              }else{
+                  return "";
+              }
+          }
+
+          function getDisabled(flag){
+              if(!flag){
+                  return " disabled ";
+              }else{
+                  return "";
+              }
+          }
+
+          //当前用户是否为遍历的ID
+          function isCurrent(model){
+              //console.log(currentUserID);
+              //console.log(model.UserId);
+              if(currentUserID){
+                  return currentUserID==model.UserId;
+              }
+              return false;
+          }
+
+          function add(){
+                lay_extend.openwin({
+                    title:'添加日志',
+                    page_path:'/Views/UReport/SaveUReport.cshtml',
+                    cancel:function(){ query();}
+                });
+          }
+
+          function edit(id){
+                    lay_extend.openwin({
+                        title:'修改日志',
+                        page_path: '/Views/UReport/SaveUReport.cshtml',
+                        data:{ ID: id },
+                        cancel:function () { query(); }
+                    });
+          }
+
+          function del(id){
+                    layer.confirm('真的删除么', function (index) {
+                        $.ajax({
+                          url: "/UReport/DeleteUReport",
+                          type: 'DELETE',
+                          data: {ID:id},
+                          success:function(response){
+                            if(response.Code==200){
+                                layer.msg("删除成功");
+                                query();
+                            }
+                          }
+                        });
+                        layer.close(index);
+                    });
+          }
+          
+          function preview(oper) {
+              $("#header").hide();
+              $("#reportMessage").removeClass("content-Message");
+              if(oper < 10){
+               bdhtml=window.document.body.innerHTML;
+              // 打印开始的标志
+              sprnstr="<!--startprint-->";
+              // 打印结束的标志
+               eprnstr="<!--endprint-->";
+              // 从打印开始的位置截取到末尾
+               prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr)+17);
+               // 从开始截取到打印结束的位置
+               prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+               // 替换html
+               window.document.body.innerHTML=prnhtml;
+              // 打印
+               window.print();
+               window.document.body.innerHTML = bdhtml;
+              }else{
+                  window.print();
+              }
+              $("#header").show();
+              $("#reportMessage").addClass("content-Message");
+          }
+
+    </script>
+}

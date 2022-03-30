@@ -1,0 +1,217 @@
+﻿@*
+
+*@
+@{
+    ViewData["Title"] = "菜单设置";
+}
+
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="add">添加菜单</button>
+    </div>
+</script>
+
+<table id="sMenuTable" lay-filter="sMenuTable"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+@*<div id="page"></div>
+<button id="show">展开</button>
+<button id="hide">折叠</button>
+<button id="showSn">展示run数据</button>
+<button id="reload">重载</button>
+<button id="getData">获取data数据</button>*@
+
+@*树插件：https://gitee.com/dqb12315/layui-table-tree*@
+@section Scripts{
+
+<script type="text/javascript">
+    layui.config({
+        base: '/lib/layui/layui_exts/'
+    });
+    layui.use(['table','tableTreeDj'], function() {
+        const table = layui.table
+        const tableTree = layui.tableTreeDj;
+        const $ = layui.$;
+
+        // 分页配置
+        //const page = {
+        //    elem: 'page'
+        //    , layout: ['prev', 'page', 'next', 'last','skip'] //自定义分页布局
+        //    , groups: 5 //只显示 5 个连续页码
+        //    , prev: '上一页'
+        //    , next: '下一页'
+        //    , first: 1 //不显示首页
+        //};
+
+        // 字段配置
+        /*
+        const cols = [[
+            {field: 'aid', title: 'id',style:'color: black;',},
+            {field: 'title', title: '名称',style:'color: black;'},
+            {field: 'parent_id', title: '上级id',style:'color: black;'},
+        ]];
+         */
+        const cols = [[
+            { field: 'ID', title: '菜单编码', width: 100, align: "left" }
+            , { field: 'Name', title: '菜单名称', width: 160, align: "left"  }
+            //, {
+            //    field: 'type', title: '菜单类型', templet: function (d) {
+            //        switch (d.type) {
+            //            case "目录":
+            //                return '<span class="layui-badge layui-bg-green">' + d.type + '</span>';
+            //                break;
+            //            case "路径":
+            //                return '<span class="layui-badge layui-orange">' + d.type + '</span>';
+            //                break;
+            //            default:
+            //                return '<span class="layui-badge layui-bg-blue">' + d.type + '</span>'
+            //        }
+            //    }, width: 130, align: "center"
+            //}
+            //, {
+            //    field: 'status', title: '菜单状态', templet: function (d) {
+            //        switch (d.status) {
+            //            case "正常":
+            //                return '<span class="layui-badge layui-bg-green">' + d.status + '</span>';
+            //                break;
+            //            case "禁用":
+            //                return '<span class="layui-badge">隐藏</span>';
+            //                break;
+            //            default:
+            //                return '<span class="layui-badge layui-bg-gray">' + d.status + '</span>'
+            //        }
+            //    }, width: 130, align: "center"
+            //}
+            , { field: 'Url', title: '菜单地址', align: "left" }
+            , { field: 'Sort', title: '排序', width: 130, align: "left" }
+            , { title: '操作', align: 'center', toolbar: '#barDemo', align: "left"  }
+        ]]
+
+
+
+        // 表格配置
+        const objTable = {
+            elem: '#sMenuTable'
+            ,url: '/SMenu/GetSMenu'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            //,page:page
+            ,limit: 1000
+            ,cols: cols
+            ,id: 'list'
+            ,loading:true
+        }
+
+        const objTree = {
+            //defaultShow: true,
+            title: 'Name',
+            keyId: "ID",
+            keyPid: "PID",
+            indent: '&nbsp;&nbsp;&nbsp;&nbsp;',
+            icon: {
+                open: 'layui-icon layui-icon-triangle-d', // 展开时候图标
+                close: 'layui-icon layui-icon-triangle-r', // 折叠时候图标
+            }
+            ,showCache: true, //是否开启展开折叠缓存,默认不开启
+        }
+
+        // tableTree 渲染表格
+        //table.render(objTable)
+        tableTree.render(objTable, objTree);
+
+        tableTree.cache(tableTree.getShowCache(), [])
+
+        $('#show').click(() => {
+            tableTree.showAll(objTable);
+        });
+        $('#hide').click(() => {
+            tableTree.hideAll(objTable);
+        });
+
+        $('#showSn').click(() => {
+            const run = tableTree.getRun();
+            const dataIndex = run.dataIndex;
+            for(let id in dataIndex) {
+                let has = true;
+                let sn = id;
+                let idNow = id;
+
+                while(has) {
+                    if(!!run.childParent[idNow]) {
+                        let pid = run.childParent[idNow];
+                        sn = pid + " - " + sn;
+                        idNow = pid
+                    } else {
+                        break;
+                    }
+                }
+                $("[lay-id='"+ objTable.id +"'] table tr[data-index='"+ dataIndex[id] +"'] td[data-field="+ "sn" +"]").children("div").html(sn);
+            }
+        });
+
+        $('#getData').click(() => {
+            const data = tableTree.getDataOri();
+            console.log(data);
+
+        });
+
+
+        $('#reload').click(() => {
+            objTable.where = {key:"val"}
+            tableTree.reload(objTable, 'list');
+        });
+        
+        var active = {
+            reload: function () {
+                objTable.where = {key:"val"}
+                tableTree.reload(objTable, 'list');
+            }
+        };
+        
+        //头工具栏事件
+        table.on('toolbar(sMenuTable)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'add':
+                    lay_extend.openwin({
+                        title: '添加菜单',
+                        page_path: '/Views/SMenu/SaveSMenu.cshtml',
+                        cancel: function () { active.reload(); }
+                    });
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(sMenuTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                      url: "/SMenu/DeleteSMenu",
+                      type: 'DELETE',
+                      data: {ID:data.ID},
+                      success:function(response){
+                        if(response.Code==200){
+                            layer.msg("删除成功");
+                            active.reload();
+                        }
+                      }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                lay_extend.openwin({
+                    title:'修改菜单',
+                    page_path: '/Views/SMenu/SaveSMenu.cshtml',
+                    data:{ ID: data.ID },
+                    cancel:function () { active.reload(); }
+                });
+            }
+        });
+
+    });
+</script>
+}

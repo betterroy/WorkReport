@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Security.Claims
+@using WorkReport.Commons.Extensions
+@using WorkReport.Models.ViewModel
+@using WorkReport.Interface.IService;
+@inject IUReportService _iUReportService
+@{
+    ViewData["Title"] = "日志填报情况";
+
+    List<UReportUserViewModel> uReportUserViewModels = _iUReportService.GetUReportWriteStatus();
+}
+
+@for (int i = 0; i < uReportUserViewModels.Count(); i++)
+{
+    var val = uReportUserViewModels[i];
+    <blockquote class="layui-elem-quote layui-text">
+      @val.ReportTime.ToString("yyyy年MM月dd日")<b>@val.Department</b> 日志填报情况：
+    </blockquote>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+      <legend>已填(<b>@val.UserHadWrite.Count()</b> 人)</legend>
+    </fieldset>   
+    <div class="layui-btn-container">
+        @for (int j = 0; j < val.UserHadWrite.Count(); j++)
+        {
+            <button class="layui-btn layui-btn-primary layui-border-green layui-btn-radius">@val.UserHadWrite[j]</button>
+        }
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+      <legend>未填(<b>@val.UserUnWrite.Count()</b> 人)</legend>
+    </fieldset>
+    <div class="layui-btn-container">
+        @for (int j = 0; j < val.UserUnWrite.Count(); j++)
+        {
+            <button class="layui-btn layui-btn-primary layui-border-red layui-btn-radius">@val.UserUnWrite[j]</button>
+        }
+    </div>
+}
+

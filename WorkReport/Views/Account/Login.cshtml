@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "登录";
+    Layout = "";
+}
+<link rel="stylesheet" href="~/lib/login/css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="~/lib/login/css/font-awesome.min.css" rel="stylesheet" />
+
+<body>
+    <div class="main-bg" id="mian">
+        <!-- title -->
+        <h1>公司周报系统</h1>
+        <!-- //title -->
+        <div class="sub-main-w3">
+            <div class="image-style">
+            </div>
+            <!-- vertical tabs -->
+            <div class="vertical-tab">
+                <div id="section1" class="section-w3ls">
+                    <input type="radio" name="sections" id="option1" checked>
+                    <label for="option1" class="icon-left-w3pvt"><span class="fa fa-user-circle" aria-hidden="true"></span>登录</label>
+                    <article>
+                        <form action="/Account/Login" method="post">
+                            <h3 class="legend">账号登录</h3>
+                            <div class="input">
+                                <span class="fa fa-user-o" aria-hidden="true"></span>
+                                <input type="text" placeholder="账号" name="username" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input type="password" placeholder="密码" name="password" required />
+                            </div>
+                            <button type="submit" class="btn submit">登 录</button>
+                            <b style="float:left;color:red"> @ViewBag.Message </b>
+                            <a href="#" class="bottom-text-w3ls">忘记密码?</a>
+                        </form>
+                    </article>
+                </div>
+                <div id="section2" class="section-w3ls">
+                    <input type="radio" name="sections" id="option2">
+                    <label for="option2" class="icon-left-w3pvt"><span class="fa fa-pencil-square" aria-hidden="true"></span>注册</label>
+                    <article>
+                        <form action="#" method="post">
+                            <h3 class="legend">注册帐户</h3>
+                            <div class="input">
+                                <span class="fa fa-user-o" aria-hidden="true"></span>
+                                <input type="text" placeholder="用户名" name="name" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input type="password" placeholder="密码" name="password" required />
+                            </div>
+                            <div class="input">
+                                <span class="fa fa-key" aria-hidden="true"></span>
+                                <input type="password" placeholder="确认密码" name="confirmPassword" required />
+                            </div>
+                            <button type="submit" class="btn submit">注 册</button>
+                        </form>
+                    </article>
+                </div>
+                <div id="section3" class="section-w3ls">
+                    <input type="radio" name="sections" id="option3">
+                    <label for="option3" class="icon-left-w3pvt"><span class="fa fa-lock" aria-hidden="true"></span>忘记密码?</label>
+                    <article>
+                        <form action="#" method="post">
+                            <h3 class="legend last">重置密码</h3>
+                            <p class="para-style">请在下面输入您的电子邮件地址，我们将给您发送一封带有说明的电子邮件。</p>
+                            <p class="para-style-2"><strong>需要帮助?</strong>了解更多关于如何 <a href="#">#</a></p>
+                            <div class="input">
+                                <span class="fa fa-envelope-o" aria-hidden="true"></span>
+                                <input type="email" placeholder="邮箱" name="email" required />
+                            </div>
+                            <button type="submit" class="btn submit last-btn">提交</button>
+                        </form>
+                    </article>
+                </div>
+            </div>
+            <!-- //vertical tabs -->
+            <div class="clear"></div>
+        </div>
+        <!-- copyright -->
+        <div class="copyright">
+            <h2>
+                Copyright &copy; 2022 - 2022 版权所有| by
+                <a href="#">everyone</a>
+            </h2>
+        </div>
+        <!-- //copyright -->
+    </div>
+
+</body>
+<!-- script   -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- JavaScript 代码需要放在尾部（指定的HTML元素之后） -->
+<script type="text/javascript">
+
+    $(function(){
+        if (window !== top) {    //当Session过期之后,我们需要从iframe标签中跳转到最外层的登录页面
+            top.location.href = location.href;
+        }
+    });
+
+    addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+</script>
+<!-- //script -->
+</html>
