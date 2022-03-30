@@ -19,7 +19,7 @@ namespace WorkReport.Controllers
             return View();
         }
 
-        //上传excel，使用miniexcel，参见SUser中UploadExcel方法
+        //上传excel，参见SUser中UploadExcel方法；使用miniexcel。
 
         /// <summary>
         /// 文件上传
@@ -59,10 +59,15 @@ namespace WorkReport.Controllers
                 {
                     await file.CopyToAsync(stream);
                 }
+                return new JsonResult(new HttpResponseResult()
+                {
+                    Code = HttpResponseCode.Success,
+                    Data = savePath
+                });
             }
             return new JsonResult(new HttpResponseResult()
             {
-                Code = HttpResponseCode.Success,
+                Code = HttpResponseCode.BadRequest,
                 Data = savePath
             });
         }
