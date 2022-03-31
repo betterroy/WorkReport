@@ -53,6 +53,16 @@ function download(url, params) {
     $(iframeDoc).find('form').submit();
 }
 
+//获取文件后缀名
+var getFileSuffix = function (fileName) {
+    var suffixName = '';
+    var fileNameSplit = fileName.split('.');
+    if (fileNameSplit.length > 0) {
+        suffixName = fileNameSplit[fileNameSplit.length - 1];
+    }
+    return suffixName;
+}
+
 //变量不为空，转换为字符返回。
 function isNullReturnStr(val) {
     if (val == null || val == undefined) {

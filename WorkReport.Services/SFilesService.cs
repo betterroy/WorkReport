@@ -25,7 +25,7 @@ namespace WorkReport.Services
         public HttpResponseResult GetSFiles(BaseQuery baseQuery)
         {
 
-            Expression<Func<SFiles, bool>> expressionWhere = null ;
+            Expression<Func<SFiles, bool>> expressionWhere = f=>f.IsDel==false ;
             Expression<Func<SFiles, int?>> expressionOrder = c => c.Sort;
 
             PageResult<SFiles> pageResult = QueryPage<SFiles, int?>(expressionWhere, baseQuery.limit, baseQuery.page, expressionOrder, true);
