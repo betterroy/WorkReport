@@ -53,6 +53,7 @@ namespace WorkReport.Repositories
         public virtual DbSet<UReport> UReports { get; set; }
         public virtual DbSet<SMenu> SMenus { get; set; }
         public virtual DbSet<SLog> SLogs { get; set; }
+        public virtual DbSet<SFiles> SFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WorkReport.Commons.Api;
+using WorkReport.Commons.EncryptHelper;
 using WorkReport.Commons.FileHlper;
+using WorkReport.Interface.IService;
+using WorkReport.Repositories.Models;
 
 namespace WorkReport.Controllers
 {
-    public class FilesController : Controller
+    public class SFilesController : Controller
     {
 
         private readonly Microsoft.Extensions.Configuration.IConfiguration _IConfiguration = null;
+        private readonly ISFilesService _ISFilesService;
 
-        public FilesController(Microsoft.Extensions.Configuration.IConfiguration iConfiguration)
+        public SFilesController(Microsoft.Extensions.Configuration.IConfiguration iConfiguration, ISFilesService ISFilesService)
         {
             this._IConfiguration = iConfiguration;
+            this._ISFilesService = ISFilesService;
         }
 
         public IActionResult Index()
@@ -33,35 +38,32 @@ namespace WorkReport.Controllers
             {
                 IFormFile file = files.FirstOrDefault();
 
-                //获取配置文件的文件地址
-                var fileAddressSection = _IConfiguration.GetSection("FileAddress");
-                if (fileAddressSection == null)
-                {
-                    return new JsonResult(new HttpResponseResult()
-                    {
-                        Msg = "未配置文件保存地址"
-                    });
-                }
-
-                string filePath = $"{fileAddressSection.Value}/{DateTime.Now.ToString("yyyyMMdd")}";
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
                 string suffix = string.Empty;  //后缀名
                 string[] array = file.FileName.Split('.');
                 if (array != null && array.Length > 0)
                 {
                     suffix = array[array.Length - 1];
                 }
+
+                string filePath = GetFilePath();
                 savePath = Path.Combine(filePath, $"{Guid.NewGuid()}.{suffix}");
                 using (var stream = new FileStream(savePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
-                return new JsonResult(new HttpResponseResult()
+
+                SFiles sFile = new SFiles();   //组装数据添加至数据库中。
+                sFile.FileName = file.FileName;
+                sFile.FilePath = savePath;
+                sFile.MD5Code = MD5Encrypt.AbstractFile(savePath);  //存储文件的MD5 
+                sFile.CreateTime = DateTime.Now;
+                sFile.Sort = 1;
+                sFile.IsDel = false;
+
+                _ISFilesService.Insert(sFile);
+
+                return new JsonResult(new HttpResponseResult()  //不给Code默认Success
                 {
-                    Code = HttpResponseCode.Success,
                     Data = savePath
                 });
             }
@@ -70,6 +72,27 @@ namespace WorkReport.Controllers
                 Code = HttpResponseCode.BadRequest,
                 Data = savePath
             });
+        }
+
+        /// <summary>
+        /// 获取文件路径
+        /// </summary>
+        /// <returns></returns>
+        private string GetFilePath()
+        {
+            //获取配置文件的文件地址
+            var fileAddressSection = _IConfiguration.GetSection("FileAddress");
+            if (fileAddressSection == null)
+            {
+                fileAddressSection.Value = "FileResource";
+            }
+
+            string filePath = $"{fileAddressSection.Value}/{DateTime.Now.ToString("yyyyMMdd")}";
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            return filePath;
         }
 
         /// <summary>
