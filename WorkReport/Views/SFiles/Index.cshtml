@@ -42,7 +42,7 @@
                     , { field: 'ID', title: '自增ID', width: 80 }
                     , {
                         field: 'type', title: '文档类型', templet: function (d) {
-                            var suffixName = getFileSuffix(d.FileName);
+                            var suffixName = getFileSuffix(d.FileName).toLowerCase();
                             var imgUrl = "";
                             switch (suffixName) {
                                 case "jpg":
