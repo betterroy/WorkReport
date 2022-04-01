@@ -202,29 +202,31 @@ namespace WorkReport.Controllers
         /// <summary>
         /// 下载本地文件
         /// </summary>
-        /// <param name="fileName">文件名:(eg:Files/用户信息模板.xlsx)</param>
+        /// <param name="fileName">文件名:用户信息模板.xlsx</param>
+        /// <param name="fileName">文件名:FileResource\20220401\ddd7d156-6a80-42fc-b573-86f785211664.png</param>
         /// <returns></returns>
-        public async Task<IActionResult> DownLoadFile(string fileName)
+        public async Task<IActionResult> DownLoadFile(string fileName, string filePath)
         {
             UploadFileModel uploadFileModel = new UploadFileModel();
 
-            var filePath = $@"{uploadFileModel.catalog}{fileName}";
+            var fileCatalog = $@"{uploadFileModel.catalog}{filePath}";
 
-            if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
+            if (string.IsNullOrEmpty(fileCatalog) || !System.IO.File.Exists(fileCatalog))
             {
                 throw new Exception("文件不存在");
             }
             var memoryStream = new MemoryStream();
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            using (var stream = new FileStream(fileCatalog, FileMode.Open))
             {
                 await stream.CopyToAsync(memoryStream);
             }
             memoryStream.Seek(0, SeekOrigin.Begin);
             //文件名必须编码，否则会有特殊字符(如中文)无法在此下载。
-            string encodeFilename = Path.GetFileName(fileName);
+            //string encodeFilename = Path.GetFileName(fileName);
+            string encodeFilename = fileName;
             encodeFilename = System.Web.HttpUtility.UrlEncode(encodeFilename, System.Text.Encoding.GetEncoding("UTF-8"));
             Response.Headers.Add("Content-Disposition", "attachment; filename=" + encodeFilename);
-            return new FileStreamResult(memoryStream, MimeMappingHelper.GetMimeMapping(filePath));//文件流方式，指定文件流对应的
+            return new FileStreamResult(memoryStream, MimeMappingHelper.GetMimeMapping(fileCatalog));//文件流方式，指定文件流对应的
         }
 
         #endregion

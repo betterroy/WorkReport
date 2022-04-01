@@ -19,6 +19,7 @@
 </script>
 
 <script type="text/html" id="barDemo">
+    <a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="down">下载</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -75,6 +76,7 @@
                                     imgUrl = "/images/word.png";
                                     break;
                                 default:
+                                    imgUrl = "/images/txt.png";
                                     break;
                             }
                             var res ='<img src="' + imgUrl + '" style="width:68px;height:68px;" />';
@@ -84,12 +86,12 @@
                     , { field: 'FileName', title: '文档名称', width: 360, edit: 'text' }
                     , { field: 'FileName', title: '文档描述', width: 360, edit: 'text' }
                     , { field: 'CreateTime', title: '创建时间', width: 160, edit: 'text' }
-                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250 }
                 ]]
                 , id: 'testReload'
                 , page: true
-                ,limit: 20
-                ,limits: [20,50,100]
+                ,limit: 10
+                ,limits: [10,20,50]
             });
 
             var $ = layui.$, active = {
@@ -146,6 +148,13 @@
                         data:{ ID: data.ID },
                         cancel:function () { active.reload(); }
                     });
+                } else if (obj.event === 'down') {
+                    var url = "/SFiles/DownLoadFile";
+                    var params = {
+                        fileName:data.FileName,
+                        filePath:data.FilePath
+                    }
+                    download(url,params);
                 }
             });
         });

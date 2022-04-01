@@ -33,9 +33,11 @@ function getQueryStringByName(name) {
 *  params is javascript plain object
 */
 function download(url, params) {
+    var tid = guid();
+    var iframeID = "download_iframe" + tid;
     var $iframe, iframeDoc, iframeHtml;
-    if (($iframe = $('#download_iframe')).length === 0) {
-        $iframe = $("<iframe id='download_iframe'" +
+    if (($iframe = $('#' + iframeID)).length === 0) {
+        $iframe = $("<iframe id='" + iframeID +"'" +
             " style='display: none' src='about:blank'></iframe>"
         ).appendTo("body");
     }
@@ -52,7 +54,15 @@ function download(url, params) {
     iframeDoc.write(iframeHtml);
     $(iframeDoc).find('form').submit();
 }
-
+/**
+ *获取id
+ */
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 //获取文件后缀名
 var getFileSuffix = function (fileName) {
     var suffixName = '';

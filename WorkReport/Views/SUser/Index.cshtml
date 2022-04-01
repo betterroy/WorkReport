@@ -102,9 +102,10 @@
                         });
                         break;
                     case 'ExcelTemplateDownload':
-                        var url = "/Files/DownLoadFile";
+                        var url = "/SFiles/DownLoadFile";
                         var params = {
-                            fileName:"/Files/用户信息模板.xlsx"
+                            fileName:"用户信息模板.xlsx",
+                            filePath:"/Files/用户信息模板.xlsx"
                         }
                         download(url,params);
                     break;
