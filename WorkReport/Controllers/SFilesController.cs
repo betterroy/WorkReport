@@ -126,7 +126,6 @@ namespace WorkReport.Controllers
         public async Task<IActionResult> UploadFile()
         {
             IFormFileCollection files = Request.Form.Files;
-            string savePath = string.Empty;
             if (files != null && files.Count != 0)
             {
                 IFormFile file = files.FirstOrDefault();
@@ -149,8 +148,11 @@ namespace WorkReport.Controllers
                     suffix = array[array.Length - 1];
                 }
 
-                string filePath = GetFilePath();
-                savePath = Path.Combine(filePath, $"{Guid.NewGuid()}.{suffix}");
+                var uploadFileModel = GetFilePath();
+
+                var fileName = $"{Guid.NewGuid()}.{suffix}";
+                string savePath = Path.Combine($@"{uploadFileModel.catalog}\{uploadFileModel.url}", fileName);      //实际落盘位置
+                string urlPath = Path.Combine(uploadFileModel.url, fileName);           //前台读取文件url
                 using (var stream = new FileStream(savePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -158,7 +160,7 @@ namespace WorkReport.Controllers
 
                 SFiles sFile = new SFiles();   //组装数据添加至数据库中。
                 sFile.FileName = file.FileName;
-                sFile.FilePath = savePath;
+                sFile.FilePath = urlPath;
                 sFile.MD5Code = _MD5Code;  //存储文件的MD5 
                 sFile.CreateTime = DateTime.Now;
                 sFile.Sort = 1;
@@ -174,7 +176,7 @@ namespace WorkReport.Controllers
             return new JsonResult(new HttpResponseResult()
             {
                 Code = HttpResponseCode.BadRequest,
-                Data = savePath
+                Data = ""
             });
         }
 
@@ -182,21 +184,19 @@ namespace WorkReport.Controllers
         /// 获取文件路径
         /// </summary>
         /// <returns></returns>
-        private string GetFilePath()
+        private UploadFileModel GetFilePath()
         {
-            //获取配置文件的文件地址
-            var fileAddressSection = _IConfiguration.GetSection("FileAddress");
-            if (fileAddressSection == null)
-            {
-                fileAddressSection.Value = "FileResource";
-            }
+            UploadFileModel uploadFileModel = new UploadFileModel();
 
-            string filePath = $"{fileAddressSection.Value}/{DateTime.Now.ToString("yyyyMMdd")}";
-            if (!Directory.Exists(filePath))
+            var url = _IConfiguration.GetSection("FileAddress").Value ?? "FileResource";    //url
+            uploadFileModel.url = @$"{url}\{DateTime.Now.ToString("yyyyMMdd")}";
+
+            var catalog = @$"{uploadFileModel.catalog}\{uploadFileModel.url}";
+            if (!Directory.Exists(catalog))
             {
-                Directory.CreateDirectory(filePath);
+                Directory.CreateDirectory(catalog);
             }
-            return filePath;
+            return uploadFileModel;
         }
 
         /// <summary>
@@ -206,9 +206,9 @@ namespace WorkReport.Controllers
         /// <returns></returns>
         public async Task<IActionResult> DownLoadFile(string fileName)
         {
-            var directory = Environment.CurrentDirectory;
+            UploadFileModel uploadFileModel = new UploadFileModel();
 
-            var filePath = $@"{directory}\wwwroot\{fileName}";
+            var filePath = $@"{uploadFileModel.catalog}{fileName}";
 
             if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
             {

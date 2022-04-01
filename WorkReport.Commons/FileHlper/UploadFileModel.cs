@@ -14,7 +14,7 @@ namespace WorkReport.Commons.FileHlper
         /// <summary>
         /// 目录名称
         /// </summary>
-        public string catalog { set; get; }
+        public string catalog { set; get; } = @$"{Environment.CurrentDirectory}\wwwroot\";
         /// <summary>
         /// 文件名称，包括扩展名
         /// </summary>
