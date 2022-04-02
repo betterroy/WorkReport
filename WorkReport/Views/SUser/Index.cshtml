@@ -6,6 +6,7 @@
 }
 <table class="layui-hide" id="sUserTable" lay-filter="sUserTable"></table>
 
+<button type="button" class="layui-btn layui-btn-sm" id="importUser" value="导入明细" style="display: none"/>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
 
@@ -14,7 +15,7 @@
             <i class="layui-icon layui-icon-addition layui-font-12"> </i> 添加用户
         </button>
 
-      <button class="layui-btn layui-btn-normal layui-btn-sm btn_color_confirm perssion-node-display permission-right-13000020" id="uploadFile"
+      <button class="layui-btn layui-btn-normal layui-btn-sm btn_color_confirm perssion-node-display permission-right-13000020" id="import" lay-event="import"
         title="工具栏右侧向下箭头下载模板"
       ><i class="layui-icon"></i>上传用户</button>
     </div>
@@ -101,6 +102,9 @@
                             height:500
                         });
                         break;
+                    case 'import':
+                        $("#importUser").click();
+                        break;
                     case 'ExcelTemplateDownload':
                         var url = "/SFiles/DownLoadFile";
                         var params = {
@@ -114,10 +118,10 @@
 
             //上传控件初始化
             upload.render({
-                elem: '#uploadFile'
+                elem: '#importUser'
                 ,url: '/SUser/UploadExcel' //此处配置你自己的上传接口即可
                 ,accept: 'file' //普通文件
-                ,exts: 'xls|xlsx'
+                , acceptMime: '.xls,.xlsx'
                 ,before: function () {
                     layer.msg('上传中', {
                         icon: 16,
