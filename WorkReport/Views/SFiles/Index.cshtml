@@ -83,9 +83,49 @@
                             return res;
                         }, width: 120, align: "center"
                     }
-                    , { field: 'FileName', title: '文档名称', width: 360, edit: 'text' }
-                    , { field: 'FileName', title: '文档描述', width: 360, edit: 'text' }
-                    , { field: 'CreateTime', title: '创建时间', width: 160, edit: 'text' }
+                    , {
+                        field: 'type', title: '文档名称', templet: function (d) {
+                            var suffixName = getFileSuffix(d.FileName).toLowerCase();
+                            var clickAction = "";
+                            var filePath = d.FilePath;
+                            switch (suffixName) {
+                                case "jpg":
+                                case "jpeg":
+                                case "png":
+                                case "bmp":
+                                case "gif":
+                                    filePath='/'+d.FilePath;
+                                    clickAction = 'showImg(this)';
+                                    break;
+                                case "txt":
+                                    clickAction = 'showTxt(this,"txt")';
+                                    break;
+                                case "ppt":
+                                case "pptx":
+                                    clickAction = "";
+                                    break;
+                                case "pdf":
+                                    clickAction = 'showPdf(this,"pdf")';
+                                    break;
+                                case "xls":
+                                case "xlsx":
+                                    clickAction = 'showOffice(this,"xls")';
+                                    break;
+                                case "doc":
+                                case "docx":
+                                    clickAction = 'showOffice(this,"doc")';
+                                    break;
+                                default:
+                                    clickAction = "";
+                                    break;
+                            }
+                            var res ="<span filePath='"+filePath+"' onclick='" + clickAction + "'>" + d.FileName + "</span>";
+                            return res;
+                        }, width: 360, align: "center"
+                    }
+                    //, { field: 'FileName', title: '文档名称', width: 360 }
+                    , { field: 'FileName', title: '文档描述', width: 360 }
+                    , { field: 'CreateTime', title: '创建时间', width: 160 }
                     , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250 }
                 ]]
                 , id: 'testReload'
@@ -159,5 +199,62 @@
             });
         });
 
+        //弹出显示图片
+        function showImg(e){
+            var imgUrl=$(e).attr('filePath');
+            //layer.msg(1);
+            //页面层-图片
+            layer.open({
+              type: 1,
+              title: false,
+              closeBtn: 0,
+              area: ['auto'],
+              skin: 'layui-layer-nobg', //没有背景色
+              shadeClose: true,
+              content: '<img src="' + imgUrl + '" style=\'max-width:800px;max-width:650px;\'/>'
+            });
+        }
+
+        //弹出显示office
+        function showOffice(e,fileName){
+            var filePath=$(e).attr('filePath');
+            alert(fileName);
+            alert(filePath);
+        }
+
+        //弹出显示Pdf
+        function showPdf(e,fileName){
+            var filePath=$(e).attr('filePath');
+            alert(fileName);
+            alert(filePath);
+        }
+
+        //弹出显示txt
+        function showTxt(e,fileName){
+            var filePath=$(e).attr('filePath');
+            $.ajax({
+                url: "/SFiles/OpenTxtToHtml",
+                dataType: 'json',
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                data: { fileName: fileName,filePath: filePath },
+                method: "post",
+                success: function (response) {                    
+                    layer.open({
+                      type: 1,
+                      title: false,
+                      closeBtn: 0,
+                      shadeClose: true,
+                      skin: 'yourclass',
+                      content: response
+                    });
+                },
+                error: function () {
+                    layer.msg("数据保存失败");
+                    return;
+                }
+            });
+
+        }
     </script>
 }

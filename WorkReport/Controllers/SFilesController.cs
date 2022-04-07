@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.EncryptHelper;
 using WorkReport.Commons.FileHlper;
@@ -229,6 +230,71 @@ namespace WorkReport.Controllers
             return new FileStreamResult(memoryStream, MimeMappingHelper.GetMimeMapping(fileCatalog));//文件流方式，指定文件流对应的
         }
 
+        #endregion
+
+        #region word excel转为html返回前台
+
+
+        public async Task<IActionResult> OpenFileToHtml(string fileName, string filePath)
+        {
+            UploadFileModel uploadFileModel = new UploadFileModel();
+
+            var fileCatalog = $@"{uploadFileModel.catalog}{filePath}";  //文件存储路径
+
+            if (string.IsNullOrEmpty(fileCatalog) || !System.IO.File.Exists(fileCatalog))
+            {
+                throw new Exception("文件不存在");
+            }
+
+            string suffix = string.Empty;  //后缀名
+            string[] array = fileName.Split('.');
+            if (array != null && array.Length > 0)
+            {
+                suffix = array[array.Length - 1].ToLower().Substring(0, 2);
+            }
+            string convertToHtml = string.Empty;
+
+            if (string.Equals(suffix, "doc", StringComparison.CurrentCultureIgnoreCase))   //为word时
+            {
+                convertToHtml = ce.office.extension.WordHelper.ToHtml(fileCatalog);
+            }
+            else if (string.Equals(suffix, "xls", StringComparison.CurrentCultureIgnoreCase))  //为excel时
+            {
+                convertToHtml = ce.office.extension.ExcelHelper.ToHtml(fileCatalog);
+            }
+
+            return Content(convertToHtml);
+        }
+
+        public async Task<IActionResult> OpenTxtToHtml(string fileName, string filePath)
+        {
+
+            UploadFileModel uploadFileModel = new UploadFileModel();
+
+            var fileCatalog = $@"{uploadFileModel.catalog}{filePath}";  //文件存储路径
+
+            if (string.IsNullOrEmpty(fileCatalog) || !System.IO.File.Exists(fileCatalog))
+            {
+                throw new Exception("文件不存在");
+            }
+
+            StringBuilder convertToHtml = new StringBuilder();
+            using (StreamReader sr = new StreamReader(fileCatalog, Encoding.GetEncoding("gb2312"))) //模板页路径
+            {
+                String line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    //为空就为换行
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        line = "<br/>";
+                    }
+                    convertToHtml.Append($"<div>{line}</div>");
+                }
+                sr.Close();
+            }
+            return Content(convertToHtml.ToString());
+        }
         #endregion
     }
 }
