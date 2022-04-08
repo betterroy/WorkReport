@@ -250,7 +250,7 @@ namespace WorkReport.Controllers
             string[] array = fileName.Split('.');
             if (array != null && array.Length > 0)
             {
-                suffix = array[array.Length - 1].ToLower().Substring(0, 2);
+                suffix = array[array.Length - 1].ToLower().Substring(0, 3);
             }
             string convertToHtml = string.Empty;
 
