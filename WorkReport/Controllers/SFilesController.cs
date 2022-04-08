@@ -235,7 +235,7 @@ namespace WorkReport.Controllers
         #region word excel转为html返回前台
 
 
-        public async Task<IActionResult> OpenFileToHtml(string fileName, string filePath)
+        public async Task<IActionResult> OpenOfficeToHtml(string fileName, string filePath)
         {
             UploadFileModel uploadFileModel = new UploadFileModel();
 

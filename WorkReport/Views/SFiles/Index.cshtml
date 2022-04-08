@@ -98,22 +98,22 @@
                                     clickAction = 'showImg(this)';
                                     break;
                                 case "txt":
-                                    clickAction = 'showTxt(this,"txt")';
+                                    clickAction = 'showTxt(this,"'+d.FileName+'")';
                                     break;
                                 case "ppt":
                                 case "pptx":
                                     clickAction = "";
                                     break;
                                 case "pdf":
-                                    clickAction = 'showPdf(this,"pdf")';
+                                    clickAction = 'showPdf(this,"'+d.FileName+'")';
                                     break;
                                 case "xls":
                                 case "xlsx":
-                                    clickAction = 'showOffice(this,"xls")';
+                                    clickAction = 'showOffice(this,"'+d.FileName+'")';
                                     break;
                                 case "doc":
                                 case "docx":
-                                    clickAction = 'showOffice(this,"doc")';
+                                    clickAction = 'showOffice(this,"'+d.FileName+'")';
                                     break;
                                 default:
                                     clickAction = "";
@@ -218,8 +218,28 @@
         //弹出显示office
         function showOffice(e,fileName){
             var filePath=$(e).attr('filePath');
-            alert(fileName);
-            alert(filePath);
+            $.ajax({
+                url: "/SFiles/OpenOfficeToHtml",
+                async: false,
+                data: { fileName: fileName,filePath: filePath },
+                method: "post",
+                success: function (response) {
+                    layer.open({
+                      type: 1,
+                      title: false,
+                      title: fileName,
+                      //closeBtn: 0,
+                      shadeClose: true, 
+                      //skin: 'layui-layer-rim', //加上边框
+                      area: ['800px', '650px'], //宽高
+                      content: response
+                    });
+                },
+                error: function () {
+                    layer.msg("数据保存失败");
+                    return;
+                }
+            });
         }
 
         //弹出显示Pdf
@@ -234,18 +254,18 @@
             var filePath=$(e).attr('filePath');
             $.ajax({
                 url: "/SFiles/OpenTxtToHtml",
-                dataType: 'json',
                 async: false,
-                contentType: 'application/json; charset=utf-8',
                 data: { fileName: fileName,filePath: filePath },
                 method: "post",
-                success: function (response) {                    
+                success: function (response) {
                     layer.open({
                       type: 1,
                       title: false,
-                      closeBtn: 0,
-                      shadeClose: true,
-                      skin: 'yourclass',
+                      title: fileName,
+                      //closeBtn: 0,
+                      shadeClose: true, 
+                      //skin: 'layui-layer-rim', //加上边框
+                      area: ['800px', '650px'], //宽高
                       content: response
                     });
                 },
@@ -254,7 +274,6 @@
                     return;
                 }
             });
-
         }
     </script>
 }
