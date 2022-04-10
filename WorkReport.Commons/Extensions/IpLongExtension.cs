@@ -7,7 +7,7 @@ using WorkReport.Commons.Extensions;
 
 namespace WorkReport.Commons.Extensions
 {
-    public class IpLong
+    public class IpLongExtension
     {
 
         /// <summary>

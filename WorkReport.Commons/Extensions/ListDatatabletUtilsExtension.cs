@@ -11,7 +11,7 @@ namespace WorkReport.Commons.Extensions
     /// <summary>
     /// 转换帮助类
     /// </summary>
-    public class ConvertUtils
+    public class ListDatatabletUtilsExtension
     {
         /// <summary>
         /// 把DataRow对象转换成指定类型对象

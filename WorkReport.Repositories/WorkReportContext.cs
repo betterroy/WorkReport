@@ -54,6 +54,8 @@ namespace WorkReport.Repositories
         public virtual DbSet<SMenu> SMenus { get; set; }
         public virtual DbSet<SLog> SLogs { get; set; }
         public virtual DbSet<SFiles> SFiles { get; set; }
+        public virtual DbSet<SFieldCatalog> SFieldCatalogs { get; set; }
+        public virtual DbSet<SFieldContent> SFieldContents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

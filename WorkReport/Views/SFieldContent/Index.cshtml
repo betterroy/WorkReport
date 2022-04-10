@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "字典设置";
+}
+
+<style type="text/css">
+.layout{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+.aside{
+    border-left:1px solid rgba(0,0,0,0.2);
+    border-right:1px solid rgba(0,0,0,0.2);
+    float: left;
+    width: 20%;
+    height: 100%;
+    margin-left: 3px;
+    padding : 12px;
+}
+.article{
+    border-left:1px solid rgba(0,0,0,0.2);
+    border-right:1px solid rgba(0,0,0,0.2);
+    margin-left: 5px;
+    width: 78%;
+    height: 100%;
+    padding : 12px;
+}
+.btn_box{
+
+}
+</style>
+
+<div class="layout">
+
+    <aside class="aside">
+        <div class="btn_box">
+            <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">修改</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">删除</button>
+        </div>
+        <div id="test1" class="demo-tree demo-tree-box"></div>
+    </aside>
+
+    <article class="article">
+
+    </article>
+
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+    layui.use(['tree', 'util'], function(){
+        var tree = layui.tree
+        ,layer = layui.layer
+        ,util = layui.util
+
+        loadTree(); //加载左侧树
+
+        //常规用法
+        tree.render({
+          elem: '#test1' //默认是点击节点可进行收缩   
+          ,id: 'demoId1'
+          ,data: data1
+        });
+        
+        $('.layui-btn').on('click', function () {
+            var othis = $(this), type = $(this).attr('lay-event');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+        
+        var active = {
+            add: function () {
+                lay_extend.openwin({
+                    title: '添加字典目录',
+                    page_path: '/Views/SFieldContent/SaveSFieldCatalog.cshtml',
+                    data:{ treeCataLog: data1 },
+                    cancel: function () { active.reload(); }
+                });
+            }
+            , edit: function () {
+                layer.msg("edit");
+            }
+            , delete: function (othis) {
+                layer.msg("delete");
+            }
+            , reload: function(){
+                loadTree(); //加载左侧树 
+                tree.reload('demoId1',{ data: data1 });
+            }
+        };
+    });
+    var data1;
+    function loadTree(){
+        $.ajax({
+            url: "/SFieldContent/GetSFieldCatalog",
+            data: { ID: 0 },
+            method: "GET",
+            async: false,
+            success: function (result) {
+                data1 = result;
+            }
+        });
+    }
+</script>
+}

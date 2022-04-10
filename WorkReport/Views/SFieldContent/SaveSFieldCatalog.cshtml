@@ -1,0 +1,159 @@
+﻿@*
+
+*@
+@{
+    Layout = "/Views/Shared/_LayoutEdit.cshtml";
+}
+
+<link rel="stylesheet" href="~/lib/layui/layui_exts/cascader/layCascader.css" />
+
+<form class="layui-form" lay-filter="example" style="margin-right:20px">
+
+    <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">字典英文：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Field" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">目录名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="CatalogName" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级编码：</label>
+        <div class="layui-input-block">
+              @*<input name="ParentID" placeholder="选择父级编码" class="layui-input" id="demo2">*@
+              <input name="ParentID" id="demo2">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Sort" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否启用：</label>
+        <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <input type="radio" name="IsUse" value="true" title="启用">
+                    <input type="radio" name="IsUse" value="false" title="禁用">
+                </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function init() {
+            layui.config({
+                base: '/lib/layui/layui_exts/cascader/'
+            });
+            //layui.use(['form','dropdown', 'util', 'layer', 'table'], function () {
+            layui.use(['form','layCascader', 'util', 'layer', 'table'], function () {
+                var form = layui.form
+                //,dropdown = layui.dropdown
+                ,layCascader = layui.layCascader
+                ,util = layui.util
+                ,layer = layui.layer
+                ,table = layui.table
+                ,$ = layui.jquery;
+
+                var treeCataLog = _data.treeCataLog;
+                treeCataLog = JSON.parse(JSON.stringify(treeCataLog).replace(/id/g, 'value').replace(/title/g, 'label'));
+                
+                //dropdown.render({
+                //  elem: '#demo2'
+                //  ,data: treeCataLog
+                //  ,click: function(obj){
+                //    this.elem.val(obj.title);
+                //  }
+                //  ,style: 'width: 235px;'
+                //});
+                layCascader({
+                  elem: '#demo2',
+                  clearable: true,
+                  options: treeCataLog,
+                  props: {
+                    checkStrictly: true
+                  }
+                });
+
+                form.on('submit(ok)', function (data) {
+                    $.ajax({
+                        url: "/SFieldContent/SaveSFieldCatalog",
+                        dataType: 'json',
+                        async: false,
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data.field),
+                        method: "post",
+                        success: function (response) {
+                            if (response.Code==200) {
+                                var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
+                                parent.layer.close(index);//关闭弹出层
+                            } else {
+                                layer.msg("数据保存失败");
+                                return;
+                            }
+                        },
+                        error: function () {
+                            layer.msg("数据保存失败");
+                            return;
+                        }
+                    });
+                    return false;
+                });
+                
+                if (_data && _data.hasOwnProperty('ID')) {
+                    form.val('example', {
+                        "ID": _result.ID
+                        , "CatalogName": _result.CatalogName
+                        , "ParentID": _result.ParentID
+                        , "Sort": _result.Sort
+                        , "IsUse": _result.IsUse
+                        , "Field": _result.Field
+                    });
+                } else {
+                    form.val('example', {
+                        "IsUse": "true"
+                    });
+                }
+            });
+
+        }
+        var _result;
+        var _data;
+        function SetData(data) {
+            _data = data;
+            if (data && _data.hasOwnProperty('ID')) {
+                $.ajax({
+                    url: "/SFieldContent/GetSFieldCatalogByID/" + data.ID,
+                    data: { ID: data.ID },
+                    method: "GET",
+                    async: false,
+                    success: function (result) {
+                        _result = result;
+                    }
+                });
+            }
+            init();
+        }
+    </script>
+}
