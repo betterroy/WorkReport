@@ -21,6 +21,7 @@
 	  <None Include="wwwroot\lib\layui\font\iconfont.woff2" />
 	  <None Include="wwwroot\lib\layui\layui.js" />
 	  <None Include="wwwroot\lib\layui\layui_exts\cascader\layCascader.js" />
+	  <None Include="wwwroot\lib\layui\layui_exts\eleTree\fonts\eletree_icon.svg" />
 	  <None Include="wwwroot\lib\layui\modules\all.js" />
 	  <None Include="wwwroot\lib\layui\modules\carousel.js" />
 	  <None Include="wwwroot\lib\layui\modules\code.js" />

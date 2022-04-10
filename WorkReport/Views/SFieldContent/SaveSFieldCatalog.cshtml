@@ -28,7 +28,6 @@
     <div class="layui-form-item">
         <label class="layui-form-label">父级编码：</label>
         <div class="layui-input-block">
-              @*<input name="ParentID" placeholder="选择父级编码" class="layui-input" id="demo2">*@
               <input name="ParentID" id="demo2">
         </div>
     </div>
@@ -66,10 +65,8 @@
             layui.config({
                 base: '/lib/layui/layui_exts/cascader/'
             });
-            //layui.use(['form','dropdown', 'util', 'layer', 'table'], function () {
             layui.use(['form','layCascader', 'util', 'layer', 'table'], function () {
                 var form = layui.form
-                //,dropdown = layui.dropdown
                 ,layCascader = layui.layCascader
                 ,util = layui.util
                 ,layer = layui.layer
@@ -77,17 +74,9 @@
                 ,$ = layui.jquery;
 
                 var treeCataLog = _data.treeCataLog;
-                treeCataLog = JSON.parse(JSON.stringify(treeCataLog).replace(/id/g, 'value').replace(/title/g, 'label'));
+                treeCataLog = JSON.parse(JSON.stringify(treeCataLog).replace(/id/g, 'value'));
                 
-                //dropdown.render({
-                //  elem: '#demo2'
-                //  ,data: treeCataLog
-                //  ,click: function(obj){
-                //    this.elem.val(obj.title);
-                //  }
-                //  ,style: 'width: 235px;'
-                //});
-                layCascader({
+                var cascader = layCascader({
                   elem: '#demo2',
                   clearable: true,
                   options: treeCataLog,
@@ -120,17 +109,18 @@
                     });
                     return false;
                 });
-                
+                console.log(_data.currentNode);
                 if (_data && _data.hasOwnProperty('ID')) {
+                    cascader.setValue(_data.currentNode.parentid);
                     form.val('example', {
                         "ID": _result.ID
                         , "CatalogName": _result.CatalogName
-                        , "ParentID": _result.ParentID
                         , "Sort": _result.Sort
-                        , "IsUse": _result.IsUse
+                        , "IsUse": isNullReturnStr(_result.IsUse)
                         , "Field": _result.Field
                     });
                 } else {
+                    cascader.setValue(_data.currentNode.id);
                     form.val('example', {
                         "IsUse": "true"
                     });

@@ -146,6 +146,22 @@ namespace WorkReport.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpDelete]
+        public IActionResult DeleteSFieldCatalog(int ID)
+        {
+            _ISFieldContentService.Delete<SFieldCatalog>(ID);
+            return Json(new HttpResponseResult()
+            {
+                Msg = "删除成功",
+                Code = HttpResponseCode.Success
+            });
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpDelete]
         public IActionResult DeleteSFieldContent(int ID)
         {
             _ISFieldContentService.Delete<SFieldContent>(ID);
