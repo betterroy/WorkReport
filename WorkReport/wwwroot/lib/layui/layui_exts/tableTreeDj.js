@@ -1,4 +1,7 @@
-layui.define(['table', 'jquery'], function(exports) {
+/**
+ * gitee: https://gitee.com/luanshi-dijiang/layui-table-tree
+ */
+layui.define(['table', 'jquery'], function (exports) {
     const MOD_NAME = 'tableTreeDj';
     const $ = layui.jquery;
     const table = layui.table;
