@@ -23,7 +23,7 @@ namespace WorkReport.Interface.IService
         /// 获取字典目录下详细字典
         /// </summary>
         /// <returns></returns>
-        public HttpResponseResult GetSFieldContent(BaseQuery baseQuery);
+        public HttpResponseResult GetSFieldContent(SFieldContentQuery baseQuery);
 
 
 

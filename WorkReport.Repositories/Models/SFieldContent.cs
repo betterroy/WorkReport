@@ -13,7 +13,7 @@ namespace WorkReport.Repositories.Models
         public int? CatalogID { get; set; }
         public int? Code { get; set; }
         public string Field { get; set; }
-        public string FieldContent { get; set; }
+        public string CodeContent { get; set; }
         public bool IsUse { get; set; }
         public int? Sort { get; set; }
     }

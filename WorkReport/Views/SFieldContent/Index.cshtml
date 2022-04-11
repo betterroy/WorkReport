@@ -19,7 +19,7 @@
         border-right: 1px solid rgba(0,0,0,0.2);
         float: left;
         width: 20%;
-        height: 100%;
+        height: 95%;
         margin-left: 3px;
         padding: 12px;
     }
@@ -29,7 +29,7 @@
         border-right: 1px solid rgba(0,0,0,0.2);
         margin-left: 5px;
         width: 78%;
-        height: 100%;
+        height: 95%;
         padding: 12px;
     }
 
@@ -49,6 +49,18 @@
     </aside>
 
     <article class="article">
+        <table class="layui-hide" id="sFieldContentTable" lay-filter="sFieldContentTable"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="addFieldContent">添加字典</button>
+            </div>
+        </script>
+
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="editFieldContent">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delFieldContent">删除</a>
+        </script>
     </article>
 
 </div>
@@ -58,12 +70,15 @@
         layui.config({
             base: '/lib/layui/layui_exts/eleTree/'
         });
-        layui.use(['tree', 'util','eleTree'], function(){
+        layui.use(['tree', 'util','eleTree','table'], function(){
             var tree = layui.tree
             ,eleTree = layui.eleTree
             ,layer = layui.layer
             ,util = layui.util
+            ,table = layui.table
 
+
+            //字典详细
             loadTree(); //加载左侧树
             var el1 = eleTree({
                 el: '.eletree11',
@@ -89,6 +104,7 @@
             var currentNode;
             el1.on("click",function(d) {
                 currentNode=d.data;
+                active.filedContentReload();    //点击节点时，加载右侧字典
             });
 
             $('.layui-btn').on('click', function () {
@@ -107,7 +123,7 @@
                 }
                 , edit: function () {
                     lay_extend.openwin({
-                        title:'修改部门',
+                        title:'修改字典目录',
                         page_path: '/Views/SFieldContent/SaveSFieldCatalog.cshtml',
                         data:{ ID: currentNode.id,treeCataLog: data1,currentNode:currentNode },
                         cancel:function () { active.reload(); }
@@ -132,14 +148,108 @@
                     }else{
                         layer.msg("请选择节点");
                     }
-
                 }
                 , reload: function(){
                     loadTree(); //加载左侧树
                     el1.reload({data: data1});
                     el1.expandAll();
                 }
+                , filedContentReload: function () {
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            CatalogID: currentNode.id
+                            ,id:1
+                        }
+                    });
+                }
             };
+
+
+            //字典详细
+            table.render({
+                elem: '#sFieldContentTable'
+                , url: '/SFieldContent/GetSFieldContent'
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['exports', 'print']
+                , title: '字典'
+                , cols: [[
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'ID', title: '自增ID', width: 80, fixed: 'left', unresize: true, sort: false }
+                    , { field: 'Code', title: '编码', width: 160 }
+                    , { field: 'CodeContent', title: '字典名称', width: 160 }
+                    , { field: 'Sort', title: '排序', width: 160 }
+                    //, { field: 'IsUse', title: '是否启用', width: 160 }                    
+                    , {
+                        field: 'IsUse', title: '是否启用', templet: function (d) {
+                            switch (d.IsUse) {
+                                case true:
+                                    return '<span class="layui-badge layui-bg-green">启用</span>';
+                                    break;
+                                case false:
+                                    return '<span class="layui-badge">禁用</span>';
+                                    break;
+                                default:
+                                    return '<span class="layui-badge layui-bg-gray">禁用</span>'
+                            }
+                        }, width: 130, align: "center"
+                    }
+                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                ]]
+                , where: {
+                     CatalogID: 1
+                     ,id:1
+                }
+                , id: 'testReload'
+                , page: true
+                ,limit: 20
+                ,limits: [20,50,100]
+            });
+
+            //头工具栏事件
+            table.on('toolbar(sFieldContentTable)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'addFieldContent':
+                        lay_extend.openwin({
+                            title: '添加字典',
+                            page_path: '/Views/SFieldContent/SaveSFieldContent.cshtml',
+                            data:{ treeCataLog: data1,currentNode:currentNode },
+                            cancel: function () { active.filedContentReload(); }
+                        });
+                        break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(sFieldContentTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'delFieldContent') {
+                    layer.confirm('真的删除行么', function (index) {
+                        $.ajax({
+                          url: "/SFieldContent/DeleteSFieldContent",
+                          type: 'DELETE',
+                          data: {ID:data.ID},
+                          success:function(response){
+                            if(response.Code==200){
+                                layer.msg("删除成功");
+                                active.filedContentReload();
+                            }
+                          }
+                        });
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'editFieldContent') {
+                    lay_extend.openwin({
+                        title:'修改字典',
+                        page_path: '/Views/SFieldContent/SaveSFieldContent.cshtml',
+                        data:{ ID: data.ID,treeCataLog: data1,currentNode:currentNode },
+                        cancel:function () { active.filedContentReload(); }
+                    });
+                }
+            });
         });
         var data1;
         function loadTree(){

@@ -39,12 +39,12 @@ namespace WorkReport.Controllers
         }
 
         /// <summary>
-        /// 获取全部的分页
+        /// 获取字典分类下数据
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetSFieldContent(BaseQuery baseQuery)
+        public IActionResult GetSFieldContent(SFieldContentQuery baseQuery)
         {
             var rsult = _ISFieldContentService.GetSFieldContent(baseQuery);
             return new JsonResult(rsult.Data);

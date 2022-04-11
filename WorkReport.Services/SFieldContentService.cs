@@ -57,14 +57,13 @@ namespace WorkReport.Services
         /// </summary>
         /// <param name="baseQuery"></param>
         /// <returns></returns>
-        public HttpResponseResult GetSFieldContent(BaseQuery baseQuery)
+        public HttpResponseResult GetSFieldContent(SFieldContentQuery baseQuery)
         {
+            Expression<Func<SFieldContent, bool>> expressionWhere = s => s.CatalogID == baseQuery.CatalogID;
+            Expression<Func<SFieldContent, int?>> expressionOrder = s => s.Sort;
 
-            Expression<Func<SFieldContent, bool>> expressionWhere = s => s.CatalogID == 1;
-
-            var Result = Query(expressionWhere).OrderBy(s => s.Sort);
-            return new HttpResponseResult() { Data = Result };
-
+            PageResult<SFieldContent> pageResult = QueryPage<SFieldContent, int?>(expressionWhere, baseQuery.limit, baseQuery.page, expressionOrder, true);
+            return new HttpResponseResult() { Data = pageResult };
         }
 
     }
