@@ -10,39 +10,26 @@
     <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
 
     <div class="layui-form-item">
-        <label class="layui-form-label">名称：</label>
+        <label class="layui-form-label">权限编码：</label>
         <div class="layui-input-block">
-            <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+            <input type="text" name="RoleCode" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">父级ID：</label>
+        <label class="layui-form-label">权限名称：</label>
         <div class="layui-input-block">
-            <input type="text" name="PID" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+            <input type="text" name="RoleName" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">地址：</label>
-        <div class="layui-input-block">
-            <input type="text" name="Url" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">排序：</label>
-        <div class="layui-input-block">
-            <input type="text" name="Sort" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
-        </div>
-    </div>
-    
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
+
 </form>
 
 @section Scripts{
@@ -55,7 +42,7 @@
                 form.on('submit(ok)', function (data) {
                     console.log(data);
                     $.ajax({
-                        url: "/SMenu/SaveSMenu",
+                        url: "/SRole/SaveSRole",
                         dataType: 'json',
                         async: false,
                         contentType: 'application/json; charset=utf-8',
@@ -81,10 +68,8 @@
                 if (_data && _data.hasOwnProperty('ID')) {
                     form.val('example', {
                         "ID": _result.ID
-                        , "Name": _result.Name
-                        , "PID": _result.PID
-                        , "Url": _result.Url
-                        , "Sort": _result.Sort
+                        , "RoleCode": _result.RoleCode
+                        , "RoleName": _result.RoleName
                     });
                 }
             });
@@ -96,7 +81,7 @@
             _data = data;
             if (data && _data.hasOwnProperty('ID')) {
                 $.ajax({
-                    url: "/SMenu/GetSMenuByID/" + data.ID,
+                    url: "/SRole/GetSRoleByID/" + data.ID,
                     data: { ID: data.ID },
                     method: "GET",
                     async: false,

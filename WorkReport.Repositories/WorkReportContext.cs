@@ -56,6 +56,9 @@ namespace WorkReport.Repositories
         public virtual DbSet<SFiles> SFiles { get; set; }
         public virtual DbSet<SFieldCatalog> SFieldCatalogs { get; set; }
         public virtual DbSet<SFieldContent> SFieldContents { get; set; }
+        public virtual DbSet<SRole> SRoles { get; set; }
+        public virtual DbSet<SRolePermissions> SsRolePermissions { get; set; }
+        public virtual DbSet<SRoleUser> SRoleUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
