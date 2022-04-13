@@ -1,0 +1,112 @@
+﻿@*
+
+*@
+@{
+    ViewData["Title"] = "ajax请求";
+}
+
+<button class="layui-btn layui-btn-sm" lay-event="GetString">get带参</button>
+<button class="layui-btn layui-btn-sm" lay-event="PostString">post带参</button>
+<button class="layui-btn layui-btn-sm" lay-event="PostStringFromForm">PostStringFromForm带参</button>
+
+<button class="layui-btn layui-btn-sm" lay-event="PostModelFromForm">PostModelFromForm带参</button>
+<button class="layui-btn layui-btn-sm" lay-event="PostModelFromBody">PostModelFromBody带参</button>
+<button class="layui-btn layui-btn-sm" lay-event="PostDynamic">PostDynamic带参</button>
+<button class="layui-btn layui-btn-sm" lay-event="PostJObject">PostJObject带参</button>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function() {
+            initButton();
+        });
+
+        function initButton(){
+            $('.layui-btn').on('click', function () {
+                var othis = $(this), type = $(this).attr('lay-event');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        }
+        var active={
+            GetString : function() {
+                $.ajax({
+                  url: "/AjaxRequest/GetString?str=一句话&id=1",
+                  type: 'get',
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+            ,PostString : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostString",
+                  dataType: 'json',
+                  type: 'post',
+                  data:{ str : "一句话",id : 1},
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+            ,PostStringFromForm : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostStringFromForm",
+                  dataType: 'json',
+                  type: 'post',
+                  data:{ str : "一句话",id : 1},
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+
+            ,PostModelFromForm : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostModelFromForm",
+                  dataType: 'json',
+                  type: 'post',
+                  data:{ Id : 1,Name : "PostModelFromForm"},
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+            ,PostModelFromBody : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostModelFromBody",
+                  dataType: 'json',
+                  contentType: 'application/json; charset=utf-8',
+                  type: 'post',
+                  data:JSON.stringify({ Id : 1,Name : "PostModelFromBody"}),
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+            ,PostDynamic : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostDynamic",
+                  dataType: 'json',
+                  contentType: 'application/json; charset=utf-8',
+                  type: 'post',
+                  data:JSON.stringify({ Id : 1,Name : "PostModelFromBody"}),
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+            ,PostJObject : function() {
+                $.ajax({
+                  url: "/AjaxRequest/PostJObject",
+                  dataType: 'json',
+                  contentType: 'application/json; charset=utf-8',
+                  type: 'post',
+                  data:JSON.stringify({ Id : 1,Name : "PostModelFromBody"}),
+                  success:function(response){
+                      alert(response);
+                  }
+                });
+            }
+        };
+    </script>
+}

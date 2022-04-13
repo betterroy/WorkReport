@@ -13,6 +13,7 @@ namespace WorkReport.Repositories.Models
         public string Name { get; set; }
         public int? PID { get; set; }
         public string Url { get; set; }
+        public int? MenuType { get; set; }
         public int? Sort { get; set; }
 
     }

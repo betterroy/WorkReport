@@ -29,6 +29,13 @@
             <input type="text" name="Url" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单类型：</label>
+        <div class="layui-input-block">
+            <input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">排序：</label>
@@ -83,6 +90,7 @@
                         "ID": _result.ID
                         , "Name": _result.Name
                         , "PID": _result.PID
+                        , "MenuType": _result.MenuType
                         , "Url": _result.Url
                         , "Sort": _result.Sort
                     });

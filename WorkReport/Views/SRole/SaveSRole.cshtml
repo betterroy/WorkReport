@@ -24,6 +24,13 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">选择权限：</label>
+        <div class="layui-input-block">
+            <div id="roleTreeId" class="demo-tree"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <div class="layui-input-block">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -36,17 +43,24 @@
     <script type="text/javascript">
 
         function init() {
-            layui.use(['form'], function () {
-                var form = layui.form;
+            layui.use(['tree','form'], function () {
+                var form = layui.form
+                ,tree = layui.tree;
 
                 form.on('submit(ok)', function (data) {
+
+                    getCheckedRoleId(); //获取权限
+
                     console.log(data);
+                    console.log(roleIDs);
+                    console.log(JSON.stringify({sRole : data.field , roleIDs : roleIDs }));
+
                     $.ajax({
                         url: "/SRole/SaveSRole",
                         dataType: 'json',
                         async: false,
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data.field),
+                        //contentType: 'application/json; charset=utf-8',
+                        data: {sRole : data.field , roleIDs : roleIDs },
                         method: "post",
                         success: function (response) {
                             if (response.Code==200) {
@@ -72,13 +86,43 @@
                         , "RoleName": _result.RoleName
                     });
                 }
+
+
+                //开启复选框
+                tree.render({
+                  elem: '#roleTreeId'
+                  ,data: treeData
+                  ,showCheckbox: true
+                  , id: 'roleTreeId'
+                });
+
+
+                var getCheckedRoleId = function () {
+                    var checkedData = tree.getChecked('roleTreeId'); //获取选中节点的数据
+                    roleIDs = [];
+                    getroleIDs(checkedData);
+                }
+
+                var roleIDs = [];
+                //递归获取选中的角色id
+                var getroleIDs = function (checkedData) {
+                    checkedData.forEach(function (item, index) {
+                        //debugger;
+                        roleIDs.push(item.id);
+                        if (item.children != null && item.children.length > 0) {
+                            getroleIDs(item.children);
+                        }
+                    });
+                }
             });
 
         }
         var _result;
         var _data;
+        var treeData;   //权限树数据
         function SetData(data) {
             _data = data;
+            loadRoleTree();
             if (data && _data.hasOwnProperty('ID')) {
                 $.ajax({
                     url: "/SRole/GetSRoleByID/" + data.ID,
@@ -92,5 +136,19 @@
             }
             init();
         }
+        function loadRoleTree(){
+            $.ajax({
+                url: "/SRole/GetSRoleMenu",
+                data: { ID: 0 },
+                method: "GET",
+                async: false,
+                success: function (result) {
+                    treeData = result;
+                    //data1 = JSON.parse(JSON.stringify(data1).replace(/title/g, 'label'));
+                }
+            });
+        }
+
+
     </script>
 }

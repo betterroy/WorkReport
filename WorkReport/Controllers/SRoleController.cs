@@ -21,6 +21,8 @@ namespace WorkReport.Controllers
             _ISRoleService = ISUserService;
         }
 
+        #region 基础增删改查
+
         public IActionResult Index()
         {
             return View();
@@ -69,19 +71,19 @@ namespace WorkReport.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult SaveSRole([FromBody] SRole uReport)
+        public IActionResult SaveSRole([FromForm] SRole sRole, [FromForm] string[] roleIDs)
         {
             HttpResponseCode doResult = HttpResponseCode.Failed;
 
             try
             {
-                if (uReport != null && uReport.ID > 0)
+                if (sRole != null && sRole.ID > 0)
                 {
-                    _ISRoleService.Update(uReport);
+                    _ISRoleService.Update(sRole);
                 }
                 else
                 {
-                    _ISRoleService.Insert(uReport);
+                    _ISRoleService.Insert(sRole);
                 }
                 doResult = HttpResponseCode.Success;
             }
@@ -113,5 +115,18 @@ namespace WorkReport.Controllers
             });
         }
 
+        #endregion
+
+        /// <summary>
+        /// 获取全部的菜单
+        /// </summary>
+        /// <param name="query">分页需要的参数和关键字</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetSRoleMenu(BaseQuery baseQuery)
+        {
+            var rsult = _ISRoleService.GetSRoleMenu(baseQuery);
+            return new JsonResult(rsult.Data);
+        }
     }
 }

@@ -14,6 +14,12 @@ namespace WorkReport.Interface.IService
     {
 
         /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery);
+
+        /// <summary>
         /// 获取部门
         /// </summary>
         /// <returns></returns>

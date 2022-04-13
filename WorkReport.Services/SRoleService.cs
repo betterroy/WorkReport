@@ -11,6 +11,8 @@ using WorkReport.Interface.IService;
 using WorkReport.Models.Query;
 using WorkReport.Repositories.Extend;
 using WorkReport.Repositories.Models;
+using WorkReport.Commons.Extensions;
+using WorkReport.Commons.Tree;
 
 namespace WorkReport.Services
 {
@@ -38,5 +40,29 @@ namespace WorkReport.Services
             var res = Set<SRole>().ToList();
             return res;
         }
+        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery)
+        {
+
+            Expression<Func<SMenu, bool>> expressionWhere = null;
+
+            var Result = Query(expressionWhere).OrderBy(s => s.Sort);
+
+            List<SRoleMenuTreeViewModel> sRoleMenuTrees = new List<SRoleMenuTreeViewModel>();
+            foreach (var item in Result)
+            {
+                SRoleMenuTreeViewModel sRoleMenuTree = new SRoleMenuTreeViewModel()
+                {
+                    id = item.ID.ToInt(),
+                    parentid = item.PID.ToInt(),
+                    spread = true,
+                    title = item.Name
+                };
+                sRoleMenuTrees.Add(sRoleMenuTree);
+            }
+            var CatalogTree = TreeExtension<SRoleMenuTreeViewModel>.ToDo(sRoleMenuTrees);
+            return new HttpResponseResult() { Data = CatalogTree };
+
+        }
+
     }
 }

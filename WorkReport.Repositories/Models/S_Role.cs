@@ -17,4 +17,5 @@ namespace WorkReport.Repositories.Models
         public string RoleName { get; set; }
         public DateTime CreateTime { get; set; } = DateTime.Now;
     }
+
 }

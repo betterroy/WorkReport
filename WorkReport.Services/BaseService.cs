@@ -73,7 +73,14 @@ namespace WorkReport.Services
         public IQueryable<T> Query<T>(Expression<Func<T, bool>> funcWhere) where T : class
         {
             Context = DbContextFactory.ConnWriteOrRead(WriteAndReadEnum.Read);
-            return this.Context.Set<T>().Where<T>(funcWhere);
+            if (funcWhere == null)
+            {
+                return this.Context.Set<T>();
+            }
+            else
+            {
+                return this.Context.Set<T>().Where<T>(funcWhere);
+            }
         }
 
         public PageResult<T> QueryPage<T, S>(Expression<Func<T, bool>> funcWhere, int limit, int page, Expression<Func<T, S>> funcOrderby, bool isAsc = true) where T : class
