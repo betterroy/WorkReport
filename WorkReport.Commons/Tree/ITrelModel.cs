@@ -18,10 +18,12 @@ namespace WorkReport.Commons.Tree
         /// </summary>
         public bool spread { get; set; }
 
-        /// <summary>
-        /// 子节点
-        /// </summary>
-        public List<ITrelModel> children { get; set; }
+        public bool checkedBox { get; set; }
+
+    /// <summary>
+    /// 子节点
+    /// </summary>
+    public List<ITrelModel> children { get; set; }
 
         public void AddChilrden(ITrelModel node);
     }

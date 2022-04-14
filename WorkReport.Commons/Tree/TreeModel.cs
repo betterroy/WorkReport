@@ -19,6 +19,11 @@ namespace WorkReport.Commons.Tree
         public bool spread { get; set; }=false;
 
         /// <summary>
+        /// 是否选中
+        /// </summary>
+        public bool checkedBox { get; set; }
+
+        /// <summary>
         /// 子节点
         /// </summary>
         public List<ITrelModel> children { get; set; }

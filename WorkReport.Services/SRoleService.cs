@@ -40,21 +40,24 @@ namespace WorkReport.Services
             var res = Set<SRole>().ToList();
             return res;
         }
-        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery)
+
+        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery, int? RoleID)
         {
 
             Expression<Func<SMenu, bool>> expressionWhere = null;
+            var SMenuResult = Query(expressionWhere).OrderBy(s => s.Sort);
 
-            var Result = Query(expressionWhere).OrderBy(s => s.Sort);
+            var SRolePermissionsListFromDB = Query<SRolePermissions>(r => r.RoleID == RoleID).ToList();
 
             List<SRoleMenuTreeViewModel> sRoleMenuTrees = new List<SRoleMenuTreeViewModel>();
-            foreach (var item in Result)
+            foreach (var item in SMenuResult)
             {
                 SRoleMenuTreeViewModel sRoleMenuTree = new SRoleMenuTreeViewModel()
                 {
                     id = item.ID.ToInt(),
                     parentid = item.PID.ToInt(),
-                    spread = true,
+                    spread = true,      //默认全展开
+                    checkedBox = SRolePermissionsListFromDB.Any(r => r.MenuID == item.ID),      //是否选中
                     title = item.Name
                 };
                 sRoleMenuTrees.Add(sRoleMenuTree);

@@ -11,8 +11,6 @@ namespace WorkReport.Repositories.Models
     [Table("S_RolePermissions")]
     public class SRolePermissions
     {
-        [Key]
-        public int? ID { get; set; }
         public int? MenuID { get; set; }
         public int? RoleID { get; set; }
     }

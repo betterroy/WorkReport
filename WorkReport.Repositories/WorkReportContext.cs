@@ -63,6 +63,8 @@ namespace WorkReport.Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<SRolePermissions>().HasKey(x => new { x.RoleID, x.MenuID });
         }
 
     }

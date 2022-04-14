@@ -14,12 +14,6 @@ namespace WorkReport.Interface.IService
     {
 
         /// <summary>
-        /// 获取菜单
-        /// </summary>
-        /// <returns></returns>
-        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery);
-
-        /// <summary>
         /// 获取部门
         /// </summary>
         /// <returns></returns>
@@ -31,6 +25,10 @@ namespace WorkReport.Interface.IService
         /// <returns></returns>
         public List<SRole> GetSRoleList();
 
-
+        /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery, int? RoleID);
     }
 }
