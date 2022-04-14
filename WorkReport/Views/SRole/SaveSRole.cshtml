@@ -83,7 +83,6 @@
                     });
                 }
 
-                console.log(treeData);
                 //开启复选框
                 tree.render({
                     elem: '#roleTreeId'
@@ -93,7 +92,7 @@
                     ,oncheck: function (obj) {
                          var childs = $(obj.elem).find('.' + "layui-tree-pack").find('input[same="layuiTreeCheck"]');
                          childs.each(function () {
-                                    this.checked = false;
+                            this.checked = false;
                      });
                     }
                 });
