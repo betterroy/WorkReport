@@ -7,11 +7,11 @@
 项目是基于Net6.0+SQL Server进行开发的框架。
 整合应用技术包括
 
-# 后端
+## 后端
 
 Asp.NetCore MVC、EF、Autofac、Log4Net。
 
-# 前端
+## 前端
 
 Layui为主。
 
