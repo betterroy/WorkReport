@@ -58,6 +58,7 @@ namespace WorkReport.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpGet]
+        //[Authorize(policy: "customPolicy")]
         public IActionResult GetUReportByID(int ID)
         {
             UReport uReport = _IUReportService.Find<UReport>(ID);
@@ -70,6 +71,7 @@ namespace WorkReport.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost]
+        //[Authorize(policy: "customPolicy")]
         public IActionResult SaveReport([FromBody] UReport uReport)
         {
             HttpResponseCode doResult = HttpResponseCode.Failed;

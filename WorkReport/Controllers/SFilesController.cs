@@ -2,7 +2,7 @@
 using System.Text;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.EncryptHelper;
-using WorkReport.Commons.FileHlper;
+using WorkReport.Commons.FileHelper;
 using WorkReport.Interface.IService;
 using WorkReport.Models.Query;
 using WorkReport.Repositories.Models;

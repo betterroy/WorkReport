@@ -19,6 +19,7 @@ using WorkReport.Utility.Filters.Policy;
 using WorkReport.Commons.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
+using WorkReport.Commons.RedisHelper.Service;
 
 namespace WorkReport
 {
@@ -94,7 +95,7 @@ namespace WorkReport
             services.Inject();  //自动注册服务
 
 
-            services.AddSession(); 
+            services.AddSession();
 
             services.AddMvc(option =>
             {
@@ -118,7 +119,7 @@ namespace WorkReport
                 optins.AddPolicy("customPolicy", polic =>
                 {
                     polic.AddRequirements(
-                        new CustomAuthorizationRequirement("Policy01")
+                        new CustomAuthorizationRequirement("Policy01")  //UReportController中有案例
                         // ,new CustomAuthorizationRequirement("Policy02")
                     );
                 });
@@ -161,6 +162,10 @@ namespace WorkReport
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+
+            builder.RegisterType<RedisZSetService>();
+            builder.RegisterType<RedisStringService>();
+            builder.RegisterType<RedisHashService>();
             //builder.RegisterModule(new AutofacModule());
         }
     }

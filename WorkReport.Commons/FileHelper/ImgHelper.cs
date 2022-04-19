@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkReport.Commons.FileHlper
+namespace WorkReport.Commons.FileHelper
 {
     /// <summary>
     /// 图片处理

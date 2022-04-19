@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkReport.Commons.FileHlper
+namespace WorkReport.Commons.FileHelper
 {
     public static class MimeMappingHelper
     {

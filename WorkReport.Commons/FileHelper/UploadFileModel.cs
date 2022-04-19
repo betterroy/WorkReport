@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkReport.Commons.FileHlper
+namespace WorkReport.Commons.FileHelper
 {
     /// <summary>
     /// 上传文件 返回数据模型

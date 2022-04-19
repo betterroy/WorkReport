@@ -11,8 +11,6 @@ namespace WorkReport.Repositories
     public partial class WorkReportContext : DbContext
     {
 
-        private ConfigOptions option = null;
-
         public WorkReportContext()
         {
 
