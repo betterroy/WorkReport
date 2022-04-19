@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.MvcResult;
@@ -33,6 +34,7 @@ namespace WorkReport.Controllers
         /// <param name="query">分页需要的参数和关键字</param>
         /// <returns></returns>
         [HttpGet]
+        //[Authorize(policy: "customPolicy")]
         public IActionResult GetCurrentComment(UReportPageQuery query)
         {
             var rsult = _IUReportService.GetUReport(query);

@@ -50,6 +50,18 @@ namespace WorkReport.Controllers
         }
 
         /// <summary>
+        /// 提示无权限操作
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        //[AllowAnonymous]
+        [CustomAllowAnonymousAttribute]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 登录
         /// </summary>
         /// <returns></returns>
@@ -78,7 +90,8 @@ namespace WorkReport.Controllers
                 {
                    new Claim(ClaimTypes.Sid,sUser.ID.ToString()),
                    new Claim(ClaimTypes.Name,sUser.Name),
-                   new Claim("SUser",JsonConvert.SerializeObject(sUser))
+                   new Claim("SUser",JsonConvert.SerializeObject(sUser)),
+                   new Claim("id",sUser.ID.ToString())
                 };
                 ClaimsPrincipal userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "CurrentUser"));
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, new AuthenticationProperties
@@ -98,6 +111,8 @@ namespace WorkReport.Controllers
         public IActionResult GetCurrentUser()
         {
             var user = HttpContext.User;            //获取当前上下文对象
+            string userId = user.FindFirst("id").Value;
+
             var IsAuthenticated = User.Identity.IsAuthenticated;        //是否登陆
             var name = HttpContext.User.Identity.Name;  //ClaimTypes.Name值
             var currentClaim = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Sid);

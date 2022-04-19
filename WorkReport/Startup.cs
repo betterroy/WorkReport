@@ -15,6 +15,10 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WorkReport.Utility.Filters.Attributes;
 using Microsoft.AspNetCore.Authorization;
+using WorkReport.Utility.Filters.Policy;
+using WorkReport.Commons.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace WorkReport
 {
@@ -89,11 +93,6 @@ namespace WorkReport
             services.AddTransient<DbContext, WorkReportContext>();
             services.Inject();  //自动注册服务
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)   //登录校验
-            .AddCookie(options =>
-            {
-                options.LoginPath = new PathString("/Account/Login");//没登录跳到这个路径
-            });
 
             services.AddSession(); 
 
@@ -103,6 +102,26 @@ namespace WorkReport
                 option.Filters.Add<CustomAuthorizeFilterAttribute>();    // 增加自定义权限过滤器,判断是否登陆
                 option.Filters.Add<CustomExceptionFilterAttribute>();    // 增加全局异常过滤器，记录日志
                 option.Filters.Add<CustomActionFilterAttribute>();    // 增加action过滤器，记录日志
+            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)   //登录校验
+            .AddCookie(options =>
+            {
+                options.LoginPath = new PathString("/Account/Login");//没登录跳到这个路径
+                options.AccessDeniedPath = new PathString("/Account/AccessDenied");//没权限跳到这个路径
+            });
+
+            services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();     //增加授权
+            services.AddAuthorization(optins =>                                             //授权校验
+            {
+                //增加授权策略
+                optins.AddPolicy("customPolicy", polic =>
+                {
+                    polic.AddRequirements(
+                        new CustomAuthorizationRequirement("Policy01")
+                        // ,new CustomAuthorizationRequirement("Policy02")
+                    );
+                });
             });
 
 
@@ -139,6 +158,7 @@ namespace WorkReport
             });
 
         }
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //builder.RegisterModule(new AutofacModule());

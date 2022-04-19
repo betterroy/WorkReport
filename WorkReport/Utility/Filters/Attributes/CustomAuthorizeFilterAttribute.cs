@@ -45,7 +45,7 @@ namespace WorkReport.Utility.Filters.Attributes
                     context.Result = new JsonResult(new HttpResponseResult
                     {
                         Code = HttpResponseCode.Failed,
-                        Msg = "没有权限"
+                        Msg = "未登录"
                     });
                 }
                 context.Result = new RedirectResult("~/Account/Login");//短路器，只要对context.Result赋值，就不再往后执行

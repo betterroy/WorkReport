@@ -65,6 +65,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\WorkReport.Commons\WorkReport.Commons.csproj" />
 		<ProjectReference Include="..\WorkReport.Interface\WorkReport.Interface.csproj" />
 		<ProjectReference Include="..\WorkReport.Repositories\WorkReport.Repositories.csproj" />
 		<ProjectReference Include="..\WorkReport.Services\WorkReport.Services.csproj" />
