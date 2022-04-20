@@ -3,6 +3,7 @@ using WorkReport.Commons.Api;
 using WorkReport.Commons.MvcResult;
 using WorkReport.Interface.IService;
 using WorkReport.Models.Query;
+using WorkReport.Models.ViewModel;
 using WorkReport.Repositories.Models;
 
 namespace WorkReport.Controllers
@@ -38,8 +39,9 @@ namespace WorkReport.Controllers
         [HttpGet]
         public IActionResult GetSMenuList()
         {
-            var rsult = _ISMenuService.GetSMenuList(0);
-            return new JsonResult(rsult);
+            //var result = _ISMenuService.GetSMenuList(0);
+            List<SMenuViewModel> result = null;
+            return new JsonResult(result);
         }
 
         /// <summary>

@@ -18,7 +18,19 @@ namespace WorkReport.Interface.IService
         /// </summary>
         /// <returns></returns>
         public HttpResponseResult GetSMenu(BaseQuery baseQuery);
+
+        /// <summary>
+        /// 获取所有菜单
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public List<SMenuViewModel> GetSMenuList(int userId);
+
+        /// <summary>
+        /// 获取菜单,根据用户ID获取角色下菜单
+        /// </summary>
+        /// <returns></returns>
+        public List<SMenuViewModel> GetSMenuListByRoleID(int userId);
 
     }
 }

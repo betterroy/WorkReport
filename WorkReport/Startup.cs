@@ -20,6 +20,7 @@ using WorkReport.Commons.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using WorkReport.Commons.RedisHelper.Service;
+using WorkReport.Interface.AopExtension;
 
 namespace WorkReport
 {
@@ -166,6 +167,7 @@ namespace WorkReport
             builder.RegisterType<RedisZSetService>();
             builder.RegisterType<RedisStringService>();
             builder.RegisterType<RedisHashService>();
+            builder.RegisterType(typeof(CustomAutofacCacheAop));
             //builder.RegisterModule(new AutofacModule());
         }
     }

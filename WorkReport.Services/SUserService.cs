@@ -19,9 +19,11 @@ namespace WorkReport.Services
     public class SUserService : BaseService, ISUserService
     {
         private readonly IMapper _iMapper;
-        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper) : base(dbContextFactory)
+        private readonly ISMenuService _iSMenuService;
+        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper, ISMenuService iSMenuService) : base(dbContextFactory)
         {
             _iMapper = mapper;
+            _iSMenuService = iSMenuService;
         }
 
         /// <summary>
@@ -140,7 +142,10 @@ namespace WorkReport.Services
                 sysUser = sUser.FirstOrDefault();
 
                 menuUrllist = null;
-                menueViewList = null;
+
+                //menueViewList = null;
+
+                menueViewList =_iSMenuService.GetSMenuListByRoleID(sysUser.ID.ToInt());
                 return true;
             }
             else
