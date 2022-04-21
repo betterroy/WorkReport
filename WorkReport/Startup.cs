@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.AopExtension;
+using Autofac.Extras.DynamicProxy;
 
 namespace WorkReport
 {
@@ -168,6 +169,7 @@ namespace WorkReport
             builder.RegisterType<RedisStringService>();
             builder.RegisterType<RedisHashService>();
             builder.RegisterType(typeof(CustomAutofacCacheAop));
+            builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();
             //builder.RegisterModule(new AutofacModule());
         }
     }

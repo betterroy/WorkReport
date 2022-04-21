@@ -42,11 +42,17 @@ namespace WorkReport.Interface.AopExtension
 
                 _logger.LogInformation(sUser.Name + "登录成功");
 
-                string menuUrKey = CacheKeyConstant.GetCurrentUserMenuUrlKeyConstant(sUser.ID.ToString());      //当前用户的菜单Url地址  缓存的key
-                _RedisHashService.SetRangeInHash(menuUrKey, menuUrlDictionary);
+                if (menuUrlDictionary != null)
+                {
+                    string menuUrKey = CacheKeyConstant.GetCurrentUserMenuUrlKeyConstant(sUser.ID.ToString());      //当前用户的菜单Url地址  缓存的key
+                    _RedisHashService.SetRangeInHash(menuUrKey, menuUrlDictionary);
+                }
 
-                string menuListKey = CacheKeyConstant.GetCurrentUserMenuListKeyConstant(sUser.ID.ToString());   //当前用户的菜单集合  缓存的Key
-                _RedisStringService.Set<List<SMenuViewModel>>(menuListKey, menueViewList);
+                if (menueViewList != null)
+                {
+                    string menuListKey = CacheKeyConstant.GetCurrentUserMenuListKeyConstant(sUser.ID.ToString());   //当前用户的菜单集合  缓存的Key
+                    _RedisStringService.Set<List<SMenuViewModel>>(menuListKey, menueViewList);
+                }
             }
         }
     }

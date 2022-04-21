@@ -13,6 +13,8 @@ using WorkReport.Models.Query;
 using WorkReport.Repositories.Extend;
 using WorkReport.Repositories.Models;
 using WorkReport.Commons.Extensions;
+using WorkReport.Interface.AopExtension;
+using Autofac.Extras.DynamicProxy;
 
 namespace WorkReport.Services
 {

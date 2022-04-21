@@ -1,4 +1,5 @@
 ﻿@using WorkReport.Interface.IService;
+@using WorkReport.Models.ViewModel
 @inject ISMenuService _iSMenuService
 @{
     int userId = 0;
@@ -13,11 +14,12 @@
             @foreach (var smenu in s_menus)
             {
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:;">@smenu.Name</a>
+                    <a class="" href="javascript:;">@smenu.title</a>
                     <dl class="layui-nav-child">
-                        @foreach (var menu in smenu.SubSMenu)
+                        @foreach (var menu in smenu.children)
                         {
-                            <dd><a data-id="@menu.ID" data-url="@menu.Url" href="javascript:;" data-text="@menu.Name">@menu.Name</a></dd>
+                            var _menu = menu as SMenuViewModel;
+                            <dd><a data-id="@_menu.id" data-url="@_menu.Url" href="javascript:;" data-text="@_menu.title">@_menu.title</a></dd>
                         }
                     </dl>
                 </li>
