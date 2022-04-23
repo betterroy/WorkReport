@@ -19,15 +19,15 @@ namespace WorkReport.Controllers
     public class AccountController : Controller
     {
 
-        private readonly ISUserService _ISUserService;
+        private readonly ISUserService _iSUserService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="iCommentService"></param>
-        public AccountController(ISUserService ISUserService)
+        public AccountController(ISUserService iSUserService)
         {
-            _ISUserService = ISUserService;
+            _iSUserService = iSUserService;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace WorkReport.Controllers
 
             SUser sUser ;
 
-            var isLogin = _ISUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser);
+            var isLogin = _iSUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser);
 
             if (!isLogin)
             {
@@ -145,14 +145,14 @@ namespace WorkReport.Controllers
             HttpResponseCode doResult = HttpResponseCode.Failed;
 
             var ID = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Sid).Value.ToInt();
-            var User = _ISUserService.Find<SUser>(ID);
+            var User = _iSUserService.Find<SUser>(ID);
 
 
             if (User != null && !string.IsNullOrEmpty(pass.password))
             {
                 pass.password = MD5Encrypt.Encrypt(pass.password);    //对密码进行MD5加密验证。
                 User.Password = pass.password;
-                _ISUserService.Update<SUser>(User);
+                _iSUserService.Update<SUser>(User);
                 doResult = HttpResponseCode.Success;
             }
 

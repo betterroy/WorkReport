@@ -24,6 +24,8 @@ namespace WorkReport.Services
 
         }
 
+
+        #region 角色的基础维护
         public HttpResponseResult GetSRole(BaseQuery baseQuery)
         {
 
@@ -41,6 +43,16 @@ namespace WorkReport.Services
             return res;
         }
 
+        #endregion
+
+        #region 角色菜单
+
+        /// <summary>
+        /// 根据角色ID,获取权限菜单。前台编辑选择用
+        /// </summary>
+        /// <param name="baseQuery"></param>
+        /// <param name="RoleID"></param>
+        /// <returns></returns>
         public HttpResponseResult GetSRoleMenu(BaseQuery baseQuery, int? RoleID)
         {
 
@@ -66,6 +78,19 @@ namespace WorkReport.Services
             return new HttpResponseResult() { Data = CatalogTree };
 
         }
+
+        #endregion
+
+
+        #region 角色下用户(SRoleUser)
+
+        public List<SRoleUser> GetSRoleUserByUserID(int? userID)
+        {
+            var result = Query<SRoleUser>(r => r.UserID == userID).ToList();
+            return result;
+        }
+
+        #endregion
 
     }
 }

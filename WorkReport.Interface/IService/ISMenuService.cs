@@ -30,7 +30,7 @@ namespace WorkReport.Interface.IService
         /// 获取菜单,根据用户ID获取角色下菜单
         /// </summary>
         /// <returns></returns>
-        public List<SMenuViewModel> GetSMenuListByRoleID(int userId);
+        public List<SMenuViewModel> GetSMenuList(int userId);
 
     }
 }

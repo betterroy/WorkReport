@@ -1,9 +1,10 @@
-﻿@using WorkReport.Interface.IService;
+﻿@using WorkReport.Commons.Extensions
+@using WorkReport.Interface.IService;
 @using WorkReport.Models.ViewModel
 @inject ISMenuService _iSMenuService
 @{
-    int userId = 0;
-    var s_menus = _iSMenuService.GetSMenuList();
+    int userId = @Context.User.FindFirst("id").Value.ToInt();
+    var s_menus = _iSMenuService.GetSMenuList(userId);
 }
 
 <div class="layui-side layui-bg-black">

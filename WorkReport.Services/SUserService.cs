@@ -22,10 +22,12 @@ namespace WorkReport.Services
     {
         private readonly IMapper _iMapper;
         private readonly ISMenuService _iSMenuService;
-        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper, ISMenuService iSMenuService) : base(dbContextFactory)
+        private readonly ISRoleService _iSRoleService;
+        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper, ISMenuService iSMenuService, ISRoleService iSRoleService) : base(dbContextFactory)
         {
             _iMapper = mapper;
             _iSMenuService = iSMenuService;
+            _iSRoleService = iSRoleService;
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace WorkReport.Services
                     DeptName = item.DeptName
                 };
                 sUserViewModels.Add(sUserViewModel);
-             }
+            }
 
             PageResult<SUserViewModel> result = new PageResult<SUserViewModel>()
             {
@@ -135,15 +137,16 @@ namespace WorkReport.Services
         public virtual bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser)
         {
             IQueryable<SUser> sUser = Query<SUser>(u => u.UserCode.Equals(username)
-            && u.Password.Equals(password)
-            && (u.Status == true || u.Status == null));
+                                                        && u.Password.Equals(password)
+                                                        && (u.Status == true || u.Status == null));
             if (sUser != null && sUser.Count() > 0)
             {
                 sysUser = sUser.FirstOrDefault();
 
                 //menueViewList = _iSMenuService.GetSMenuListByRoleID(sysUser.ID.ToInt());   //根据当前用户获取所有菜单
-                int userID = sysUser.ID.ToInt();
-                sRoleUser = Query<SRoleUser>(r => r.UserID == userID).ToList();
+
+                sRoleUser = _iSRoleService.GetSRoleUserByUserID(sysUser.ID.ToInt());
+
                 return true;
             }
             else

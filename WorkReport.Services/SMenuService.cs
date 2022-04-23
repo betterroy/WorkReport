@@ -40,11 +40,11 @@ namespace WorkReport.Services
             return sMenus;
         }
 
-        public List<SMenuViewModel> GetSMenuListByRoleID(int userId)
+        public List<SMenuViewModel> GetSMenuList(int userId)
         {
-            IQueryable<SUser> sUser = Query<SUser>(u => u.ID.Equals(userId));
-            int roleId = (sUser.FirstOrDefault()?.RoleId).ToInt();
-            IQueryable<SRolePermissions> sRolePermissions = Query<SRolePermissions>(r => r.RoleID.Equals(roleId));
+            IQueryable<SRoleUser> sRoleUser = Query<SRoleUser>(u => u.UserID.Equals(userId));
+
+            IQueryable<SRolePermissions> sRolePermissions = Query<SRolePermissions>(r => sRoleUser.Any(r=>r.RoleID == r.RoleID));
 
             List<SMenuViewModel> sMenus = RecursionMenue(sRolePermissions);
 
