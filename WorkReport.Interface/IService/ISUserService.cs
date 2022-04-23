@@ -46,7 +46,7 @@ namespace WorkReport.Interface.IService
         /// <param name="menuUrlDictionary"></param>
         /// <param name="menueViewList"></param>
         /// <returns></returns>
-        public bool SUserLogin(string username, string password, out SUser sysUser, out Dictionary<string, string> menuUrlDictionary, out List<SMenuViewModel> menueViewList);
+        public bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser);
 
 
         /// <summary>

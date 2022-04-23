@@ -115,7 +115,7 @@ namespace WorkReport
             });
 
             services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();     //增加授权
-            services.AddAuthorization(optins =>                                             //授权校验
+            services.AddAuthorization(optins =>                                             //授权校验-此处其实未用到
             {
                 //增加授权策略
                 optins.AddPolicy("customPolicy", polic =>
@@ -171,6 +171,9 @@ namespace WorkReport
             builder.RegisterType(typeof(CustomAutofacCacheAop));
             builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();
             //builder.RegisterModule(new AutofacModule());
+
+            //系统加载时，初始化权限至redis，永不过期，权限更改时，对权限进行更新。(也可以在需要的时候判断一下没有，没有则进行添加。)
+
         }
     }
 }

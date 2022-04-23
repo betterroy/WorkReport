@@ -69,7 +69,6 @@ namespace WorkReport.Services
                             a.Name,
                             a.UserType,
                             a.DeptId,
-                            a.RoleId,
                             a.Status,
                             a.Mobile,
                             a.QQ,
@@ -90,7 +89,6 @@ namespace WorkReport.Services
                     Name = item.Name,
                     UserType = item.UserType,
                     DeptId = item.DeptId,
-                    RoleId = item.RoleId,
                     Status = item.Status,
                     Mobile = item.Mobile,
                     QQ = item.QQ,
@@ -134,7 +132,7 @@ namespace WorkReport.Services
         /// <param name="sysUser"></param>
         /// <param name="menulist"></param>
         /// <returns></returns> 
-        public virtual bool SUserLogin(string username, string password, out SUser sysUser, out Dictionary<string, string> menuUrllist, out List<SMenuViewModel> menueViewList)
+        public virtual bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser)
         {
             IQueryable<SUser> sUser = Query<SUser>(u => u.UserCode.Equals(username)
             && u.Password.Equals(password)
@@ -143,18 +141,15 @@ namespace WorkReport.Services
             {
                 sysUser = sUser.FirstOrDefault();
 
-                menuUrllist = null;
-
-                //menueViewList = null;
-
-                menueViewList =_iSMenuService.GetSMenuListByRoleID(sysUser.ID.ToInt());
+                //menueViewList = _iSMenuService.GetSMenuListByRoleID(sysUser.ID.ToInt());   //根据当前用户获取所有菜单
+                int userID = sysUser.ID.ToInt();
+                sRoleUser = Query<SRoleUser>(r => r.UserID == userID).ToList();
                 return true;
             }
             else
             {
                 sysUser = null;
-                menuUrllist = null;
-                menueViewList = null;
+                sRoleUser = null;
                 return false;
             }
         }

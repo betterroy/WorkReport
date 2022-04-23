@@ -37,22 +37,28 @@ namespace WorkReport.Interface.AopExtension
             if (invocation.Method.Name.Equals("SUserLogin") && (bool)invocation.ReturnValue) //说明这里是登录，进行缓存当前用户所有菜单
             {
                 SUser sUser = invocation.Arguments[2] as SUser;
-                Dictionary<string, string> menuUrlDictionary = invocation.Arguments[3] as Dictionary<string, string>;
-                List<SMenuViewModel> menueViewList = invocation.Arguments[4] as List<SMenuViewModel>;
+                List<SRoleUser> sRoleUserList = invocation.Arguments[3] as List<SRoleUser>;
+                //List<SMenuViewModel> menueViewList = invocation.Arguments[4] as List<SMenuViewModel>;
 
                 _logger.LogInformation(sUser.Name + "登录成功");
 
-                if (menuUrlDictionary != null)
+                if (sRoleUserList != null)
                 {
-                    string menuUrKey = CacheKeyConstant.GetCurrentUserMenuUrlKeyConstant(sUser.ID.ToString());      //当前用户的菜单Url地址  缓存的key
-                    _RedisHashService.SetRangeInHash(menuUrKey, menuUrlDictionary);
+                    string menuListKey = CacheKeyConstant.GetCurrentUserRoleKeyConstant(sUser.ID.ToString());   //当前用户所对应的角色
+                    _RedisStringService.Set(menuListKey, sRoleUserList);
                 }
 
-                if (menueViewList != null)
-                {
-                    string menuListKey = CacheKeyConstant.GetCurrentUserMenuListKeyConstant(sUser.ID.ToString());   //当前用户的菜单集合  缓存的Key
-                    _RedisStringService.Set<List<SMenuViewModel>>(menuListKey, menueViewList);
-                }
+                //if (menuUrlDictionary != null)
+                //{
+                //    string menuUrKey = CacheKeyConstant.GetCurrentUserMenuUrlKeyConstant(sUser.ID.ToString());      //当前用户的菜单Url地址  缓存的key
+                //    _RedisHashService.SetRangeInHash(menuUrKey, menuUrlDictionary);
+                //}
+
+                //if (menueViewList != null)
+                //{
+                //    string menuListKey = CacheKeyConstant.GetCurrentUserMenuListKeyConstant(sUser.ID.ToString());   //当前用户的菜单集合  缓存的Key
+                //    _RedisStringService.Set<List<SMenuViewModel>>(menuListKey, menueViewList);
+                //}
             }
         }
     }

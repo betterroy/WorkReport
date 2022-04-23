@@ -26,7 +26,7 @@ namespace WorkReport.Controllers
         {
             return View();
         }
-        public IActionResult Test()
+        public IActionResult Test() //非树形菜单维护-作废
         {
             return View();
         }

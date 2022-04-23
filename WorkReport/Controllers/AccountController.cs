@@ -72,10 +72,9 @@ namespace WorkReport.Controllers
         {
             password = MD5Encrypt.Encrypt(password);    //对密码进行MD5加密验证。
 
-            SUser sUser = null;
-            //List<MenueViewModel> menueViewList;
+            SUser sUser ;
 
-            var isLogin = _ISUserService.SUserLogin(username, password, out sUser, out Dictionary<string, string> menuUrlDictionary, out List<SMenuViewModel> menueViewList);
+            var isLogin = _ISUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser);
 
             if (!isLogin)
             {
@@ -130,10 +129,6 @@ namespace WorkReport.Controllers
         /// <returns></returns>
         public IActionResult LogOut()
         {
-            // HttpContext.DeleteCookies("CurrentUser");
-            //Session方式
-            // HttpContext.Session.Remove("CurrentUser");
-
             CurrentUser.Value = null;  //存储当前登陆用户
 
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

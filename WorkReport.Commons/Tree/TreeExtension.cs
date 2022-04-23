@@ -11,7 +11,7 @@ namespace WorkReport.Commons.Tree
     {
         public static List<T> ToDo(List<T> models)
         {
-            var dtoMap = new Dictionary<int, T>();
+            var dtoMap = new Dictionary<int, T>(models.Count());
             foreach (var item in models)
             {
                 dtoMap.Add(item.id.ToInt(), item);

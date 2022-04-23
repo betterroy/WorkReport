@@ -24,7 +24,7 @@ namespace WorkReport.Interface.IService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public List<SMenuViewModel> GetSMenuList(int userId);
+        public List<SMenuViewModel> GetSMenuList();
 
         /// <summary>
         /// 获取菜单,根据用户ID获取角色下菜单

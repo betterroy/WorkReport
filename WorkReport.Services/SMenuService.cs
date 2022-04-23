@@ -34,7 +34,7 @@ namespace WorkReport.Services
 
         }
 
-        public List<SMenuViewModel> GetSMenuList(int userId)
+        public List<SMenuViewModel> GetSMenuList()
         {
             List<SMenuViewModel> sMenus = RecursionMenue();
             return sMenus;
