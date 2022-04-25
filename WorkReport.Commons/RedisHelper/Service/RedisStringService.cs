@@ -151,8 +151,27 @@ namespace WorkReport.Commons.RedisHelper.Service
         {
            return  IClient.ExpireEntryIn(key, timeSpan);
         }
-        
 
+
+        #endregion
+
+        #region 删除
+
+        /// <summary>
+        /// 删除key
+        /// </summary>
+        public bool Remove(string key)
+        {
+            return base.IClient.Remove(key);
+        }
+
+        /// <summary>
+        /// 删除多个key
+        /// </summary>
+        public void Remove(List<string> keys)
+        {
+            base.IClient.RemoveAll(keys);
+        }
         #endregion
     }
 }

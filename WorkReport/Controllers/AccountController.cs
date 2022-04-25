@@ -13,6 +13,8 @@ using WorkReport.Commons.EncryptHelper;
 using WorkReport.Commons.Extensions;
 using WorkReport.Commons.MvcResult;
 using WorkReport.Commons.Api;
+using WorkReport.Commons.RedisHelper.Service;
+using WorkReport.Commons.CacheHelper;
 
 namespace WorkReport.Controllers
 {
@@ -20,14 +22,17 @@ namespace WorkReport.Controllers
     {
 
         private readonly ISUserService _iSUserService;
+        private readonly RedisStringService _RedisStringService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="iCommentService"></param>
-        public AccountController(ISUserService iSUserService)
+        public AccountController(ISUserService iSUserService,
+            RedisStringService redisStringService)
         {
             _iSUserService = iSUserService;
+            this._RedisStringService = redisStringService;
         }
 
         /// <summary>
@@ -131,7 +136,16 @@ namespace WorkReport.Controllers
         /// <returns></returns>
         public IActionResult LogOut()
         {
-            CurrentUser.Value = null;  //存储当前登陆用户
+            CurrentUser.Value = null;  //移除当前用户
+
+            var user = HttpContext.User;            //获取当前上下文对象
+            string userId = user.FindFirst("id").Value;
+            List<string> keys = new List<string>();
+            keys.Add(CacheKeyConstant.GetCurrentUserRoleKeyConstant(userId));   //当前用户所对应的角色
+            keys.Add(CacheKeyConstant.GetCurrentUserRoleMenuUrlKeyConstant(userId));   //当前用户的菜单集合  缓存的Key
+            //退出登陆时，移除当前用户菜单与权限。
+            _RedisStringService.Remove(keys);
+
 
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");

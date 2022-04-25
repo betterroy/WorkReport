@@ -49,7 +49,7 @@ namespace WorkReport.Interface.AopExtension
             if (redisSmenu == null) //如果Redis中无此用户菜单，则进行获取。
             {
                 List<SMenuViewModel> sMenus = func.Invoke();
-                _RedisStringService.Set(menuListKey, sMenus);
+                _RedisStringService.Set(menuListKey, sMenus, TimeSpan.FromMinutes(30));
                 return sMenus;
             }
             else

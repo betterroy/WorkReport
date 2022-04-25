@@ -45,8 +45,8 @@ namespace WorkReport.Interface.AopExtension
 
                 if (sRoleUserList != null)
                 {
-                    string menuListKey = CacheKeyConstant.GetCurrentUserRoleKeyConstant(sUser.ID.ToString());   //当前用户所对应的角色
-                    _RedisStringService.Set(menuListKey, sRoleUserList);
+                    string roleListKey = CacheKeyConstant.GetCurrentUserRoleKeyConstant(sUser.ID.ToString());   //当前用户所对应的角色
+                    _RedisStringService.Set(roleListKey, sRoleUserList, TimeSpan.FromMinutes(30));
                 }
 
                 //if (controllerList != null)
