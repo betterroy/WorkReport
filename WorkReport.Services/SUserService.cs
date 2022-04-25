@@ -21,12 +21,14 @@ namespace WorkReport.Services
     public class SUserService : BaseService, ISUserService
     {
         private readonly IMapper _iMapper;
-        private readonly ISMenuService _iSMenuService;
+        //private readonly ISMenuService _iSMenuService;
         private readonly ISRoleService _iSRoleService;
-        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper, ISMenuService iSMenuService, ISRoleService iSRoleService) : base(dbContextFactory)
+        public SUserService(ICustomDbContextFactory dbContextFactory, IMapper mapper
+            //, ISMenuService iSMenuService
+            , ISRoleService iSRoleService) : base(dbContextFactory)
         {
             _iMapper = mapper;
-            _iSMenuService = iSMenuService;
+            //_iSMenuService = iSMenuService;
             _iSRoleService = iSRoleService;
         }
 
@@ -134,7 +136,9 @@ namespace WorkReport.Services
         /// <param name="sysUser"></param>
         /// <param name="menulist"></param>
         /// <returns></returns> 
-        public virtual bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser)
+        public virtual bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser
+            //,out List<SMenuViewModel> menueViewList
+            )
         {
             IQueryable<SUser> sUser = Query<SUser>(u => u.UserCode.Equals(username)
                                                         && u.Password.Equals(password)
@@ -143,9 +147,9 @@ namespace WorkReport.Services
             {
                 sysUser = sUser.FirstOrDefault();
 
-                //menueViewList = _iSMenuService.GetSMenuListByRoleID(sysUser.ID.ToInt());   //根据当前用户获取所有菜单
-
                 sRoleUser = _iSRoleService.GetSRoleUserByUserID(sysUser.ID.ToInt());
+
+                //menueViewList = _iSMenuService.GetSMenuList(sysUser.ID.ToInt());   //根据当前用户获取所有菜单
 
                 return true;
             }
@@ -153,6 +157,7 @@ namespace WorkReport.Services
             {
                 sysUser = null;
                 sRoleUser = null;
+                //menueViewList = null;
                 return false;
             }
         }

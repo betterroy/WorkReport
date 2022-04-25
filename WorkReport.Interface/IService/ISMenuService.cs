@@ -8,9 +8,12 @@ using WorkReport.Models.ViewModel;
 using WorkReport.Interface.IRepositories;
 using WorkReport.Repositories.Models;
 using WorkReport.Models.Query;
+using WorkReport.Interface.AopExtension;
+using Autofac.Extras.DynamicProxy;
 
 namespace WorkReport.Interface.IService
 {
+    [Intercept(typeof(CustomAutofacSMenuAop))]
     public interface ISMenuService : IBaseService
     {
         /// <summary>

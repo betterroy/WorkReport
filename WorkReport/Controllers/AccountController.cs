@@ -74,7 +74,9 @@ namespace WorkReport.Controllers
 
             SUser sUser ;
 
-            var isLogin = _iSUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser);
+            var isLogin = _iSUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser
+                //, out List<SMenuViewModel> menueViewList
+                );
 
             if (!isLogin)
             {

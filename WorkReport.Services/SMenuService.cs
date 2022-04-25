@@ -13,14 +13,17 @@ using System.Linq.Expressions;
 using WorkReport.Commons.MvcResult;
 using WorkReport.Commons.Extensions;
 using WorkReport.Commons.Tree;
+using WorkReport.Commons.RedisHelper.Service;
+using WorkReport.Commons.CacheHelper;
 
 namespace WorkReport.Services
 {
     public class SMenuService : BaseService, ISMenuService
     {
-        public SMenuService(ICustomDbContextFactory dbContextFactory) : base(dbContextFactory)
+        private readonly RedisStringService _RedisStringService;
+        public SMenuService(ICustomDbContextFactory dbContextFactory,
+            RedisStringService redisStringService) : base(dbContextFactory)
         {
-
         }
 
         public HttpResponseResult GetSMenu(BaseQuery baseQuery)
@@ -40,17 +43,17 @@ namespace WorkReport.Services
             return sMenus;
         }
 
-        public List<SMenuViewModel> GetSMenuList(int userId)
+        public virtual List<SMenuViewModel> GetSMenuList(int userId)
         {
             IQueryable<SRoleUser> sRoleUser = Query<SRoleUser>(u => u.UserID.Equals(userId));
 
-            IQueryable<SRolePermissions> sRolePermissions = Query<SRolePermissions>(r => sRoleUser.Any(r=>r.RoleID == r.RoleID));
+            IQueryable<SRolePermissions> sRolePermissions = Query<SRolePermissions>(r => sRoleUser.Any(r => r.RoleID == r.RoleID));
 
             List<SMenuViewModel> sMenus = RecursionMenue(sRolePermissions);
 
             return sMenus;
         }
-        private List<SMenuViewModel> RecursionMenue(IQueryable<SRolePermissions> sMenuViewModels=null)
+        private List<SMenuViewModel> RecursionMenue(IQueryable<SRolePermissions> sMenuViewModels = null)
         {
             List<SMenu>? menuQuery;
 
@@ -84,5 +87,7 @@ namespace WorkReport.Services
             return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList);
         }
 
+
     }
+
 }

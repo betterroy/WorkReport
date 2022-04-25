@@ -17,18 +17,18 @@ namespace WorkReport.Commons.CacheHelper
         public static string GetCurrentUserRoleKeyConstant(string userId) => $"user_{userId}_role";
 
         /// <summary>
-        /// 当前角色所对应的控制器目录
+        /// 当前用户所对应的控制器目录
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static string GetCurrentUserControllerKeyConstant(string roleId) => $"role_{roleId}_controller";
+        public static string GetCurrentUserControllerKeyConstant(string roleId) => $"user_{roleId}_controller";
 
         /// <summary>
-        /// 角色对应的菜单
+        /// 用户对应的菜单
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static string GetCurrentUserRoleMenuUrlKeyConstant(string roleId) => $"role_{roleId}_menu";
+        public static string GetCurrentUserRoleMenuUrlKeyConstant(string roleId) => $"user_{roleId}_menu";
 
     }
 }

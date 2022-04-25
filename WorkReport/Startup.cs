@@ -168,8 +168,10 @@ namespace WorkReport
             builder.RegisterType<RedisZSetService>();
             builder.RegisterType<RedisStringService>();
             builder.RegisterType<RedisHashService>();
-            builder.RegisterType(typeof(CustomAutofacCacheAop));
+            builder.RegisterType(typeof(CustomAutofacSUserAop));
+            builder.RegisterType(typeof(CustomAutofacSMenuAop));
             builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();
+            builder.RegisterType<SMenuService>().As<ISMenuService>().EnableClassInterceptors();
             //builder.RegisterModule(new AutofacModule());
 
             //系统加载时，初始化权限至redis，永不过期，权限更改时，对权限进行更新。(也可以在需要的时候判断一下没有，没有则进行添加。)

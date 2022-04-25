@@ -13,7 +13,7 @@ using Autofac.Extras.DynamicProxy;
 
 namespace WorkReport.Interface.IService
 {
-    [Intercept(typeof(CustomAutofacCacheAop))]
+    [Intercept(typeof(CustomAutofacSUserAop))]
     public interface ISUserService : IBaseService
     {
         /// <summary>
@@ -46,7 +46,9 @@ namespace WorkReport.Interface.IService
         /// <param name="menuUrlDictionary"></param>
         /// <param name="menueViewList"></param>
         /// <returns></returns>
-        public bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser);
+        public bool SUserLogin(string username, string password, out SUser sysUser, out List<SRoleUser> sRoleUser
+            //, out List<SMenuViewModel> menueViewList
+            );
 
 
         /// <summary>
