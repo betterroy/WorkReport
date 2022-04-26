@@ -101,6 +101,11 @@ namespace WorkReport.Services
                     Sex = item.Sex,
                     DeptName = item.DeptName
                 };
+                var sRoleUserList = Query<SRoleUser>(s => s.UserID == item.ID);
+                if (sRoleUserList.Count() > 0) {
+                    var sRoleList = Query<SRole>(r => sRoleUserList.Any(list => list.RoleID == r.ID));                    
+                    sUserViewModel.RoleId = string.Join(",", sRoleList.Select(s => s.RoleName));
+                }
                 sUserViewModels.Add(sUserViewModel);
             }
 

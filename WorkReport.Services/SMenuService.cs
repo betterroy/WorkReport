@@ -47,7 +47,7 @@ namespace WorkReport.Services
         {
             IQueryable<SRoleUser> sRoleUser = Query<SRoleUser>(u => u.UserID.Equals(userId));
 
-            IQueryable<SRole> sRoles = Query<SRole>(r => sRoleUser.Any(r => r.RoleID == r.RoleID));
+            IQueryable<SRole> sRoles = Query<SRole>(s => sRoleUser.Any(r => r.RoleID == s.ID));
             if (sRoles.Any(s => s.RoleCode == "admin"))
             {
                 return RecursionMenue();
