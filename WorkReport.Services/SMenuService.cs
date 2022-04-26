@@ -47,11 +47,16 @@ namespace WorkReport.Services
         {
             IQueryable<SRoleUser> sRoleUser = Query<SRoleUser>(u => u.UserID.Equals(userId));
 
+            IQueryable<SRole> sRoles = Query<SRole>(r => sRoleUser.Any(r => r.RoleID == r.RoleID));
+            if (sRoles.Any(s => s.RoleCode == "admin"))
+            {
+                return RecursionMenue();
+            }
+
             IQueryable<SRolePermissions> sRolePermissions = Query<SRolePermissions>(r => sRoleUser.Any(r => r.RoleID == r.RoleID));
 
-            List<SMenuViewModel> sMenus = RecursionMenue(sRolePermissions);
+            return RecursionMenue(sRolePermissions);
 
-            return sMenus;
         }
         private List<SMenuViewModel> RecursionMenue(IQueryable<SRolePermissions> sMenuViewModels = null)
         {

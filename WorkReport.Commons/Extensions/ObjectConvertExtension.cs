@@ -243,22 +243,6 @@ namespace WorkReport.Commons.Extensions
         }
 
         /// <summary>
-        /// 布尔值转换性别
-        /// </summary>
-        public static string GetBoolToSex(this bool data)
-        {
-            return data ? "男" : "女";
-        }
-
-        /// <summary>
-        /// 性别转换布尔值
-        /// </summary>
-        public static bool? GetSexToBool(this string data)
-        {
-            return data== "女" ? false : true;
-        }
-
-        /// <summary>
         /// 转换为可空布尔值
         /// </summary>
         /// <param name="data">数据</param>

@@ -63,6 +63,7 @@ namespace WorkReport.Repositories
             //base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<SRolePermissions>().HasKey(x => new { x.RoleID, x.MenuID });
+            modelBuilder.Entity<SRoleUser>().HasKey(x => new { x.RoleID, x.UserID });
         }
 
     }

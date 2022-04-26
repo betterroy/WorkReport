@@ -127,6 +127,8 @@ namespace WorkReport.Controllers
 
             var sUser = JsonConvert.DeserializeObject<SUserViewModel>(sUserInfo.Value);
 
+            SUser userValue = CurrentUser.Value;
+
             return new JsonResult(sUser);
         }
 
@@ -145,7 +147,6 @@ namespace WorkReport.Controllers
             keys.Add(CacheKeyConstant.GetCurrentUserRoleMenuUrlKeyConstant(userId));   //当前用户的菜单集合  缓存的Key
             //退出登陆时，移除当前用户菜单与权限。
             _RedisStringService.Remove(keys);
-
 
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");

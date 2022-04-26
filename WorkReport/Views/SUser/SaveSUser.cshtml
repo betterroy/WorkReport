@@ -4,9 +4,11 @@
 @using WorkReport.Commons.Extensions
 @using WorkReport.Interface.IService;
 @inject ISDepartmentService _iSDepartmentService
+@inject ISRoleService _iSRoleService
 @{
     Layout = "/Views/Shared/_LayoutEdit.cshtml";
-    var s_departments = _iSDepartmentService.GetSDepartmentList();
+    var sDepartments = _iSDepartmentService.GetSDepartmentList();
+    var sRoles = _iSRoleService.GetSRoleList();
 }
 
 <form class="layui-form" lay-filter="example">
@@ -40,7 +42,7 @@
             <div class="layui-input-inline">
                 <select name="DeptId" lay-verify="required" lay-search="">
                     <option value="">直接选择或搜索选择</option>
-                    @foreach (var sdepartment in s_departments)
+                    @foreach (var sdepartment in sDepartments)
                     {
                         <option value="@sdepartment.DeptId">@sdepartment.DeptName</option>
                     }
@@ -51,9 +53,13 @@
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">角色</label>
+            <label class="layui-form-label">性别</label>
             <div class="layui-input-inline">
-                <input type="text" name="RoleID" lay-verify="" autocomplete="off" class="layui-input">
+                @*<input type="text" name="Sex" lay-verify="" autocomplete="off" class="layui-input">*@
+                <div class="layui-input-inline">
+                    <input type="radio" name="Sex" value="男" title="男">
+                    <input type="radio" name="Sex" value="女" title="女">
+                </div>
             </div>
         </div>
         <div class="layui-inline">
@@ -95,14 +101,19 @@
     </div>
 
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">性别</label>
+        @*<div class="layui-inline">
+            <label class="layui-form-label">角色</label>
             <div class="layui-input-inline">
-                @*<input type="text" name="Sex" lay-verify="" autocomplete="off" class="layui-input">*@
-                <div class="layui-input-inline">
-                    <input type="radio" name="Sex" value="true" title="男">
-                    <input type="radio" name="Sex" value="false" title="女">
-                </div>
+                <input type="text" name="RoleId" lay-verify="" autocomplete="off" class="layui-input">
+            </div>
+        </div>*@
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+                @foreach (var sRole in sRoles)
+                {
+                    <input type="checkbox" name="role[@sRole.ID]" value="@sRole.ID" title="@sRole.RoleName">
+                }
             </div>
         </div>
     </div>
@@ -119,11 +130,18 @@
 @section Scripts{
     <script type="text/javascript">
         function init() {
-            layui.use(['form'], function () {
+            layui.use(['form'], function() {
                 var form = layui.form;
 
-                form.on('submit(ok)', function (data) {
-                    console.log(data);
+                form.on('submit(ok)', function(data) {
+                    var arr = new Array();
+                    $("input:checkbox[name^='role']:checked").each(function(i){  //获取checkbox[name^='role']以role开关的值
+                        arr[i] = $(this).val();
+                    });
+
+                    data.field.RoleId = arr.join(",");//将数组合并成字符串
+                    
+                    //console.log(data);
                     $.ajax({
                         url: "/SUser/SaveSUser",
                         dataType: 'json',
@@ -131,8 +149,8 @@
                         contentType: 'application/json; charset=utf-8',
                         data: JSON.stringify(data.field),
                         method: "post",
-                        success: function (response) {
-                            if (response.Code==200) {
+                        success: function(response) {
+                            if (response.Code == 200) {
                                 var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
                                 parent.layer.close(index);//关闭弹出层
                             } else {
@@ -140,7 +158,7 @@
                                 return;
                             }
                         },
-                        error: function () {
+                        error: function() {
                             layer.msg("数据保存失败");
                             return;
                         }
@@ -149,19 +167,31 @@
                 });
 
                 if (_data && _data.hasOwnProperty('ID')) {
-                    form.val('example', {
+                    var formData = {
                         "ID": _result.ID
                         , "UserCode": _result.UserCode
                         , "Name": _result.Name
                         , "UserType": _result.UserType
                         , "DeptId": isNullReturnStr(_result.DeptId)
-                        , "RoleID": _result.RoleID
+                        //, "RoleId": _result.RoleId
                         , "Mobile": _result.Mobile
                         , "Email": _result.Email
                         , "QQ": _result.QQ
                         , "WeChat": _result.WeChat
                         , "Sex": isNullReturnStr(_result.Sex)
-                    });
+                    };
+                    if (_result.RoleId) {
+                        console.log(_result.RoleId);
+
+                        var roleList = _result.RoleId.split(",");
+                        for (var i = 0; i < roleList.length; i++) {
+                            console.log(roleList[i]);
+                            formData["role[" + roleList[i] + "]"] = true;
+                        }
+                        //$("input:checkbox[name='role']").prop("checked", true);
+                    }
+                    form.val('example',formData );
+
                 } else {
                     form.val('example', {
                         "Sex": "true"
@@ -179,7 +209,7 @@
                     data: { ID: data.ID },
                     method: "GET",
                     async: false,
-                    success: function (result) {
+                    success: function(result) {
                         _result = result;
                     }
                 });

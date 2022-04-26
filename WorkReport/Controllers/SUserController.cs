@@ -64,6 +64,16 @@ namespace WorkReport.Controllers
         public IActionResult GetSUserByID(int ID)
         {
             SUser sUser = _ISUserService.Find<SUser>(ID);
+
+            #region 往SRoleUser表中添加角色用户
+
+            sUser.Password = "";
+            List<SRoleUser> roleList = _ISUserService.Query<SRoleUser>(r => r.UserID == ID).ToList();
+            var roleIds = roleList.Select(r => r.RoleID);
+            sUser.RoleId = String.Join(",", roleIds);   //拼接起角色ID
+
+            #endregion
+
             return new JsonResult(sUser);
         }
 
@@ -81,8 +91,29 @@ namespace WorkReport.Controllers
             {
                 if (sUser != null && sUser.ID > 0)
                 {
-                    _ISUserService.Update(sUser, it => new { it.Password });
-                    //_ISUserService.Update(sUser, "Password");
+                    _ISUserService.Update(sUser, it => new { it.Password });    //更新用户，密码不进行更新。
+                                                                                //_ISUserService.Update(sUser, "Password");
+
+                    #region 往SRoleUser表中添加角色用户
+
+                    var roleIDs = sUser.RoleId.Split(",");
+                    List<SRoleUser> roleList = new List<SRoleUser>(roleIDs.Length);  //待添加的所有权限
+                    foreach (var roleID in roleIDs)
+                    {
+                        roleList.Add(new SRoleUser() { RoleID = roleID.ToInt(), UserID = sUser.ID });
+                    }
+
+                    //查询数据库当前角色的所有权限。
+                    var SRoleUsersListFromDB = _ISUserService.Query<SRoleUser>(r => r.UserID == sUser.ID).ToList();
+
+                    var insertList = roleList.Where(r => !SRoleUsersListFromDB.Any(s => s.RoleID == r.RoleID)).ToList();  //待添加与现存差集，进行添加操作
+                    _ISUserService.Insert<SRoleUser>(insertList);
+
+                    var delList = SRoleUsersListFromDB.Where(r => !roleList.Any(s => s.RoleID == r.RoleID)).ToList();  //现存与待添加差集，进行删除操作
+                    _ISUserService.Delete<SRoleUser>(delList);
+
+                    #endregion
+
                 }
                 else
                 {
@@ -148,7 +179,7 @@ namespace WorkReport.Controllers
                     sUser.Name = item.姓名;
                     sUser.UserCode = item.登录账号;
                     //sUser.Age = item.年龄;
-                    sUser.Sex = item.性别.GetSexToBool();
+                    sUser.Sex = item.性别.Substring(0,1);
                     //sUser.QQ = item.身高;
                     //sUser.QQ = item.学历;
                     sUser.Mobile = item.手机号;

@@ -98,7 +98,7 @@ namespace WorkReport.Services
                     QQ = item.QQ,
                     WeChat = item.WeChat,
                     Email = item.Email,
-                    Sex = item.Sex.ToBool().GetBoolToSex(),
+                    Sex = item.Sex,
                     DeptName = item.DeptName
                 };
                 sUserViewModels.Add(sUserViewModel);

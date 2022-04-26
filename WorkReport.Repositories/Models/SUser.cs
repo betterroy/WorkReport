@@ -15,12 +15,13 @@ namespace WorkReport.Repositories.Models
         public string Name { get; set; }
         public int? UserType { get; set; }
         public string DeptId { get; set; }
+        [NotMapped]
         public string RoleId { get; set; }
         public bool? Status { get; set; }
         public string Mobile { get; set; }
         public long? QQ { get; set; }
         public string WeChat { get; set; }
         public string Email { get; set; }
-        public bool? Sex { get; set; }
+        public string Sex { get; set; }
     }
 }
