@@ -39,12 +39,20 @@
                     maxTabNum: 20,              // 最大的tab打开数量
                 };
                 miniAdmin.render(options);
-
-                $('.login-out').on("click", function() {
-                    layer.msg('退出登录成功', function() {
-                        window.location = 'page/login-3.html';
-                    });
+                
+                $('.layui-nav-child a').on('click', function () {  //头像处点击，显示出的消息
+                    var type = $(this).attr("id");
+                    eval(type + "()");
                 });
             });
+            function updatePass(){
+                 lay_extend.openwin({
+                     title: '修改密码',
+                     page_path: '/Views/Account/Modifypwd.cshtml',
+                     cancel: function () {    
+                         window.location.href="/Account/LogOut";
+                     }
+                 });
+            }
         </script>
     }
