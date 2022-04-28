@@ -26,9 +26,23 @@ namespace WorkReport.Controllers
         {
             return View();
         }
-        public IActionResult Test() //非树形菜单维护-作废
+
+        /// <summary>
+        /// 获取全部的菜单
+        /// </summary>
+        /// <param name="query">分页需要的参数和关键字</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetHomeList()
         {
-            return View();
+            MenusInfoResultDTO menusInfoResultDTO = new MenusInfoResultDTO();
+
+            var result = _ISMenuService.GetSMenuList();
+            menusInfoResultDTO.menuInfo = result;
+            menusInfoResultDTO.homeInfo = new S_HomeViewModel();
+            menusInfoResultDTO.logoInfo = new S_LogoViewModel();
+            
+            return new JsonResult(menusInfoResultDTO);
         }
 
         /// <summary>
@@ -39,8 +53,7 @@ namespace WorkReport.Controllers
         [HttpGet]
         public IActionResult GetSMenuList()
         {
-            //var result = _ISMenuService.GetSMenuList(0);
-            List<SMenuViewModel> result = null;
+            var result = _ISMenuService.GetSMenuList();
             return new JsonResult(result);
         }
 

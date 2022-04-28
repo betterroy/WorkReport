@@ -4,8 +4,8 @@
 @{
     ViewData["Title"] = "字典设置";
 }
-<link rel="stylesheet" href="~/lib/layui/layui_exts/eleTree/eleTree.css" />
-<link rel="stylesheet" href="~/lib/layui/layui_exts/eleTree/css/icon.css" />
+<link rel="stylesheet" href="~/js/lay-module/layui_exts/eleTree/eleTree.css" />
+<link rel="stylesheet" href="~/js/lay-module/layui_exts/eleTree/css/icon.css" />
 
 <style type="text/css">
     .layout {
@@ -67,9 +67,9 @@
 
 @section Scripts{
     <script type="text/javascript">
-        layui.config({
-            base: '/lib/layui/layui_exts/eleTree/'
-        });
+        //layui.config({
+        //    base: '/js/lay-module/layui_exts/eleTree/'
+        //});
         layui.use(['tree', 'util','eleTree','table'], function(){
             var tree = layui.tree
             ,eleTree = layui.eleTree
@@ -87,7 +87,7 @@
                 highlightCurrent: true,
                 //showCheckbox: true,
                 //showRadio: true,
-                imgUrl: "lib/layui/layui_exts/eleTree/images/",
+                imgUrl: "js/lay-module/layui_exts/eleTree/images/",
                 icon: {
                     fold: "fold.png",
                     leaf: "leaf.png",

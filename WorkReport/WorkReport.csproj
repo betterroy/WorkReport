@@ -16,12 +16,98 @@
 
 	<ItemGroup>
 	  <None Include="compilerconfig.json" />
+	  <None Include="Views\Account\AccessDenied.cshtml" />
+	  <None Include="Views\Account\Login.cshtml" />
+	  <None Include="Views\Account\Modifypwd.cshtml" />
+	  <None Include="Views\AjaxRequest\Index.cshtml" />
+	  <None Include="Views\Error\Error.cshtml" />
+	  <None Include="Views\Home\Index.cshtml" />
+	  <None Include="Views\SDepartment\Index.cshtml" />
+	  <None Include="Views\SDepartment\SaveSDepartment.cshtml" />
+	  <None Include="Views\SFieldContent\Index.cshtml" />
+	  <None Include="Views\SFieldContent\SaveSFieldCatalog.cshtml" />
+	  <None Include="Views\SFieldContent\SaveSFieldContent.cshtml" />
+	  <None Include="Views\SFiles\Index.cshtml" />
+	  <None Include="Views\SFiles\UploadFile.cshtml" />
+	  <None Include="Views\Shared\PartialBottom.cshtml" />
+	  <None Include="Views\Shared\PartialContent.cshtml" />
+	  <None Include="Views\Shared\PartialHeader.cshtml" />
+	  <None Include="Views\Shared\PartialMenue.cshtml" />
+	  <None Include="Views\Shared\_Layout.cshtml" />
+	  <None Include="Views\Shared\_LayoutEdit.cshtml" />
+	  <None Include="Views\SMenu\Index.cshtml" />
+	  <None Include="Views\SMenu\SaveSMenu.cshtml" />
+	  <None Include="Views\SMenu\Test.cshtml" />
+	  <None Include="Views\SRole\Index.cshtml" />
+	  <None Include="Views\SRole\SaveSRole.cshtml" />
+	  <None Include="Views\SUser\Index.cshtml" />
+	  <None Include="Views\SUser\SaveSUser.cshtml" />
+	  <None Include="Views\UReport\GetUReportWriteStatus.cshtml" />
+	  <None Include="Views\UReport\Index.cshtml" />
+	  <None Include="Views\UReport\SaveUReport.cshtml" />
 	  <None Include="wwwroot\Files\用户信息模板.xlsx" />
+	  <None Include="wwwroot\js\common\ajax_extened.js" />
+	  <None Include="wwwroot\js\common\date.js" />
+	  <None Include="wwwroot\js\common\jquery_extend.js" />
+	  <None Include="wwwroot\js\common\lay_extend.js" />
+	  <None Include="wwwroot\js\lay-config.js" />
+	  <None Include="wwwroot\js\lay-module\echarts\echarts.js" />
+	  <None Include="wwwroot\js\lay-module\echarts\echartsTheme.js" />
+	  <None Include="wwwroot\js\lay-module\iconPicker\iconPickerFa.js" />
+	  <None Include="wwwroot\js\lay-module\layarea\layarea.js" />
+	  <None Include="wwwroot\js\lay-module\layuimini\miniAdmin.js" />
+	  <None Include="wwwroot\js\lay-module\layuimini\miniMenu.js" />
+	  <None Include="wwwroot\js\lay-module\layuimini\miniTab.js" />
+	  <None Include="wwwroot\js\lay-module\layuimini\miniTheme.js" />
+	  <None Include="wwwroot\js\lay-module\layuimini\miniTongji.js" />
+	  <None Include="wwwroot\js\lay-module\layui_exts\cascader\layCascader.js" />
+	  <None Include="wwwroot\js\lay-module\layui_exts\eleTree\CORS" />
+	  <None Include="wwwroot\js\lay-module\layui_exts\eleTree\eleTree.js" />
+	  <None Include="wwwroot\js\lay-module\layui_exts\eleTree\fonts\eletree_icon.svg" />
+	  <None Include="wwwroot\js\lay-module\layui_exts\tableTreeDj.js" />
+	  <None Include="wwwroot\js\lay-module\step-lay\step.js" />
+	  <None Include="wwwroot\js\lay-module\tableSelect\tableSelect.js" />
+	  <None Include="wwwroot\js\lay-module\treetable-lay\treetable.js" />
+	  <None Include="wwwroot\js\lay-module\wangEditor\wangEditor.js" />
+	  <None Include="wwwroot\js\lay-module\wangEditor\wangEditor.min.js" />
+	  <None Include="wwwroot\js\lay-module\wangEditor\wangEditor.min.js.map" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\animated.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\bordered-pulled.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\core.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\fixed-width.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\font-awesome.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\icons.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\larger.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\list.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\mixins.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\path.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\rotated-flipped.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\screen-reader.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\stacked.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\variables.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\font-awesome.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_animated.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_core.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_fixed-width.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_icons.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_larger.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_list.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_mixins.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_path.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_screen-reader.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_stacked.scss" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_variables.scss" />
+	  <None Include="wwwroot\lib\jq-module\jquery.particleground.min.js" />
+	  <None Include="wwwroot\lib\jq-module\paigusu.min.js" />
+	  <None Include="wwwroot\lib\jq-module\zyupload\zyupload-1.0.0.min.js" />
+	  <None Include="wwwroot\lib\jquery-3.4.1\jquery-3.4.1.min.js" />
 	  <None Include="wwwroot\lib\layui\font\iconfont.svg" />
 	  <None Include="wwwroot\lib\layui\font\iconfont.woff2" />
 	  <None Include="wwwroot\lib\layui\layui.js" />
-	  <None Include="wwwroot\lib\layui\layui_exts\cascader\layCascader.js" />
-	  <None Include="wwwroot\lib\layui\layui_exts\eleTree\fonts\eletree_icon.svg" />
 	  <None Include="wwwroot\lib\layui\modules\all.js" />
 	  <None Include="wwwroot\lib\layui\modules\carousel.js" />
 	  <None Include="wwwroot\lib\layui\modules\code.js" />
@@ -48,6 +134,11 @@
 	  <None Include="wwwroot\lib\layui\modules\upload.js" />
 	  <None Include="wwwroot\lib\layui\modules\util.js" />
 	  <None Include="wwwroot\lib\login\fonts\fontawesome-webfont.woff2" />
+	  <None Include="wwwroot\lib\pace\.gitignore" />
+	  <None Include="wwwroot\lib\pace\LICENSE" />
+	  <None Include="wwwroot\lib\pace\pace.js" />
+	  <None Include="wwwroot\lib\pace\pace.min.js" />
+	  <None Include="wwwroot\lib\pace\README.md" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,7 +169,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\images\" />
+	  <Folder Include="wwwroot\FileResource\" />
 	</ItemGroup>
 
 </Project>

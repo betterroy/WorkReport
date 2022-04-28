@@ -82,14 +82,16 @@ namespace WorkReport.Services
                         id = menue.ID,
                         title = menue.Name,
                         parentid = menue.PID,
-                        Url = menue.Url,
-                        Sort = menue.Sort
+                        pid = menue.PID,
+                        href = menue.Url,
+                        sort = menue.Sort
                     };
                     sMenuViewModelList.Add(sMenuViewModel);
                 }
             }
 
-            return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList);
+            return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList,(s,c)=>s.AddChild(c));
+            //return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList);
         }
 
 

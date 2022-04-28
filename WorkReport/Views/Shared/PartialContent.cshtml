@@ -4,28 +4,42 @@
 @{
 }
 
-<div class="layui-tab" lay-filter="tab" lay-allowclose="true">
-    <ul class="layui-tab-title">
-        <li class="layui-this welcome" lay-id='5'>日志</li>
-        @*<li class="layui-this" lay-id="11">网站设置</li>
-        <li lay-id="22">用户管理</li>
-        <li lay-id="33">权限分配</li>
-        <li lay-id="44">商品管理</li>
-        <li lay-id="55">订单管理</li>*@
-    </ul>
-    <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">
-            <iframe src="/UReport" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
-        </div>
-        @*<div class="layui-tab-item">内容1</div>
-        <div class="layui-tab-item">内容2</div>
-        <div class="layui-tab-item">内容3</div>
-        <div class="layui-tab-item">内容4</div>
-        <div class="layui-tab-item">内容5</div>*@
+    <!--初始化加载层-->
+    <div class="layuimini-loader">
+        <div class="layuimini-loader-inner"></div>
     </div>
-</div>
-@*<div class="site-demo-button" style="margin-bottom: 0;">
-    <button class="layui-btn site-demo-active" data-type="tabAdd">新增Tab项</button>
-    <button class="layui-btn site-demo-active" data-type="tabDelete">删除：商品管理</button>
-    <button class="layui-btn site-demo-active" data-type="tabChange">切换到：用户管理</button>
-    </div>*@
+
+    <!--手机端遮罩层-->
+    <div class="layuimini-make"></div>
+
+    <!-- 移动导航 -->
+    <div class="layuimini-site-mobile"><i class="layui-icon"></i></div>
+
+    <div class="layui-body">
+
+        <div class="layuimini-tab layui-tab-rollTool layui-tab" lay-filter="layuiminiTab" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this" id="layuiminiHomeTabId" lay-id=""></li>
+            </ul>
+            <div class="layui-tab-control">
+                <li class="layuimini-tab-roll-left layui-icon layui-icon-left"></li>
+                <li class="layuimini-tab-roll-right layui-icon layui-icon-right"></li>
+                <li class="layui-tab-tool layui-icon layui-icon-down">
+                    <ul class="layui-nav close-box">
+                        <li class="layui-nav-item">
+                            <a href="javascript:;"><span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="javascript:;" layuimini-tab-close="current">关 闭 当 前</a></dd>
+                                <dd><a href="javascript:;" layuimini-tab-close="other">关 闭 其 他</a></dd>
+                                <dd><a href="javascript:;" layuimini-tab-close="all">关 闭 全 部</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+            <div class="layui-tab-content">
+                <div id="layuiminiHomeTabIframe" class="layui-tab-item layui-show"></div>
+            </div>
+        </div>
+
+    </div>

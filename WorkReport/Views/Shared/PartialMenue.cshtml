@@ -1,46 +1,13 @@
-﻿@using WorkReport.Commons.Extensions
+﻿@*@using WorkReport.Commons.Extensions
 @using WorkReport.Interface.IService;
 @using WorkReport.Models.ViewModel
-@inject ISMenuService _iSMenuService
+@inject ISMenuService _iSMenuService*@
 @{
-    int userId = @Context.User.FindFirst("id").Value.ToInt();
-    var s_menus = _iSMenuService.GetSMenuList(userId);
+    //int userId = @Context.User.FindFirst("id").Value.ToInt();
+    //var s_menus = _iSMenuService.GetSMenuList(userId);
 }
 
-<div class="layui-side layui-bg-black">
-    <div class="layui-side-scroll">
-        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-        <ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
-
-            @foreach (var smenu in s_menus)
-            {
-                <li class="layui-nav-item">
-                    <a class="" href="javascript:;">@smenu.title</a>
-                    <dl class="layui-nav-child">
-                        @foreach (var menu in smenu.children)
-                        {
-                            var _menu = menu as SMenuViewModel;
-                            <dd><a data-id="@_menu.id" data-url="@_menu.Url" href="javascript:;" data-text="@_menu.title">@_menu.title</a></dd>
-                        }
-                    </dl>
-                </li>
-            }
-            @*<li class="layui-nav-item layui-nav-itemed">
-                <a class="" href="javascript:;">设置</a>
-                <dl class="layui-nav-child">
-                    <dd><a data-id="1" data-url="/SUser" href="javascript:;" data-text="用户设置">用户设置</a></dd>
-                    <dd><a data-id="2" data-url="/SDepartment" href="javascript:;" data-text="部门设置">部门设置</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">日志管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a data-id="3" data-url="/UReport" href="javascript:;" data-text="日志">日志</a></dd>
-                </dl>
-            </li>*@
-            @*<li class="layui-nav-item"><a href="javascript:;">click menu item</a></li>
-                <li class="layui-nav-item"><a href="">the links</a></li>*@
-        </ul>
+    <!--无限极左侧菜单-->
+    <div class="layui-side layui-bg-black layuimini-menu-left">
     </div>
-</div>
 

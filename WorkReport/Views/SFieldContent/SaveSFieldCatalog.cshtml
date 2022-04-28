@@ -5,7 +5,7 @@
     Layout = "/Views/Shared/_LayoutEdit.cshtml";
 }
 
-<link rel="stylesheet" href="~/lib/layui/layui_exts/cascader/layCascader.css" />
+<link rel="stylesheet" href="~/js/lay-module/layui_exts/cascader/layCascader.css" />
 
 <form class="layui-form" lay-filter="example" style="margin-right:20px">
 
@@ -62,9 +62,9 @@
     <script type="text/javascript">
 
         function init() {
-            layui.config({
-                base: '/lib/layui/layui_exts/cascader/'
-            });
+            //layui.config({
+            //    base: '/js/lay-module/layui_exts/cascader/'
+            //});
             layui.use(['form','layCascader', 'util', 'layer', 'table'], function () {
                 var form = layui.form
                 ,layCascader = layui.layCascader
