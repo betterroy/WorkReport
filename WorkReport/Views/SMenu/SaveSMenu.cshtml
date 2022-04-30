@@ -4,6 +4,7 @@
 @{
     Layout = "/Views/Shared/_LayoutEdit.cshtml";
 }
+<link rel="stylesheet" href="~/js/lay-module/layui_exts/cascader/layCascader.css" />
 
 <form class="layui-form" lay-filter="example" style="margin-right:20px">
 
@@ -16,13 +17,14 @@
         </div>
     </div>
 
+    
     <div class="layui-form-item">
-        <label class="layui-form-label">父级：</label>
+        <label class="layui-form-label">所属目录：</label>
         <div class="layui-input-block">
-            <input type="text" name="PID" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+              <input name="PID" id="demo2">
         </div>
     </div>
-    
+
     <div class="layui-form-item">
         <label class="layui-form-label">图标：</label>
         <div class="layui-input-block">
@@ -73,9 +75,10 @@
     <script type="text/javascript">
 
         function init() {
-            layui.use(['iconPickerFa', 'form'], function() {
+            layui.use(['iconPickerFa', 'form', 'layCascader'], function() {
                 var form = layui.form
-                    , iconPickerFa = layui.iconPickerFa;
+                    , iconPickerFa = layui.iconPickerFa
+                    , layCascader = layui.layCascader;
 
                 form.on('submit(ok)', function(data) {
                     console.log(data);
@@ -116,11 +119,24 @@
                     limit: 16,
                     // 点击回调
                     click: function(data) {
-                        console.log(data);
+                        //console.log(data);
                     },
                     // 渲染成功后的回调
                     success: function(d) {
-                        console.log(d);
+                        //console.log(d);
+                    }
+                });
+
+                var treeMenu = _menu;
+                treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/id/g, 'value'));
+                treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/title/g, 'label'));
+                treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/child/g, 'children'));
+                var cascader = layCascader({
+                    elem: '#demo2',
+                    clearable: true,
+                    options: treeMenu,
+                    props: {
+                        checkStrictly: true
                     }
                 });
 
@@ -140,10 +156,22 @@
 
         }
         var _result;
+        var _menu;
         var _data;
         function SetData(data) {
             _data = data;
-            if (data && _data.hasOwnProperty('ID')) {
+            //加载菜单
+            $.ajax({
+                url: "/SMenu/GetSMenuList",
+                data: {},
+                method: "GET",
+                async: false,
+                success: function(result) {
+                    _menu = result;
+                }
+            });
+
+            if (data && _data.hasOwnProperty('ID')) {   //加载修改数据
                 $.ajax({
                     url: "/SMenu/GetSMenuByID/" + data.ID,
                     data: { ID: data.ID },

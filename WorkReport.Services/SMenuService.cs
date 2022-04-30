@@ -26,6 +26,12 @@ namespace WorkReport.Services
         {
         }
 
+        public List<SMenuViewModel> GetSMenuList()
+        {
+            List<SMenuViewModel> sMenus = RecursionMenue();
+            return sMenus;
+        }
+
         public HttpResponseResult GetSMenu(BaseQuery baseQuery)
         {
 
@@ -35,12 +41,6 @@ namespace WorkReport.Services
             PageResult<SMenu> pageResult = QueryPage<SMenu, int?>(expressionWhere, baseQuery.limit, baseQuery.page, expressionOrder, true);
             return new HttpResponseResult() { Data = pageResult };
 
-        }
-
-        public List<SMenuViewModel> GetSMenuList()
-        {
-            List<SMenuViewModel> sMenus = RecursionMenue();
-            return sMenus;
         }
 
         public virtual List<SMenuViewModel> GetSMenuList(int userId)

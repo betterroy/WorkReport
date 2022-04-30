@@ -14,7 +14,7 @@
                 
         @await Html.PartialAsync("PartialContent");
 
-        @*@await Html.PartialAsync("PartialBottom");*@
+        @await Html.PartialAsync("PartialBottom");
 
     </div>
 </body>
@@ -30,7 +30,7 @@
 
                 var options = {
                     //iniUrl: "/api/init.json?a=2",    // 初始化接口
-                    iniUrl: "/SMenu/GetHomeList",    // 初始化接口
+                    iniUrl: "/Home/GetHomeList",    // 初始化接口
                     clearUrl: "/api/clear.json", // 缓存清理接口
                     urlHashLocation: false,      // 是否打开hash定位
                     bgColorDefault: false,      // 主题默认配置

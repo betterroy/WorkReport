@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WorkReport.Commons.Api;
-using WorkReport.Commons.MvcResult;
 using WorkReport.Interface.IService;
 using WorkReport.Models.Query;
-using WorkReport.Models.ViewModel;
 using WorkReport.Repositories.Models;
 
 namespace WorkReport.Controllers
@@ -25,24 +23,6 @@ namespace WorkReport.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-
-        /// <summary>
-        /// 获取全部的菜单
-        /// </summary>
-        /// <param name="query">分页需要的参数和关键字</param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult GetHomeList()
-        {
-            MenusInfoResultDTO menusInfoResultDTO = new MenusInfoResultDTO();
-
-            var result = _ISMenuService.GetSMenuList();
-            menusInfoResultDTO.menuInfo = result;
-            menusInfoResultDTO.homeInfo = new S_HomeViewModel();
-            menusInfoResultDTO.logoInfo = new S_LogoViewModel();
-            
-            return new JsonResult(menusInfoResultDTO);
         }
 
         /// <summary>

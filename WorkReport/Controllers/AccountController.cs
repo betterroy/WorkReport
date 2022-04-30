@@ -122,6 +122,7 @@ namespace WorkReport.Controllers
             var IsAuthenticated = User.Identity.IsAuthenticated;        //是否登陆
             var name = HttpContext.User.Identity.Name;  //ClaimTypes.Name值
             var currentClaim = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Sid);
+            int userClaimsId = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Sid).Value.ToInt();
 
             var sUserInfo = User.Claims.FirstOrDefault(u => u.Type == "SUser");
 
