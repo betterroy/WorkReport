@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 	  <Content Remove="compilerconfig.json" />
+	  <Content Remove="wwwroot\lib\font-awesome-4.7.0\less\variables.less" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -85,7 +86,9 @@
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\rotated-flipped.less" />
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\screen-reader.less" />
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\stacked.less" />
-	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\variables.less" />
+	  <None Include="wwwroot\lib\font-awesome-4.7.0\less\variables.less">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\font-awesome.scss" />
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_animated.scss" />
 	  <None Include="wwwroot\lib\font-awesome-4.7.0\scss\_bordered-pulled.scss" />

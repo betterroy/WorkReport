@@ -17,9 +17,26 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">父级ID：</label>
+        <label class="layui-form-label">父级：</label>
         <div class="layui-input-block">
             <input type="text" name="PID" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">图标：</label>
+        <div class="layui-input-block">
+            <input type="text" id="Icon" name="Icon" lay-filter="Icon" class="hide" value="">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">target属性：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="target" value="_self" title="_self">
+            <input type="radio" name="target" value="_blank" title="_blank">
+            <input type="radio" name="target" value="_parent" title="_parent">
+            <input type="radio" name="target" value="_top" title="_top">
         </div>
     </div>
 
@@ -29,9 +46,9 @@
             <input type="text" name="Url" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
-    
+
     <div class="layui-form-item">
-        <label class="layui-form-label">菜单类型：</label>
+        <label class="layui-form-label">类型：</label>
         <div class="layui-input-block">
             <input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
@@ -43,7 +60,7 @@
             <input type="text" name="Sort" lay-verify="" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
-    
+
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="ok">立即提交</button>
@@ -56,10 +73,11 @@
     <script type="text/javascript">
 
         function init() {
-            layui.use(['form'], function () {
-                var form = layui.form;
+            layui.use(['iconPickerFa', 'form'], function() {
+                var form = layui.form
+                    , iconPickerFa = layui.iconPickerFa;
 
-                form.on('submit(ok)', function (data) {
+                form.on('submit(ok)', function(data) {
                     console.log(data);
                     $.ajax({
                         url: "/SMenu/SaveSMenu",
@@ -68,8 +86,8 @@
                         contentType: 'application/json; charset=utf-8',
                         data: JSON.stringify(data.field),
                         method: "post",
-                        success: function (response) {
-                            if (response.Code==200) {
+                        success: function(response) {
+                            if (response.Code == 200) {
                                 var index = parent.layer.getFrameIndex(window.name);//获取窗口索引
                                 parent.layer.close(index);//关闭弹出层
                             } else {
@@ -77,12 +95,33 @@
                                 return;
                             }
                         },
-                        error: function () {
+                        error: function() {
                             layer.msg("数据保存失败");
                             return;
                         }
                     });
                     return false;
+                });
+
+                iconPickerFa.render({
+                    // 选择器，推荐使用input
+                    elem: '#Icon',
+                    // fa 图标接口
+                    url: "/lib/font-awesome-4.7.0/less/variables.less?v=2",
+                    // 是否开启搜索：true/false，默认true
+                    search: true,
+                    // 是否开启分页：true/false，默认true
+                    page: true,
+                    // 每页显示数量，默认12
+                    limit: 16,
+                    // 点击回调
+                    click: function(data) {
+                        console.log(data);
+                    },
+                    // 渲染成功后的回调
+                    success: function(d) {
+                        console.log(d);
+                    }
                 });
 
                 if (_data && _data.hasOwnProperty('ID')) {
@@ -91,6 +130,8 @@
                         , "Name": _result.Name
                         , "PID": _result.PID
                         , "MenuType": _result.MenuType
+                        , "Url": _result.Url
+                        , "Icon": _result.Icon
                         , "Url": _result.Url
                         , "Sort": _result.Sort
                     });
@@ -108,7 +149,7 @@
                     data: { ID: data.ID },
                     method: "GET",
                     async: false,
-                    success: function (result) {
+                    success: function(result) {
                         _result = result;
                     }
                 });

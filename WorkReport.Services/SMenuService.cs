@@ -84,6 +84,7 @@ namespace WorkReport.Services
                         parentid = menue.PID,
                         pid = menue.PID,
                         href = menue.Url,
+                        icon = menue.Icon,
                         sort = menue.Sort
                     };
                     sMenuViewModelList.Add(sMenuViewModel);

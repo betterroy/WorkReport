@@ -559,11 +559,11 @@ layui.define(['table', 'jquery'], function (exports) {
             const level = this.getLevel();
             const pc = this.getParentChild();
             const sort = this.getSort();
-            console.log('sort', sort)
+            //console.log('sort', sort)
 
             // 1. 先排序顶级
             const dataTop = [];
-            console.log('level', level)
+            //console.log('level', level)
             for(let i=0; i<level.length; i++) {
                 if(level[i]["level"] === 0) {
                     const key = level[i]['id'];

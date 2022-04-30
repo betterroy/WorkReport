@@ -55,22 +55,40 @@
         ]];
          */
         const cols = [[
-            { field: 'ID', title: '菜单编码', width: 100, align: "left" }
-            , { field: 'Name', title: '菜单名称', width: 160, align: "left"  }
-            //, {
-            //    field: 'type', title: '菜单类型', templet: function (d) {
-            //        switch (d.type) {
-            //            case "目录":
-            //                return '<span class="layui-badge layui-bg-green">' + d.type + '</span>';
-            //                break;
-            //            case "路径":
-            //                return '<span class="layui-badge layui-orange">' + d.type + '</span>';
-            //                break;
-            //            default:
-            //                return '<span class="layui-badge layui-bg-blue">' + d.type + '</span>'
-            //        }
-            //    }, width: 130, align: "center"
-            //}
+            { field: 'ID', title: '菜单编码', width: 100, align: "center" }
+            , { field: 'Name', title: '菜单名称', width: 160, align: "center"  }
+            , {
+                field: 'Icon', title: '图标', templet: function (d) {
+                    if (d.Icon) {
+                        return '<i class="fa fa-adjust"></i>';
+                    }
+                    return '';
+                }, width: 130, align: "center"
+            }
+            , { field: 'Url', title: '菜单地址', align: "center" }
+            , {
+                field: 'MenuType', title: '菜单类型', templet: function (d) {
+                    if (d.MenuType) {
+                        switch (d.MenuType) {
+                            case 1:   //模块
+                                return '<span class="layui-badge layui-bg-blue">模块</span>';
+                                break;
+                            case 2:   //目录
+                                return '<span class="layui-badge layui-bg-green">目录</span>';
+                                break;
+                            case 3:   //菜单
+                                return '<span class="layui-badge layui-bg-cyan">菜单</span>';
+                                break;
+                            case 4:   //功能/按钮
+                                return '<span class="layui-badge layui-gray">功能/按钮</span>';
+                                break;
+                            default:
+                                return ''
+                        }
+                    }
+                    return '';
+                }, width: 130, align: "center"
+            }
             //, {
             //    field: 'status', title: '菜单状态', templet: function (d) {
             //        switch (d.status) {
@@ -85,9 +103,7 @@
             //        }
             //    }, width: 130, align: "center"
             //}
-            , { field: 'Url', title: '菜单地址', align: "left" }
-            , { field: 'MenuType', title: '菜单类型', align: "left" }
-            , { field: 'Sort', title: '排序', width: 130, align: "left" }
+            , { field: 'Sort', title: '排序', width: 130, align: "center" }
             , { title: '操作', align: 'center', toolbar: '#barDemo', minWidth:150  }
         ]]
 

@@ -22,6 +22,8 @@ using System.Text.Json;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.AopExtension;
 using Autofac.Extras.DynamicProxy;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace WorkReport
 {
@@ -122,7 +124,7 @@ namespace WorkReport
                 {
                     polic.AddRequirements(
                         new CustomAuthorizationRequirement("Policy01")  //UReportController中有案例
-                        // ,new CustomAuthorizationRequirement("Policy02")
+                                                                        // ,new CustomAuthorizationRequirement("Policy02")
                     );
                 });
             });
@@ -144,7 +146,23 @@ namespace WorkReport
 
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".less"] = "text/css";
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
+
             app.UseStaticFiles();
+
+#if DEBUG
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions()   //启用目录浏览------测试时用
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = new PathString("/wwwroot")
+            });
+#endif
 
             app.UseRouting();
 
