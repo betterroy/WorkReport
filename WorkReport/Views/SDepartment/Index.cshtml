@@ -4,14 +4,19 @@
 @{
     ViewData["Title"] = "部门设置";
 }
-<table class="layui-hide" id="sDepartmentTable" lay-filter="sDepartmentTable"></table>
+<div class="layuimini-container">
+    <div class="layuimini-main">
 
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="add">添加部门</button>
+        <table class="layui-hide" id="sDepartmentTable" lay-filter="sDepartmentTable"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="add">添加部门</button>
+            </div>
+        </script>
+
     </div>
-</script>
-
+</div>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -19,87 +24,87 @@
 
 
 @section Scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    layui.use('table', function () {
-        var table = layui.table;
+        layui.use('table', function() {
+            var table = layui.table;
 
-        table.render({
-            elem: '#sDepartmentTable'
-            , url: '/SDepartment/GetSDepartment'
-            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            , defaultToolbar: ['exports', 'print']
-            , title: '部门'
-            , cols: [[
-                { type: 'checkbox', fixed: 'left' }
-                , { field: 'ID', title: '自增ID', width: 80, fixed: 'left', unresize: true, sort: false }
-                , { field: 'DeptId', title: '部门ID', width: 160, edit: 'text' }
-                , { field: 'DeptName', title: '部门名称', width: 160, edit: 'text' }
-                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
-            ]]
-            , id: 'testReload'
-            , page: true
-            ,limit: 20
-            ,limits: [20,50,100]
-        });
+            table.render({
+                elem: '#sDepartmentTable'
+                , url: '/SDepartment/GetSDepartment'
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['exports', 'print']
+                , title: '部门'
+                , cols: [[
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'ID', title: '自增ID', width: 80, fixed: 'left', unresize: true, sort: false }
+                    , { field: 'DeptId', title: '部门ID', width: 160, edit: 'text' }
+                    , { field: 'DeptName', title: '部门名称', width: 160, edit: 'text' }
+                    , { title: '操作', toolbar: '#barDemo', minWidth: 150 }
+                ]]
+                , id: 'testReload'
+                , page: true
+                , limit: 20
+                , limits: [20, 50, 100]
+            });
 
-        var $ = layui.$, active = {
-            reload: function () {
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        key: {
-                            id: ""
+            var $ = layui.$, active = {
+                reload: function() {
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
                         }
-                    }
-                });
-            }
-        };
-
-        //头工具栏事件
-        table.on('toolbar(sDepartmentTable)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'add':
-                    lay_extend.openwin({
-                        title: '添加部门',
-                        page_path: '/Views/SDepartment/SaveSDepartment.cshtml',
-                        cancel: function () { active.reload(); }
+                        , where: {
+                            key: {
+                                id: ""
+                            }
+                        }
                     });
-                    break;
+                }
             };
-        });
 
-        //监听行工具事件
-        table.on('tool(sDepartmentTable)', function (obj) {
-            var data = obj.data;
-            if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    $.ajax({
-                      url: "/SDepartment/DeleteSDepartment",
-                      type: 'DELETE',
-                      data: {ID:data.ID},
-                      success:function(response){
-                        if(response.Code==200){
-                            layer.msg("删除成功");
-                            active.reload();
-                        }
-                      }
+            //头工具栏事件
+            table.on('toolbar(sDepartmentTable)', function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'add':
+                        lay_extend.openwin({
+                            title: '添加部门',
+                            page_path: '/Views/SDepartment/SaveSDepartment.cshtml',
+                            cancel: function() { active.reload(); }
+                        });
+                        break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(sDepartmentTable)', function(obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function(index) {
+                        $.ajax({
+                            url: "/SDepartment/DeleteSDepartment",
+                            type: 'DELETE',
+                            data: { ID: data.ID },
+                            success: function(response) {
+                                if (response.Code == 200) {
+                                    layer.msg("删除成功");
+                                    active.reload();
+                                }
+                            }
+                        });
+                        layer.close(index);
                     });
-                    layer.close(index);
-                });
-            } else if (obj.event === 'edit') {
-                lay_extend.openwin({
-                    title:'修改部门',
-                    page_path: '/Views/SDepartment/SaveSDepartment.cshtml',
-                    data:{ ID: data.ID },
-                    cancel:function () { active.reload(); }
-                });
-            }
+                } else if (obj.event === 'edit') {
+                    lay_extend.openwin({
+                        title: '修改部门',
+                        page_path: '/Views/SDepartment/SaveSDepartment.cshtml',
+                        data: { ID: data.ID },
+                        cancel: function() { active.reload(); }
+                    });
+                }
+            });
         });
-    });
 
-</script>
+    </script>
 }

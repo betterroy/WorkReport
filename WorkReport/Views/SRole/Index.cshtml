@@ -4,14 +4,19 @@
 @{
     ViewData["Title"] = "权限设置";
 }
-<table class="layui-hide" id="sRoleTable" lay-filter="sRoleTable"></table>
+<div class="layuimini-container">
+    <div class="layuimini-main">
 
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="add">添加权限</button>
+        <table class="layui-hide" id="sRoleTable" lay-filter="sRoleTable"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="add">添加权限</button>
+            </div>
+        </script>
+
     </div>
-</script>
-
+</div>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -19,87 +24,87 @@
 
 
 @section Scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    layui.use('table', function () {
-        var table = layui.table;
+        layui.use('table', function() {
+            var table = layui.table;
 
-        table.render({
-            elem: '#sRoleTable'
-            , url: '/SRole/GetSRole'
-            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            , defaultToolbar: ['exports', 'print']
-            , title: '权限'
-            , cols: [[
-                { type: 'checkbox' }
-                , { field: 'ID', title: '自增ID', width: 80 }
-                , { field: 'RoleCode', title: '权限ID', width: 160 }
-                , { field: 'RoleName', title: '权限名称', width: 160 }
-                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
-            ]]
-            , id: 'testReload'
-            , page: true
-            ,limit: 20
-            ,limits: [20,50,100]
-        });
+            table.render({
+                elem: '#sRoleTable'
+                , url: '/SRole/GetSRole'
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['exports', 'print']
+                , title: '权限'
+                , cols: [[
+                    { type: 'checkbox' }
+                    , { field: 'ID', title: '自增ID', width: 80 }
+                    , { field: 'RoleCode', title: '权限ID', width: 160 }
+                    , { field: 'RoleName', title: '权限名称', width: 160 }
+                    , { title: '操作', toolbar: '#barDemo', minWidth: 150 }
+                ]]
+                , id: 'testReload'
+                , page: true
+                , limit: 20
+                , limits: [20, 50, 100]
+            });
 
-        var $ = layui.$, active = {
-            reload: function () {
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        key: {
-                            id: ""
+            var $ = layui.$, active = {
+                reload: function() {
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
                         }
-                    }
-                });
-            }
-        };
-
-        //头工具栏事件
-        table.on('toolbar(sRoleTable)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch (obj.event) {
-                case 'add':
-                    lay_extend.openwin({
-                        title: '添加权限',
-                        page_path: '/Views/SRole/SaveSRole.cshtml',
-                        cancel: function () { active.reload(); }
+                        , where: {
+                            key: {
+                                id: ""
+                            }
+                        }
                     });
-                    break;
+                }
             };
-        });
 
-        //监听行工具事件
-        table.on('tool(sRoleTable)', function (obj) {
-            var data = obj.data;
-            if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    $.ajax({
-                      url: "/SRole/DeleteSRole",
-                      type: 'DELETE',
-                      data: {ID:data.ID},
-                      success:function(response){
-                        if(response.Code==200){
-                            layer.msg("删除成功");
-                            active.reload();
-                        }
-                      }
+            //头工具栏事件
+            table.on('toolbar(sRoleTable)', function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'add':
+                        lay_extend.openwin({
+                            title: '添加权限',
+                            page_path: '/Views/SRole/SaveSRole.cshtml',
+                            cancel: function() { active.reload(); }
+                        });
+                        break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(sRoleTable)', function(obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function(index) {
+                        $.ajax({
+                            url: "/SRole/DeleteSRole",
+                            type: 'DELETE',
+                            data: { ID: data.ID },
+                            success: function(response) {
+                                if (response.Code == 200) {
+                                    layer.msg("删除成功");
+                                    active.reload();
+                                }
+                            }
+                        });
+                        layer.close(index);
                     });
-                    layer.close(index);
-                });
-            } else if (obj.event === 'edit') {
-                lay_extend.openwin({
-                    title:'修改权限',
-                    page_path: '/Views/SRole/SaveSRole.cshtml',
-                    data:{ ID: data.ID },
-                    cancel:function () { active.reload(); }
-                });
-            }
+                } else if (obj.event === 'edit') {
+                    lay_extend.openwin({
+                        title: '修改权限',
+                        page_path: '/Views/SRole/SaveSRole.cshtml',
+                        data: { ID: data.ID },
+                        cancel: function() { active.reload(); }
+                    });
+                }
+            });
         });
-    });
 
-</script>
+    </script>
 }

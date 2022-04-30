@@ -4,58 +4,28 @@
 @{
     ViewData["Title"] = "用户设置";
 }
-<table class="layui-hide" id="sUserTable" lay-filter="sUserTable"></table>
-@*<fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit="" lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                        </div>
-                    </div>
-                </form>
+
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <table class="layui-hide" id="sUserTable" lay-filter="sUserTable"></table>
+        <button type="button" class="layui-btn layui-btn-sm" id="importUser" value="导入明细" style="display: none" />
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+
+
+                <button type="button" class="layui-btn  layui-btn-sm" lay-event="add">
+                    <i class="layui-icon layui-icon-addition layui-font-12"> </i> 添加用户
+                </button>
+
+              <button class="layui-btn layui-btn-normal layui-btn-sm btn_color_confirm perssion-node-display permission-right-13000020" id="import" lay-event="import"
+                title="工具栏右侧向下箭头下载模板"
+              ><i class="layui-icon"></i>上传用户</button>
             </div>
-        </fieldset>*@
-<button type="button" class="layui-btn layui-btn-sm" id="importUser" value="导入明细" style="display: none"/>
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
+        </script>
 
-        
-        <button type="button" class="layui-btn  layui-btn-sm" lay-event="add">
-            <i class="layui-icon layui-icon-addition layui-font-12"> </i> 添加用户
-        </button>
-
-      <button class="layui-btn layui-btn-normal layui-btn-sm btn_color_confirm perssion-node-display permission-right-13000020" id="import" lay-event="import"
-        title="工具栏右侧向下箭头下载模板"
-      ><i class="layui-icon"></i>上传用户</button>
     </div>
-</script>
-
+</div>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -72,20 +42,20 @@
 @section Scripts{
     <script type="text/javascript">
 
-        layui.use(['table', 'upload'], function () {
+        layui.use(['table', 'upload'], function() {
             var table = layui.table
-            , upload = layui.upload;
+                , upload = layui.upload;
 
             //表格初始化
             table.render({
                 elem: '#sUserTable'
                 , url: '/SUser/GetSUser'
                 , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-                , defaultToolbar: ['filter','exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                          title: '下载模板'
-                          ,layEvent: 'ExcelTemplateDownload'
-                          ,icon: 'layui-icon-down'
-                        }]
+                , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '下载模板'
+                    , layEvent: 'ExcelTemplateDownload'
+                    , icon: 'layui-icon-down'
+                }]
                 , title: '用户'
                 , cols: [[
                     { type: 'checkbox', fixed: 'left' }
@@ -101,16 +71,16 @@
                     , { field: 'QQ', title: 'QQ', width: 130 }
                     , { field: 'WeChat', title: '微信', width: 140 }
                     , { field: 'Sex', title: '性别', width: 100 }
-                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                    , { title: '操作', toolbar: '#barDemo', minWidth: 150 }
                 ]]
                 , id: 'testReload'
                 , page: true
-                ,limit: 20
-                ,limits: [20,50,100]
+                , limit: 20
+                , limits: [20, 50, 100]
             });
 
             var $ = layui.$, active = {
-                reload: function () {
+                reload: function() {
                     table.reload('testReload', {
                         page: {
                             curr: 1 //重新从第 1 页开始
@@ -125,16 +95,16 @@
             };
 
             //头工具栏事件
-            table.on('toolbar(sUserTable)', function (obj) {
+            table.on('toolbar(sUserTable)', function(obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                     case 'add':
                         lay_extend.openwin({
                             title: '添加用户',
                             page_path: '/Views/SUser/SaveSUser.cshtml',
-                            cancel: function () { active.reload(); },
-                            width:700,
-                            height:500
+                            cancel: function() { active.reload(); },
+                            width: 700,
+                            height: 500
                         });
                         break;
                     case 'import':
@@ -143,63 +113,63 @@
                     case 'ExcelTemplateDownload':
                         var url = "/SFiles/DownLoadFile";
                         var params = {
-                            fileName:"用户信息模板.xlsx",
-                            filePath:"/Files/用户信息模板.xlsx"
+                            fileName: "用户信息模板.xlsx",
+                            filePath: "/Files/用户信息模板.xlsx"
                         }
-                        download(url,params);
-                    break;
+                        download(url, params);
+                        break;
                 };
             });
 
             //上传控件初始化
             upload.render({
                 elem: '#importUser'
-                ,url: '/SUser/UploadExcel' //此处配置你自己的上传接口即可
-                ,accept: 'file' //普通文件
+                , url: '/SUser/UploadExcel' //此处配置你自己的上传接口即可
+                , accept: 'file' //普通文件
                 , acceptMime: '.xls,.xlsx'
-                ,before: function () {
+                , before: function() {
                     layer.msg('上传中', {
                         icon: 16,
                         shade: 0.01
                     }); //上传loading
-                }        
-                ,done: function(res){
+                }
+                , done: function(res) {
                     layer.close(layer.index); //关闭loading
                     layer.msg(res.Msg);
                     active.reload();
-                }        
-                , error: function (res) {
+                }
+                , error: function(res) {
                     //请求异常回调
                     console.error(res);
                 }
             });
 
             //监听行工具事件
-            table.on('tool(sUserTable)', function (obj) {
+            table.on('tool(sUserTable)', function(obj) {
                 var data = obj.data;
                 if (obj.event === 'del') {
-                    layer.confirm('真的删除行么', function (index) {
+                    layer.confirm('真的删除行么', function(index) {
                         $.ajax({
-                          url: "/SUser/DeleteSUser",
-                          type: 'DELETE',
-                          data: {ID:data.ID},
-                          success:function(response){
-                            if(response.Code==200){
-                                layer.msg("删除成功");
-                                active.reload();
+                            url: "/SUser/DeleteSUser",
+                            type: 'DELETE',
+                            data: { ID: data.ID },
+                            success: function(response) {
+                                if (response.Code == 200) {
+                                    layer.msg("删除成功");
+                                    active.reload();
+                                }
                             }
-                          }
                         });
                         layer.close(index);
                     });
                 } else if (obj.event === 'edit') {
                     lay_extend.openwin({
-                        title:'修改用户',
+                        title: '修改用户',
                         page_path: '/Views/SUser/SaveSUser.cshtml',
-                        data:{ ID: data.ID },
-                        cancel:function () { active.reload(); },
-                        width:700,
-                        height:500
+                        data: { ID: data.ID },
+                        cancel: function() { active.reload(); },
+                        width: 700,
+                        height: 500
                     });
                 }
             });

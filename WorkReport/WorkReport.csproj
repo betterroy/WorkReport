@@ -37,7 +37,6 @@
 	  <None Include="Views\Shared\_LayoutEdit.cshtml" />
 	  <None Include="Views\SMenu\Index.cshtml" />
 	  <None Include="Views\SMenu\SaveSMenu.cshtml" />
-	  <None Include="Views\SMenu\Test.cshtml" />
 	  <None Include="Views\SRole\Index.cshtml" />
 	  <None Include="Views\SRole\SaveSRole.cshtml" />
 	  <None Include="Views\SUser\Index.cshtml" />

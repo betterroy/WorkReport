@@ -10,14 +10,20 @@
         line-height: 68px;
     }
 </style>
-<table class="layui-hide" id="sFilesTable" lay-filter="sFilesTable"></table>
 
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="add">添加文档</button>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <table class="layui-hide" id="sFilesTable" lay-filter="sFilesTable"></table>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="add">添加文档</button>
+            </div>
+        </script>
+
     </div>
-</script>
-
+</div>
 <script type="text/html" id="barDemo">
     <a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="down">下载</a>
     @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
@@ -28,7 +34,7 @@
 @section Scripts{
     <script type="text/javascript">
 
-        layui.use('table', function () {
+        layui.use('table', function() {
             var table = layui.table;
 
             table.render({
@@ -38,14 +44,14 @@
                 , defaultToolbar: ['exports', 'print']
                 , title: '文档'
                 , cols: [[
-                    { type: 'checkbox'}
+                    { type: 'checkbox' }
                     //, { field: 'ID', title: '自增ID', width: 80, fixed: 'left', unresize: true, sort: false }
                     , { field: 'ID', title: '自增ID', width: 80 }
                     , {
-                        field: 'type', title: '文档类型', templet: function (d) {
+                        field: 'type', title: '文档类型', templet: function(d) {
                             var suffixName = getFileSuffix(d.FileName).toLowerCase();
                             var imgUrl = "";    //图片地址
-                            
+
                             var clickAction = "";   //触发事件
                             var filePath = d.FilePath;  //文件路径
 
@@ -55,16 +61,16 @@
                                 case "png":
                                 case "bmp":
                                 case "gif":
-                                    filePath='/'+d.FilePath;
+                                    filePath = '/' + d.FilePath;
                                     clickAction = 'showImg(this)';
-                                    imgUrl = '/'+d.FilePath;
+                                    imgUrl = '/' + d.FilePath;
                                     break;
                                 case "zip":
                                 case "rar":
                                     imgUrl = "/images/rar.png";
                                     break;
                                 case "txt":
-                                    clickAction = 'showTxt(this,"'+d.FileName+'")';
+                                    clickAction = 'showTxt(this,"' + d.FileName + '")';
                                     imgUrl = "/images/txt.png";
                                     break;
                                 case "ppt":
@@ -72,40 +78,40 @@
                                     imgUrl = "/images/ppt.png";
                                     break;
                                 case "pdf":
-                                    clickAction = 'showPdf(this,"'+d.FileName+'")';
+                                    clickAction = 'showPdf(this,"' + d.FileName + '")';
                                     imgUrl = "/images/pdf.png";
                                     break;
                                 case "xls":
                                 case "xlsx":
-                                    clickAction = 'showOffice(this,"'+d.FileName+'")';
+                                    clickAction = 'showOffice(this,"' + d.FileName + '")';
                                     imgUrl = "/images/excel.png";
                                     break;
                                 case "doc":
                                 case "docx":
-                                    clickAction = 'showOffice(this,"'+d.FileName+'")';
+                                    clickAction = 'showOffice(this,"' + d.FileName + '")';
                                     imgUrl = "/images/word.png";
                                     break;
                                 default:
                                     imgUrl = "/images/txt.png";
                                     break;
                             }
-                            var res ="<img filePath='"+filePath+"' onclick='" + clickAction + "' src='" + imgUrl + "' style='width:68px;height:68px;' />";
+                            var res = "<img filePath='" + filePath + "' onclick='" + clickAction + "' src='" + imgUrl + "' style='width:68px;height:68px;' />";
                             return res;
                         }, width: 120, align: "center"
                     }
                     , { field: 'FileName', title: '文档名称', width: 360 }
                     , { field: 'FileName', title: '文档描述', width: 360 }
                     , { field: 'CreateTime', title: '创建时间', width: 160 }
-                    , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250 }
+                    , { title: '操作', toolbar: '#barDemo', minWidth: 250 }
                 ]]
                 , id: 'testReload'
                 , page: true
-                ,limit: 10
-                ,limits: [10,20,50]
+                , limit: 10
+                , limits: [10, 20, 50]
             });
 
             var $ = layui.$, active = {
-                reload: function () {
+                reload: function() {
                     table.reload('testReload', {
                         page: {
                             curr: 1 //重新从第 1 页开始
@@ -120,92 +126,92 @@
             };
 
             //头工具栏事件
-            table.on('toolbar(sFilesTable)', function (obj) {
+            table.on('toolbar(sFilesTable)', function(obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                     case 'add':
                         lay_extend.openwin({
                             title: '添加文档',
                             page_path: '/Views/SFiles/UploadFile.cshtml',
-                            cancel: function () { active.reload(); }
+                            cancel: function() { active.reload(); }
                         });
                         break;
                 };
             });
 
             //监听行工具事件
-            table.on('tool(sFilesTable)', function (obj) {
+            table.on('tool(sFilesTable)', function(obj) {
                 var data = obj.data;
                 if (obj.event === 'del') {
-                    layer.confirm('真的删除行么', function (index) {
+                    layer.confirm('真的删除行么', function(index) {
                         $.ajax({
-                          url: "/SFiles/DeleteSFiles",
-                          type: 'DELETE',
-                          data: {ID:data.ID},
-                          success:function(response){
-                            if(response.Code==200){
-                                layer.msg("删除成功");
-                                active.reload();
+                            url: "/SFiles/DeleteSFiles",
+                            type: 'DELETE',
+                            data: { ID: data.ID },
+                            success: function(response) {
+                                if (response.Code == 200) {
+                                    layer.msg("删除成功");
+                                    active.reload();
+                                }
                             }
-                          }
                         });
                         layer.close(index);
                     });
                 } else if (obj.event === 'edit') {
                     lay_extend.openwin({
-                        title:'修改文档',
+                        title: '修改文档',
                         page_path: '/Views/SFiles/SaveSFiles.cshtml',
-                        data:{ ID: data.ID },
-                        cancel:function () { active.reload(); }
+                        data: { ID: data.ID },
+                        cancel: function() { active.reload(); }
                     });
                 } else if (obj.event === 'down') {
                     var url = "/SFiles/DownLoadFile";
                     var params = {
-                        fileName:data.FileName,
-                        filePath:data.FilePath
+                        fileName: data.FileName,
+                        filePath: data.FilePath
                     }
-                    download(url,params);
+                    download(url, params);
                 }
             });
         });
 
         //弹出显示图片
-        function showImg(e){
-            var imgUrl=$(e).attr('filePath');
+        function showImg(e) {
+            var imgUrl = $(e).attr('filePath');
             //layer.msg(1);
             //页面层-图片
             layer.open({
-              type: 1,
-              title: false,
-              closeBtn: 0,
-              area: ['auto'],
-              skin: 'layui-layer-nobg', //没有背景色
-              shadeClose: true,
-              content: '<img src="' + imgUrl + '" style=\'max-width:800px;max-width:650px;\'/>'
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + imgUrl + '" style=\'max-width:800px;max-width:650px;\'/>'
             });
         }
 
         //弹出显示office
-        function showOffice(e,fileName){
-            var filePath=$(e).attr('filePath');
+        function showOffice(e, fileName) {
+            var filePath = $(e).attr('filePath');
             $.ajax({
                 url: "/SFiles/OpenOfficeToHtml",
                 async: false,
-                data: { fileName: fileName,filePath: filePath },
+                data: { fileName: fileName, filePath: filePath },
                 method: "post",
-                success: function (response) {
+                success: function(response) {
                     layer.open({
-                      type: 1,
-                      title: false,
-                      title: fileName,
-                      //closeBtn: 0,
-                      shadeClose: true, 
-                      //skin: 'layui-layer-rim', //加上边框
-                      area: ['900px', '650px'], //宽高
-                      content: response
+                        type: 1,
+                        title: false,
+                        title: fileName,
+                        //closeBtn: 0,
+                        shadeClose: true,
+                        //skin: 'layui-layer-rim', //加上边框
+                        area: ['900px', '650px'], //宽高
+                        content: response
                     });
                 },
-                error: function () {
+                error: function() {
                     layer.msg("数据保存失败");
                     return;
                 }
@@ -213,33 +219,33 @@
         }
 
         //弹出显示Pdf
-        function showPdf(e,fileName){
-            var filePath=$(e).attr('filePath');
+        function showPdf(e, fileName) {
+            var filePath = $(e).attr('filePath');
             alert(fileName);
             alert(filePath);
         }
 
         //弹出显示txt
-        function showTxt(e,fileName){
-            var filePath=$(e).attr('filePath');
+        function showTxt(e, fileName) {
+            var filePath = $(e).attr('filePath');
             $.ajax({
                 url: "/SFiles/OpenTxtToHtml",
                 async: false,
-                data: { fileName: fileName,filePath: filePath },
+                data: { fileName: fileName, filePath: filePath },
                 method: "post",
-                success: function (response) {
+                success: function(response) {
                     layer.open({
-                      type: 1,
-                      title: false,
-                      title: fileName,
-                      //closeBtn: 0,
-                      shadeClose: true, 
-                      //skin: 'layui-layer-rim', //加上边框
-                      area: ['800px', '650px'], //宽高
-                      content: response
+                        type: 1,
+                        title: false,
+                        title: fileName,
+                        //closeBtn: 0,
+                        shadeClose: true,
+                        //skin: 'layui-layer-rim', //加上边框
+                        area: ['800px', '650px'], //宽高
+                        content: response
                     });
                 },
-                error: function () {
+                error: function() {
                     layer.msg("数据保存失败");
                     return;
                 }
