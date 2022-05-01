@@ -18,7 +18,7 @@
     <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
 
     <div class="layui-form-item">
-        <label class="layui-form-label">用户:</label>
+        <label class="layui-form-label required">用户:</label>
         <div class="layui-input-block">
             <select id="UserId" name="UserId" lay-verify="required" lay-search="" disabled>
                 <option value="">直接选择或搜索选择</option>
@@ -39,14 +39,14 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">日期:</label>
+        <label class="layui-form-label required">日期:</label>
         <div class="layui-input-block">
             <input type="text" name="ReportTime" id="ReportTime" lay-verify="required" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">内容:</label>
+        <label class="layui-form-label required">内容:</label>
         <div class="layui-input-block">
             <textarea name="Content" id="Content" placeholder="请输入日志内容" class="layui-textarea"
                       style="height:266px;"></textarea>

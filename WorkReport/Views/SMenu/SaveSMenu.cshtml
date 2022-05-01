@@ -11,17 +11,16 @@
 }
 <link rel="stylesheet" href="~/js/lay-module/layui_exts/cascader/layCascader.css" />
 
-<form class="layui-form" lay-filter="example" style="margin-right:20px">
+<form class="layui-form" lay-filter="example">
 
     <input type="hidden" id="ID" name="ID" placeholder="请输入" class="layui-input">
 
     <div class="layui-form-item">
-        <label class="layui-form-label">名称：</label>
+        <label class="layui-form-label required">名称：</label>
         <div class="layui-input-block">
             <input type="text" name="Name" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
         </div>
     </div>
-
 
     <div class="layui-form-item">
         <label class="layui-form-label">所属目录：</label>
@@ -57,14 +56,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">类型：</label>
         <div class="layui-input-block">
-            @*<input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">*@            
-                <select name="MenuType" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
-                    @foreach (var item in sFieldContentList)
-                    {
-                        <option value="@item.Code">@item.CodeContent</option>
-                    }
-                </select>
+            @*<input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">*@
+            <select name="MenuType" lay-verify="required" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+                @foreach (var item in sFieldContentList)
+                {
+                    <option value="@item.Code">@item.CodeContent</option>
+                }
+            </select>
         </div>
     </div>
 
@@ -82,7 +81,6 @@
         </div>
     </div>
 </form>
-
 @section Scripts{
     <script type="text/javascript">
 
@@ -142,7 +140,7 @@
 
                 var treeMenu = _menu;
                 //treeMenu.push({"value":0,"label":"顶级菜单"});
-                treeMenu.unshift({"value":"0","label":"顶级菜单"});
+                treeMenu.unshift({ "value": "0", "label": "顶级菜单" });
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/id/g, 'value'));
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/title/g, 'label'));
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/child/g, 'children'));
@@ -155,12 +153,11 @@
                     }
                 });
 
-                cascader.setValue(_result.PID);
-                /**
-                * 选中图标 （常用于更新时默认选中图标）
-                */
-                iconPickerFa.checkIcon('Icon', _result.Icon);
+
+                cascader.setValue("0");
                 if (_data && _data.hasOwnProperty('ID')) {
+                    cascader.setValue(_result.PID);
+                    iconPickerFa.checkIcon('Icon', _result.Icon);
                     form.val('example', {
                         "ID": _result.ID
                         , "Name": _result.Name

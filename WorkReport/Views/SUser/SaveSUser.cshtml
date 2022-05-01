@@ -17,15 +17,15 @@
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">登陆名</label>
+            <label class="layui-form-label required">登陆名</label>
             <div class="layui-input-inline">
-                <input type="text" name="UserCode" lay-verify="" autocomplete="off" class="layui-input">
+                <input type="text" name="UserCode" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">用户名</label>
+            <label class="layui-form-label required">用户名</label>
             <div class="layui-input-inline">
-                <input type="text" name="Name" lay-verify="" autocomplete="off" class="layui-input">
+                <input type="text" name="Name" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">部门</label>
+            <label class="layui-form-label required">部门</label>
             <div class="layui-input-inline">
                 <select name="DeptId" lay-verify="required" lay-search="">
                     <option value="">直接选择或搜索选择</option>

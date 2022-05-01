@@ -38,7 +38,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             options.bgColorDefault = options.bgColorDefault || 0;
             options.multiModule = options.multiModule || false;
             options.menuChildOpen = options.menuChildOpen || false;
-            options.loadingTime = options.loadingTime || 1;
+            options.loadingTime = options.loadingTime;
             options.pageAnim = options.pageAnim || false;
             options.maxTabNum = options.maxTabNum || 20;
             $.getJSON(options.iniUrl, function (data) {
