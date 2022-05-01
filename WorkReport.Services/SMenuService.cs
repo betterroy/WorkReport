@@ -36,7 +36,7 @@ namespace WorkReport.Services
         {
 
             Expression<Func<SMenu, bool>> expressionWhere = null;
-            Expression<Func<SMenu, int?>> expressionOrder = c => c.ID;
+            Expression<Func<SMenu, int?>> expressionOrder = c => c.Sort;
 
             PageResult<SMenu> pageResult = QueryPage<SMenu, int?>(expressionWhere, baseQuery.limit, baseQuery.page, expressionOrder, true);
             return new HttpResponseResult() { Data = pageResult };

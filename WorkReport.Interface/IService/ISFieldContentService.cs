@@ -25,6 +25,18 @@ namespace WorkReport.Interface.IService
         /// <returns></returns>
         public HttpResponseResult GetSFieldContent(SFieldContentQuery baseQuery);
 
+        /// <summary>
+        /// 根据CatalogID获取字典项
+        /// </summary>
+        /// <returns></returns>
+        public List<SFieldContent> GetSFieldContent(int? catalogID);
+
+        /// <summary>
+        /// 根据CatalogName获取字典项
+        /// </summary>
+        /// <returns></returns>
+        public List<SFieldContent> GetSFieldContent(string catalogField);
+
 
 
     }

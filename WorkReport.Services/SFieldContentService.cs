@@ -66,5 +66,27 @@ namespace WorkReport.Services
             return new HttpResponseResult() { Data = pageResult };
         }
 
+
+        /// <summary>
+        /// 根据CatalogID获取字典项
+        /// </summary>
+        /// <returns></returns>
+        public List<SFieldContent> GetSFieldContent(int? catalogID)
+        {
+            var res = Query<SFieldContent>(s=>s.CatalogID== catalogID);
+            return res.ToList();
+        }
+
+        /// <summary>
+        /// 根据CatalogName获取字典项
+        /// </summary>
+        /// <returns></returns>
+        public List<SFieldContent> GetSFieldContent(string catalogField)
+        {
+            var CatalogID = Query<SFieldCatalog>(s => s.Field== catalogField).FirstOrDefault()?.ID;
+            var res = GetSFieldContent(CatalogID) ;
+            return res;
+        }
+
     }
 }

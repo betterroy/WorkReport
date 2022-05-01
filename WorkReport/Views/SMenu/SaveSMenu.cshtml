@@ -1,8 +1,13 @@
 ﻿@*
 
 *@
+@using WorkReport.Commons.Extensions
+@using WorkReport.Interface.IService;
+@using WorkReport.Repositories.Models
+@inject ISFieldContentService _iSFieldContentService
 @{
     Layout = "/Views/Shared/_LayoutEdit.cshtml";
+    var sFieldContentList = _iSFieldContentService.GetSFieldContent("MenuType");
 }
 <link rel="stylesheet" href="~/js/lay-module/layui_exts/cascader/layCascader.css" />
 
@@ -17,11 +22,11 @@
         </div>
     </div>
 
-    
+
     <div class="layui-form-item">
         <label class="layui-form-label">所属目录：</label>
         <div class="layui-input-block">
-              <input name="PID" id="demo2">
+            <input name="PID" id="demo2">
         </div>
     </div>
 
@@ -52,7 +57,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">类型：</label>
         <div class="layui-input-block">
-            <input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">
+            @*<input type="text" name="MenuType" lay-verify="required" autocomplete="off" placeholder="请输入" class="layui-input">*@            
+                <select name="MenuType" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    @foreach (var item in sFieldContentList)
+                    {
+                        <option value="@item.Code">@item.CodeContent</option>
+                    }
+                </select>
         </div>
     </div>
 
@@ -119,6 +131,7 @@
                     limit: 16,
                     // 点击回调
                     click: function(data) {
+                        $('#Icon').val('fa ' + data.icon);
                         //console.log(data);
                     },
                     // 渲染成功后的回调
@@ -128,6 +141,8 @@
                 });
 
                 var treeMenu = _menu;
+                //treeMenu.push({"value":0,"label":"顶级菜单"});
+                treeMenu.unshift({"value":"0","label":"顶级菜单"});
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/id/g, 'value'));
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/title/g, 'label'));
                 treeMenu = JSON.parse(JSON.stringify(treeMenu).replace(/child/g, 'children'));
@@ -140,14 +155,17 @@
                     }
                 });
 
+                cascader.setValue(_result.PID);
+                /**
+                * 选中图标 （常用于更新时默认选中图标）
+                */
+                iconPickerFa.checkIcon('Icon', _result.Icon);
                 if (_data && _data.hasOwnProperty('ID')) {
                     form.val('example', {
                         "ID": _result.ID
                         , "Name": _result.Name
-                        , "PID": _result.PID
                         , "MenuType": _result.MenuType
-                        , "Url": _result.Url
-                        , "Icon": _result.Icon
+                        , "target": _result.Target
                         , "Url": _result.Url
                         , "Sort": _result.Sort
                     });

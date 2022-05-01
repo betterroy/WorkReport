@@ -56,11 +56,11 @@
          */
         const cols = [[
             { field: 'ID', title: '菜单编码', width: 100, align: "center" }
-            , { field: 'Name', title: '菜单名称', width: 160, align: "center"  }
+            , { field: 'Name', title: '菜单名称', width: 160, align: "left"  }
             , {
                 field: 'Icon', title: '图标', templet: function (d) {
                     if (d.Icon) {
-                        return '<i class="fa fa-adjust"></i>';
+                        return '<i class="'+d.Icon+'"></i>';
                     }
                     return '';
                 }, width: 130, align: "center"
@@ -71,16 +71,16 @@
                     if (d.MenuType) {
                         switch (d.MenuType) {
                             case 1:   //模块
-                                return '<span class="layui-badge layui-bg-blue">模块</span>';
+                                return '<span >模块</span>';
                                 break;
                             case 2:   //目录
-                                return '<span class="layui-badge layui-bg-green">目录</span>';
+                                return '<span >目录</span>';
                                 break;
                             case 3:   //菜单
-                                return '<span class="layui-badge layui-bg-cyan">菜单</span>';
+                                return '<span >菜单</span>';
                                 break;
                             case 4:   //功能/按钮
-                                return '<span class="layui-badge layui-gray">功能/按钮</span>';
+                                return '<span >功能/按钮</span>';
                                 break;
                             default:
                                 return ''
