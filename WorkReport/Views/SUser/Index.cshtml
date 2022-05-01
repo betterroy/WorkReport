@@ -7,6 +7,24 @@
 
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="Name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
         <table class="layui-hide" id="sUserTable" lay-filter="sUserTable"></table>
         <button type="button" class="layui-btn layui-btn-sm" id="importUser" value="导入明细" style="display: none" />
@@ -42,8 +60,9 @@
 @section Scripts{
     <script type="text/javascript">
 
-        layui.use(['table', 'upload'], function() {
+        layui.use(['form', 'table', 'upload'], function() {
             var table = layui.table
+                , form = layui.form
                 , upload = layui.upload;
 
             //表格初始化
@@ -58,8 +77,8 @@
                 }]
                 , title: '用户'
                 , cols: [[
-                    { type: 'checkbox', fixed: 'left' }
-                    , { field: 'ID', title: '自增ID', width: 80, fixed: 'left', unresize: true, sort: false }
+                    { type: 'checkbox' }
+                    , { field: 'ID', title: '自增ID', width: 80, unresize: true, sort: false }
                     , { field: 'UserCode', title: '用户编码', width: 100 }
                     , { field: 'Name', title: '用户名', width: 100 }
                     , { field: 'UserType', title: '用户类别', width: 100 }
@@ -93,6 +112,23 @@
                     });
                 }
             };
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function(data) {
+                var result = JSON.stringify(data.field);
+
+                //执行搜索重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1
+                    }
+                    , where: {
+                        searchParams: result
+                    }
+                }, 'data');
+
+                return false;
+            });
 
             //头工具栏事件
             table.on('toolbar(sUserTable)', function(obj) {

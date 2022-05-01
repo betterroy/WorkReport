@@ -62,9 +62,19 @@ namespace WorkReport.Services
         /// <returns></returns>
         public HttpResponseResult GetSUserAndDepartment(BaseQuery baseQuery)
         {
+            //var query = baseQuery.getQuery();
+            string Name = "";
+            //if (query!=null)
+            //{
+            //    Name = query["Name"].ToString();
+            //}
+            if (baseQuery["Name"] != null)
+            {
+                Name = baseQuery["Name"].ToString();
+            }
             var list = (from a in Set<SUser>()
                         join b in Set<SDepartment>() on a.DeptId equals b.DeptId
-                        //where u.ReportTime >= DateTime.Now.AddDays(-3)
+                        where a.Name == Name || Name==""
                         orderby a.ID
                         select new
                         {
