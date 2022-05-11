@@ -26,6 +26,8 @@ Excel文件导入，文件上传，word、excel在线打开显示功能。
 ![image-20220316085504316](https://user-images.githubusercontent.com/39639296/158498249-ce8be49a-8208-43d3-ada3-57b9c2c52eed.png)
 ## 登陆首页：
 ![image](https://user-images.githubusercontent.com/39639296/163533534-3294eefc-32cd-4ae6-a179-0d706369a13d.png)
+## 菜单管理
+![image](https://user-images.githubusercontent.com/39639296/167757630-2eae9f8f-aeaa-4f67-925a-10b9f9bfc93c.png)
 ## 日志填写情况汇总：
 ![image](https://user-images.githubusercontent.com/39639296/163534572-7d156b3e-a165-4752-a286-575b650f5642.png)
 ## 文件管理功能及在线打开：
