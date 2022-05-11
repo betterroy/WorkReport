@@ -5,11 +5,12 @@
 # 概述
 
 项目是基于Net6.0+SQL Server进行开发的框架。
+前端使用Layui及LAYUI MINI作为框架
 整合应用技术包括
 
 ## 后端
 
-Asp.NetCore MVC、EF、Autofac、Log4Net。
+Asp.NetCore MVC、EF Core、Autofac、Log4Net、AutoMapper。
 
 ## 前端
 
@@ -18,6 +19,7 @@ Layui为主。
 # 核心功能
 
 实现了基础**登陆鉴权**、**异常日志**中间件与增删改、**读写分离**模块、**Service自动注入**、公共返回类库等。
+增加了Redis缓存中间件，使用AOP在登陆时，进行菜单读取及写入缓存，过期后重新读取功能。
 Excel文件导入，文件上传，word、excel在线打开显示功能。
 
 # 功能图片
