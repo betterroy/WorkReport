@@ -24,6 +24,7 @@ using WorkReport.Interface.AopExtension;
 using Autofac.Extras.DynamicProxy;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
+using WorkReport.Commons.EmailHelper;
 
 namespace WorkReport
 {
@@ -93,6 +94,7 @@ namespace WorkReport
                                         .AddJsonFile("appsettings.json")
                                         .Build();
             services.Configure<DBConnectionOption>(configuration.GetSection("SqlServerConnections"));
+            services.Configure<SendServerConfigurationEntity>(configuration.GetSection("EmailConfigInfo"));
 
             services.AddTransient<ICustomDbContextFactory, CustomDbContextFactory>();
             services.AddTransient<DbContext, WorkReportContext>();
