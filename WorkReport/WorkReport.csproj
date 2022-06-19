@@ -107,6 +107,9 @@
 	  <None Include="wwwroot\lib\jq-module\paigusu.min.js" />
 	  <None Include="wwwroot\lib\jq-module\zyupload\zyupload-1.0.0.min.js" />
 	  <None Include="wwwroot\lib\jquery-3.4.1\jquery-3.4.1.min.js" />
+	  <None Include="wwwroot\lib\layui-v2.6.3\font\iconfont.svg" />
+	  <None Include="wwwroot\lib\layui-v2.6.3\font\iconfont.woff2" />
+	  <None Include="wwwroot\lib\layui-v2.6.3\layui.js" />
 	  <None Include="wwwroot\lib\layui\font\iconfont.svg" />
 	  <None Include="wwwroot\lib\layui\font\iconfont.woff2" />
 	  <None Include="wwwroot\lib\layui\layui.js" />
