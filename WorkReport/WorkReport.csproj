@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 	  <Content Remove="compilerconfig.json" />
+	  <Content Remove="Views\Account\Login.cshtml" />
 	  <Content Remove="wwwroot\lib\font-awesome-4.7.0\less\variables.less" />
 	</ItemGroup>
 
@@ -138,7 +139,6 @@
 	  <None Include="wwwroot\lib\layui\modules\tree.js" />
 	  <None Include="wwwroot\lib\layui\modules\upload.js" />
 	  <None Include="wwwroot\lib\layui\modules\util.js" />
-	  <None Include="wwwroot\lib\login\fonts\fontawesome-webfont.woff2" />
 	  <None Include="wwwroot\lib\pace\.gitignore" />
 	  <None Include="wwwroot\lib\pace\LICENSE" />
 	  <None Include="wwwroot\lib\pace\pace.js" />

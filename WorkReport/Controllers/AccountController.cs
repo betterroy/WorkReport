@@ -15,6 +15,13 @@ using WorkReport.Commons.MvcResult;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Commons.CacheHelper;
+using WorkReport.Models.Query;
+using Microsoft.AspNetCore.Http;
+using System.Drawing.Imaging;
+using System.Drawing;
+using WorkReport.Utility.Filters.WebHelper;
+using NPOI.SS.Formula.Functions;
+using System;
 
 namespace WorkReport.Controllers
 {
@@ -73,20 +80,30 @@ namespace WorkReport.Controllers
         [HttpPost]
         //[AllowAnonymous]
         [CustomAllowAnonymousAttribute]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login([FromBody] SUserQuery sUserQuery)
         {
-            password = MD5Encrypt.Encrypt(password);    //对密码进行MD5加密验证。
+            var isCaptcha = CheckCaptcha(sUserQuery);
+            if (isCaptcha != null)
+            {
+                return Json(isCaptcha);
+            }
+            sUserQuery.password = MD5Encrypt.Encrypt(sUserQuery.password);    //对密码进行MD5加密验证。
 
-            SUser sUser ;
+            SUser sUser;
 
-            var isLogin = _iSUserService.SUserLogin(username, password, out sUser, out List<SRoleUser> sRoleUser
+            var isLogin = _iSUserService.SUserLogin(sUserQuery.username, sUserQuery.password, out sUser, out List<SRoleUser> sRoleUser
                 //, out List<SMenuViewModel> menueViewList
                 );
 
             if (!isLogin)
             {
-                ViewBag.Message = "用户名或密码错误";
-                return View();
+                //ViewBag.Message = "用户名或密码错误";
+                //return View();
+                return Json(new HttpResponseResult()
+                {
+                    Msg = "用户名或密码错误",
+                    Code = HttpResponseCode.Failed
+                });
             }
             else
             {
@@ -186,6 +203,80 @@ namespace WorkReport.Controllers
             public string password { get; set; }
         }
 
+        /// <summary>
+        /// 生成验证码图片
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        //[Route("VerifyCodeImg")]
+        [HttpGet]
+        [CustomAllowAnonymousAttribute]
+        public IActionResult VerifyCodeImg(string tag)
+        {
+            Bitmap bitmap = VerifyCodeHelper.CreateVerifyCode(out string code);
+            string key = $"{tag}_VerifyCode";
+            _RedisStringService.Set(key, code, TimeSpan.FromMinutes(30));
+            MemoryStream stream = new MemoryStream();
+            bitmap.Save(stream, ImageFormat.Gif);
+            return File(stream.ToArray(), "image/gif");//返回FileContentResult图片
+        }
+
+        /// <summary>
+        /// 获取验证码图片值
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [CustomAllowAnonymousAttribute]
+        public string GetCaptcha(string tag)
+        {
+#if DEBUG
+            return GetCaptchaFromRedis(tag);
+#else
+            return "";
+#endif
+        }
+
+        /// <summary>
+        /// 获取验证码图片值
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public string GetCaptchaFromRedis(string tag)
+        {
+            string key = $"{tag}_VerifyCode";
+            string captcha = _RedisStringService.Get<string>(key);
+            return captcha;
+        }
+
+        /// <summary>
+        /// 校验登陆验证码
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public HttpResponseResult CheckCaptcha(SUserQuery sUserQuery)
+        {
+            var captchFromRedis = GetCaptchaFromRedis(sUserQuery.tag);
+            var httpResponseResult = new HttpResponseResult()
+            {
+                Msg = "",
+                Code = HttpResponseCode.Failed
+            };
+            if (string.IsNullOrWhiteSpace(captchFromRedis))
+            {
+                httpResponseResult.Msg = "请重新刷新验证码";
+                return httpResponseResult;
+            }
+            else if (!string.Equals(sUserQuery.captcha, captchFromRedis, StringComparison.CurrentCultureIgnoreCase))
+            {
+                httpResponseResult.Msg = "验证码输入错误";
+                return httpResponseResult;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
     }
 }
