@@ -384,7 +384,7 @@
                             $("#captcha").val(result);
                         }
                     });
-                },2000)
+                },1500)
                 
 
             });
@@ -409,6 +409,8 @@
                 //赋值验证码
                 data.tag = tag;
 
+                var loading = parent.layer.load(0, { shade: false, time: 2 * 1000 });
+
                 var loginState = true;
                 $.ajax({
                     url: "/Account/Login",
@@ -418,7 +420,7 @@
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(data),
                     success: function (result) {
-                        console.log(result);
+                        parent.layer.close(loading);
                         if (result.Code == 500) {
                             layer.msg(result.Msg);
                             loginState = false;
