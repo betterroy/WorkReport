@@ -1,6 +1,6 @@
 # 如果对您有帮助，您可以点右上角 "Star" 支持一下。
 
-公司汇报日报周报月报后台管理系统WorkReport
+公司后台管理系统，汇报日报周报月报后台管理系统WorkReport
 
 # 概述
 
@@ -23,23 +23,22 @@ Layui为主。
 Excel文件导入，文件上传，word、excel在线打开显示功能。
 
 # 功能图片
-
-登录HTML[登陆原文](http://www.uimaker.com/uimakerdown/logindesign/137243.html)：
-![image-20220316085504316](https://user-images.githubusercontent.com/39639296/158498249-ce8be49a-8208-43d3-ada3-57b9c2c52eed.png)
+登录页
+![image](https://user-images.githubusercontent.com/39639296/175870976-de92998f-6d81-49be-afc2-21402748ab22.png)
 ## 登陆首页：
-![image](https://user-images.githubusercontent.com/39639296/163533534-3294eefc-32cd-4ae6-a179-0d706369a13d.png)
+![image](https://user-images.githubusercontent.com/39639296/175871052-a2a597b4-62e8-4830-b0b5-6ae72263888a.png)
 ## 菜单管理
-![image](https://user-images.githubusercontent.com/39639296/167757630-2eae9f8f-aeaa-4f67-925a-10b9f9bfc93c.png)
-## 日志填写情况汇总：
-![image](https://user-images.githubusercontent.com/39639296/163534572-7d156b3e-a165-4752-a286-575b650f5642.png)
+![image](https://user-images.githubusercontent.com/39639296/175871116-beb5a54c-cc85-4bae-9189-9dfe7085a069.png)
 ## 文件管理功能及在线打开：
-![image](https://user-images.githubusercontent.com/39639296/163535711-11dc1fdc-8319-4ba4-8270-dcbe6f575ef3.png)
-![image](https://user-images.githubusercontent.com/39639296/163535870-fc35a2a2-acba-4e74-ad4b-38fb50e5012e.png)
+![image](https://user-images.githubusercontent.com/39639296/175871509-af274205-5ce9-4e2f-89ed-5dbafac75354.png)
+![image](https://user-images.githubusercontent.com/39639296/175871538-5a309160-d609-4d65-a196-46ba7de961b5.png)
 ## 用户模板下载及导入：
-![image](https://user-images.githubusercontent.com/39639296/163536220-44b4eb6c-d4bc-43cd-aea9-cf58ccdd52c0.png)
+![image](https://user-images.githubusercontent.com/39639296/175871644-60b53af5-d535-4a15-9395-266c6cf9cada.png)
 ## 字典表配置：
-![image](https://user-images.githubusercontent.com/39639296/163536375-1414489d-bd6b-478d-8e9c-5a65d03ddf2c.png)
+![image](https://user-images.githubusercontent.com/39639296/175871704-edc18698-9c8c-4e1e-833d-f4ce5c170987.png)
 ## 权限管理：
-![image](https://user-images.githubusercontent.com/39639296/163536532-856b3810-23b7-4941-a298-ebd95d7c224c.png)
+![image](https://user-images.githubusercontent.com/39639296/175871752-285ac645-11bb-433a-bfc5-20736d7cc792.png)
+## 邮件管理：
+![image](https://user-images.githubusercontent.com/39639296/175871813-24468564-0745-4987-9616-e17ec12070ec.png)
 
 # 后续会对项目进行持续的输出
