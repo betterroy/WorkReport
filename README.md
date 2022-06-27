@@ -23,10 +23,10 @@ Layui为主。
 Excel文件导入，文件上传，word、excel在线打开显示功能。
 
 # 功能图片
-登录页
+## 登录页
 ![image](https://user-images.githubusercontent.com/39639296/175870976-de92998f-6d81-49be-afc2-21402748ab22.png)
 ## 登陆首页：
-![image](https://user-images.githubusercontent.com/39639296/175871052-a2a597b4-62e8-4830-b0b5-6ae72263888a.png)
+![image](https://user-images.githubusercontent.com/39639296/175872429-dd643182-d0ab-47f7-994f-d9151e457c92.png)
 ## 菜单管理
 ![image](https://user-images.githubusercontent.com/39639296/175871116-beb5a54c-cc85-4bae-9189-9dfe7085a069.png)
 ## 文件管理功能及在线打开：
