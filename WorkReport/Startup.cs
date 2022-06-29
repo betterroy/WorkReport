@@ -25,6 +25,7 @@ using Autofac.Extras.DynamicProxy;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
 using WorkReport.Commons.EmailHelper;
+using WorkReport.Commons.MongoDBHelper.Init;
 
 namespace WorkReport
 {
@@ -92,9 +93,11 @@ namespace WorkReport
             //读取配置
             IConfiguration configuration = new ConfigurationBuilder()
                                         .AddJsonFile("appsettings.json")
+                                        .AddJsonFile("middleWareConfig.json")
                                         .Build();
             services.Configure<DBConnectionOption>(configuration.GetSection("SqlServerConnections"));
             services.Configure<SendServerConfigurationEntity>(configuration.GetSection("EmailConfigInfo"));
+            services.Configure<MongoDBConfig>(configuration.GetSection("MongoDBConfig"));
 
             services.AddTransient<ICustomDbContextFactory, CustomDbContextFactory>();
             services.AddTransient<DbContext, WorkReportContext>();
