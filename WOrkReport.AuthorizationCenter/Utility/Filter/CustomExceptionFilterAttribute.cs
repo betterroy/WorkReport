@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ZhaoXi.LiveBackgroundManagement.Common.Api;
-
+using WorkReport.Commons.Api;
 
 namespace WorkReport.AuthorizationCenter.Utility.Filter
 {
@@ -19,9 +18,9 @@ namespace WorkReport.AuthorizationCenter.Utility.Filter
         {
             if (!context.ExceptionHandled)
             {
-                context.Result = new JsonResult(new ApiResult()
+                context.Result = new JsonResult(new HttpResponseResult()
                 {
-                    Message = context.Exception.Message
+                    Msg = context.Exception.Message
                 });
             }
             context.ExceptionHandled = true;

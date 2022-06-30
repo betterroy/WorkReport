@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "WOrkReport.AuthorizationCenter": {
+    "WorkReport.AuthorizationCenter": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

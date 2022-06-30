@@ -7,9 +7,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using ZhaoXi.LiveBackgroundManagement.DataAccessEFCore.Models;
-using ZhaoXi.LiveBackgroundManagement.Models.ViewModel;
-using ZhaoXi.LiveReceptionManagement.AuthorizationCenter.Model;
+using WorkReport.AuthorizationCenter.Model;
+using WorkReport.Models.ViewModel;
+using WorkReport.Repositories.Models;
 
 namespace WorkReport.AuthorizationCenter.Utility
 {

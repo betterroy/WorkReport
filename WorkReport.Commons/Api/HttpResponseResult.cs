@@ -22,6 +22,11 @@ namespace WorkReport.Commons.Api
         public HttpResponseCode Code { get; set; } = HttpResponseCode.Success;
         public string Msg { get; set; }
         public object Data { get; set; }
+
+        /// <summary>
+        /// 额外数据
+        /// </summary>
+        public object Tag { get; set; }
     }
 
     //public class HttpResponseResult<T> : HttpResponseResult

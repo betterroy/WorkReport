@@ -12,5 +12,6 @@ namespace WorkReport.Models.Query
         public string password { get; set; }
         public string captcha { get; set; }
         public string tag { get; set; }
+        public string refreshToken { get; set; }
     }
 }

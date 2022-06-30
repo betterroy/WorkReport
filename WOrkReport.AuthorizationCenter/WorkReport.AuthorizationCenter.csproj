@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkReport.Interface\WorkReport.Interface.csproj" />
     <ProjectReference Include="..\WorkReport.Models\WorkReport.Models.csproj" />
     <ProjectReference Include="..\WorkReport.Repositories\WorkReport.Repositories.csproj" />
+    <ProjectReference Include="..\WorkReport.Services\WorkReport.Services.csproj" />
   </ItemGroup>
 
 </Project>
