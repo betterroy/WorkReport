@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WorkReport.AuthorizationCenter.Utility
+namespace WorkReport.Commons.JWTHelper.Model
 {
     public class JWTTokenOptions
     {

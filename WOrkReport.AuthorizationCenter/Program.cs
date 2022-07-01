@@ -11,6 +11,7 @@ using WorkReport.Services;
 using WorkReport.AuthorizationCenter.Utility.Filter;
 using WorkReport.AuthorizationCenter.Utility.Extensions;
 using Autofac.Core;
+using WorkReport.Commons.JWTHelper.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,8 +48,6 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddCors(option => option.AddPolicy("AllowCors", _build => _build.AllowAnyOrigin().AllowAnyMethod()));
 #endregion
 
-
-builder.Services.AddAutoMapper(typeof(ServiceProfile));
 
 builder.Services.AddControllers(option =>
 {

@@ -10,7 +10,7 @@ namespace WorkReport.AuthorizationCenter.Utility
 {
     public interface ICustomJWTService
     {
-        TokenOption GetToken(SUser sUser);
+        TokenOption GetToken(SUserViewModel sUser);
 
         TokenOption GetTwoToken(SUserViewModel sUser);
     }

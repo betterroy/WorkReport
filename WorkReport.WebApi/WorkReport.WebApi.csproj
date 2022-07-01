@@ -1,17 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\WorkReport.Commons\WorkReport.Commons.csproj" />
+    <ProjectReference Include="..\WorkReport.Interface\WorkReport.Interface.csproj" />
+    <ProjectReference Include="..\WorkReport.Repositories\WorkReport.Repositories.csproj" />
+    <ProjectReference Include="..\WorkReport.Services\WorkReport.Services.csproj" />
   </ItemGroup>
 
 </Project>

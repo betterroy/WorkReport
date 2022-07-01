@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using WorkReport.AuthorizationCenter.Model;
+using WorkReport.Commons.JWTHelper.Model;
 using WorkReport.Models.ViewModel;
 using WorkReport.Repositories.Models;
 
@@ -24,7 +25,7 @@ namespace WorkReport.AuthorizationCenter.Utility
         }
         #endregion
 
-        public TokenOption GetToken(SUser sUser)
+        public TokenOption GetToken(SUserViewModel sUser)
         {
             //string jtiCustom = Guid.NewGuid().ToString();//用来标识 Token
             Claim[] claims = new[]

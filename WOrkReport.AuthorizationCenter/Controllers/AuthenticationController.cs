@@ -19,14 +19,14 @@ namespace WorkReport.AuthorizationCenter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly ICustomJWTService _iJWTService = null;
         private readonly ISUserService _iSUserService = null;
         private readonly RedisStringService _RedisStringService = null;
         private readonly IMapper _iMapper;
 
-        public AccountController(ICustomJWTService service, ISUserService iSUserService, RedisStringService redisStringService, IMapper mapper)
+        public AuthenticationController(ICustomJWTService service, ISUserService iSUserService, RedisStringService redisStringService, IMapper mapper)
         {
             _iMapper = mapper;
             _iJWTService = service;
@@ -44,9 +44,7 @@ namespace WorkReport.AuthorizationCenter.Controllers
         {
             sUserQuery.password = MD5Encrypt.Encrypt(sUserQuery.password);    //对密码进行MD5加密验证。
 
-            var isLogin = _iSUserService.SUserLogin(sUserQuery.username, sUserQuery.password, out SUser sUser, out List<SRoleUser> sRoleUser
-                //, out List<SMenuViewModel> menueViewList
-                );
+            var isLogin = _iSUserService.SUserLogin(sUserQuery.username, sUserQuery.password, out SUser sUser, out List<SRoleUser> sRoleUser);
 
             if (!isLogin)
             {
@@ -58,15 +56,47 @@ namespace WorkReport.AuthorizationCenter.Controllers
             }
             else
             {
-                TokenOption option = this._iJWTService.GetToken(sUser);
                 SUserViewModel user = _iMapper.Map<SUser, SUserViewModel>(sUser);
+                TokenOption option = this._iJWTService.GetToken(user);
 
-                _RedisStringService.Set(option.RefreshToken, user);
+                _RedisStringService.Set(option.RefreshToken, user,TimeSpan.FromMinutes(30));
                 return new JsonResult(new HttpResponseResult()
                 {
                     Data = option,
                     Tag = user
                 });
+            }
+
+        }
+
+        /// <summary>
+        /// 获取刷新Token
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
+        [Route("RefreshToken")]
+        [HttpPost]
+        public IActionResult RefreshToken(SUserQuery sUserQuery)
+        {
+            SUserViewModel suser = _RedisStringService.Get<SUserViewModel>(new List<string>() { sUserQuery.refreshToken }).FirstOrDefault();
+            if (suser != null)
+            {
+
+                TokenOption option = this._iJWTService.GetTwoToken(suser);
+                _RedisStringService.Set(option.RefreshToken, suser);
+                return new JsonResult(new HttpResponseResult()
+                {
+                    Data = option,
+                    Tag = suser
+                });
+            }
+            else
+            {
+                return new JsonResult(new HttpResponseResult()
+                {
+                    Msg = "Token刷新失败，请重新登录",
+                    Code = HttpResponseCode.Failed
+                }); ;
             }
 
         }
