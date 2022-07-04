@@ -43,9 +43,9 @@ namespace WorkReport.AuthorizationCenter.Utility
             SigningCredentials credentials = new SigningCredentials(new RsaSecurityKey(keyParams), SecurityAlgorithms.RsaSha256Signature);
 
             JwtSecurityToken AccesstokenJwt = new JwtSecurityToken(
-               issuer: _JWTTokenOptions.Issuer,
-               audience: _JWTTokenOptions.Audience,
-               claims: claims,
+               issuer: _JWTTokenOptions.Issuer,         //签发人
+               audience: _JWTTokenOptions.Audience,     //接收者
+               claims: claims,                          //相关信息
                expires: DateTime.Now.AddMinutes(5),//5分钟有效期
                signingCredentials: credentials);
 

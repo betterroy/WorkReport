@@ -16,6 +16,10 @@ namespace WorkReport.Interface.Automapping
             CreateMap<UReport, UReportViewModel>().ReverseMap();
             CreateMap<SUser, SUserViewModel>().ReverseMap();
             CreateMap<SDepartment, SDepartmentViewModel>().ReverseMap();
+            CreateMap<SMenu, SMenuViewModel>()
+                .ForMember(s => s.title, opt => opt.MapFrom(src => src.Name))
+                .ForMember(s => s.parentid, opt => opt.MapFrom(src => src.PID))
+                .ForMember(s => s.href, opt => opt.MapFrom(src => src.Url)).ReverseMap();
         }
     }
 }

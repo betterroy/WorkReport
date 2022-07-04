@@ -87,12 +87,10 @@ namespace WorkReport.WebApi.Utility.ServiceExtension
                         //输出Json数据结果
                         //在这里输出结果；这个结果就告诉调用者，是没有权限
 
-                        //作业1；课后自行完后才能  在这里使用ApiResult 作为序列话的结果---注意有问题 -----大小写的问题；
-
                         context.Response.WriteAsync(JsonConvert.SerializeObject(new HttpResponseResult
                         {
                             Code = HttpResponseCode.Unauthorized,
-                            Msg = "此次操作权限验证不通过"
+                            Msg = "此次操作权限验证不通过！"
                         }));
                         return Task.FromResult(0);
                     }

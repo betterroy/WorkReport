@@ -188,9 +188,11 @@ namespace WorkReport
         public void ConfigureContainer(ContainerBuilder builder)
         {
 
-            builder.RegisterType<RedisZSetService>();
             builder.RegisterType<RedisStringService>();
             builder.RegisterType<RedisHashService>();
+            builder.RegisterType<RedisSetService>();
+            builder.RegisterType<RedisZSetService>();
+            builder.RegisterType<RedisListService>();
             builder.RegisterType(typeof(CustomAutofacSUserAop));
             builder.RegisterType(typeof(CustomAutofacSMenuAop));
             builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();

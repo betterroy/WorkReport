@@ -33,7 +33,7 @@ namespace WorkReport.WebApi.Controllers
         [Route("TestRole")]
         [HttpPost]
         [Authorize]
-        public IActionResult TestRole(UReport uReport)
+        public IActionResult TestRole()
         {
             Claim claim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
             if (claim == null)
@@ -51,6 +51,7 @@ namespace WorkReport.WebApi.Controllers
         /// <returns></returns>
         [Route("SaveReport")]
         [HttpPost]
+        [Authorize]
         public IActionResult SaveReport(UReport uReport)
         {
             HttpResponseResult httpResponseResult = new HttpResponseResult();

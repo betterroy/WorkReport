@@ -15,15 +15,22 @@ using WorkReport.Commons.Extensions;
 using WorkReport.Commons.Tree;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Commons.CacheHelper;
+using AutoMapper;
+using System.Xml.Linq;
+using ServiceStack.Script;
 
 namespace WorkReport.Services
 {
     public class SMenuService : BaseService, ISMenuService
     {
         private readonly RedisStringService _RedisStringService;
+        private readonly IMapper _iMapper;
         public SMenuService(ICustomDbContextFactory dbContextFactory,
-            RedisStringService redisStringService) : base(dbContextFactory)
+            RedisStringService redisStringService
+            , IMapper mapper) : base(dbContextFactory)
         {
+            _RedisStringService = redisStringService;
+            _iMapper = mapper;
         }
 
         public List<SMenuViewModel> GetSMenuList()
@@ -64,34 +71,37 @@ namespace WorkReport.Services
 
             if (sMenuViewModels == null)
             {
-                menuQuery = Set<SMenu>().ToList();
+                menuQuery = Set<SMenu>().OrderBy(m => m.Sort).ToList();
             }
             else
             {
                 menuQuery = Set<SMenu>().Where(m => sMenuViewModels.Any(v => v.MenuID == m.ID)).OrderBy(m => m.Sort).ToList();
             }
 
-            List<SMenuViewModel> sMenuViewModelList = new List<SMenuViewModel>(menuQuery.Count);
+            List<SMenuViewModel> sMenuViewModelList = _iMapper.Map<List<SMenu>, List<SMenuViewModel>>(menuQuery);
 
-            if (menuQuery != null && menuQuery.Count > 0)
-            {
-                foreach (SMenu menue in menuQuery)
-                {
-                    SMenuViewModel sMenuViewModel = new SMenuViewModel()
-                    {
-                        id = menue.ID,
-                        title = menue.Name,
-                        parentid = menue.PID,
-                        pid = menue.PID,
-                        href = menue.Url,
-                        icon = menue.Icon,
-                        sort = menue.Sort
-                    };
-                    sMenuViewModelList.Add(sMenuViewModel);
-                }
-            }
+            //List<SMenuViewModel> sMenuViewModelList = new List<SMenuViewModel>(menuQuery.Count);
 
-            return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList,(s,c)=>s.AddChild(c));
+            //if (menuQuery != null && menuQuery.Count > 0)
+            //{
+            //    foreach (SMenu menue in menuQuery)
+            //    {
+            //        SMenuViewModel sMenuViewModel = new SMenuViewModel()
+            //        {
+            //            id = menue.ID,
+            //            title = menue.Name,
+            //            parentid = menue.PID,
+            //            pid = menue.PID,
+            //            href = menue.Url,
+            //            icon = menue.Icon,
+            //            sort = menue.Sort
+            //        };
+            //        sMenuViewModelList.Add(sMenuViewModel);
+            //    }
+            //}
+
+
+            return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList, (s, c) => s.AddChild(c));
             //return TreeExtension<SMenuViewModel>.ToDo(sMenuViewModelList);
         }
 

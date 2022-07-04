@@ -81,7 +81,6 @@ namespace WorkReport.AuthorizationCenter.Controllers
             SUserViewModel suser = _RedisStringService.Get<SUserViewModel>(new List<string>() { sUserQuery.refreshToken }).FirstOrDefault();
             if (suser != null)
             {
-
                 TokenOption option = this._iJWTService.GetTwoToken(suser);
                 _RedisStringService.Set(option.RefreshToken, suser);
                 return new JsonResult(new HttpResponseResult()
