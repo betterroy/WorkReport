@@ -40,7 +40,7 @@ namespace WorkReport.Controllers
         }
 
         /// <summary>
-        /// string-数据类型
+        /// string-数据类型--存储字符或数字，自增自减
         /// </summary>
         /// <returns></returns>
         public IActionResult Redis_String()
@@ -54,8 +54,8 @@ namespace WorkReport.Controllers
             Console.WriteLine(_RedisStringService.GetAndSetValue("student1", "程序错误"));
             Console.WriteLine(_RedisStringService.Get("student1"));
 
-            _RedisStringService.Set<string>("student2", "王", DateTime.Now.AddSeconds(5));
-            Thread.Sleep(5100);
+            _RedisStringService.Set<string>("student2", "王", DateTime.Now.AddSeconds(2));   //设置过期时间
+            Thread.Sleep(2100);
             Console.WriteLine(_RedisStringService.Get("student2"));
 
             _RedisStringService.Set<int>("Age", 32);
@@ -66,7 +66,7 @@ namespace WorkReport.Controllers
             return Json("Redis_String执行完成。可断点调试查看控制台输出信息。");
         }
         /// <summary>
-        /// HashTable-数据类型
+        /// HashTable-数据类型--存储实体
         /// </summary>
         /// <returns></returns>
         public IActionResult Redis_Hash()
@@ -83,8 +83,8 @@ namespace WorkReport.Controllers
             var keyValues = _RedisHashService.GetAllEntriesFromHash("student");
             Console.WriteLine(_RedisHashService.GetValueFromHash("student", "id"));
 
-            _RedisHashService.SetEntryInHashIfNotExists("student", "name", "太子爷");
-            _RedisHashService.SetEntryInHashIfNotExists("student", "description", "60分以上-2");
+            bool hashExists = _RedisHashService.SetEntryInHashIfNotExists("student", "name", "太子爷");
+            hashExists = _RedisHashService.SetEntryInHashIfNotExists("student", "description", "60分以上-2");
 
             Console.WriteLine(_RedisHashService.GetValueFromHash("student", "name"));
             Console.WriteLine(_RedisHashService.GetValueFromHash("student", "description"));
@@ -93,7 +93,7 @@ namespace WorkReport.Controllers
             return Json("Redis_Hash执行完成。可断点调试查看控制台输出信息。");
         }
         /// <summary>
-        /// Set-数据类型
+        /// Set-数据类型--不重复的列表，求交并补集
         /// </summary>
         /// <returns></returns>
         public IActionResult Redis_Set()
@@ -111,7 +111,7 @@ namespace WorkReport.Controllers
             var result = _RedisSetService.GetAllItemsFromSet("advanced");
 
             var random = _RedisSetService.GetRandomItemFromSet("advanced");//随机获取
-            _RedisSetService.GetCount("advanced");//独立的ip数
+            var setGetCount = _RedisSetService.GetCount("advanced");//获取总计
             _RedisSetService.RemoveItemFromSet("advanced", "114");
 
             {
@@ -123,15 +123,15 @@ namespace WorkReport.Controllers
                 _RedisSetService.Add("end", "114");
                 _RedisSetService.Add("end", "113");
 
-                var result1 = _RedisSetService.GetIntersectFromSets("begin", "end");
-                var result2 = _RedisSetService.GetDifferencesFromSet("begin", "end");
-                var result3 = _RedisSetService.GetUnionFromSets("begin", "end");
+                var result1 = _RedisSetService.GetIntersectFromSets("begin", "end");    //获取交集
+                var result2 = _RedisSetService.GetDifferencesFromSet("begin", "end");   //获取补集
+                var result3 = _RedisSetService.GetUnionFromSets("begin", "end");        //获取并集
                 //共同好友   共同关注
             }
             return Json("Redis_Set执行完成。可断点调试查看控制台输出信息。");
         }
         /// <summary>
-        /// ZSet-数据类型
+        /// ZSet-数据类型--不重复列表，带分数
         /// </summary>
         /// <returns></returns>
         public IActionResult Redis_ZSet()
@@ -185,7 +185,7 @@ namespace WorkReport.Controllers
         {
             _RedisListService.FlushAll();
 
-            _RedisListService.Add("advanced", "Zhaoxi1234");
+            _RedisListService.Add("advanced", "1234");
             _RedisListService.Add("advanced", "kevin");
             _RedisListService.Add("advanced", "大叔");
             _RedisListService.Add("advanced", "C卡");
