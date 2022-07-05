@@ -8,25 +8,27 @@
     <div class="layuimini-main">
 
         <blockquote class="layui-elem-quote">
-            Tips：Redis_String
+            Tips：Redis_String--解决秒杀场景，存储基础字符等信息
         </blockquote>
         <button data-method="Redis_String" class="layui-btn">Redis_String_普通用法</button>
+        <button data-method="Redis_String_OverSelling" class="layui-btn">Redis_String_OverSelling_普通用法</button>
 
         <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 10px;">
             <legend>分隔线</legend>
         </fieldset>
 
         <blockquote class="layui-elem-quote">
-            Tips：Redis_Hash
+            Tips：Redis_Hash--存储实体节省空间
         </blockquote>
         <button data-method="Redis_Hash" class="layui-btn layui-btn-normal">Redis_Hash_普通用法</button>
+        <button data-method="Redis_Hash_Model" class="layui-btn layui-btn-normal">Redis_Hash_Model_用法</button>
 
         <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 10px;">
             <legend>分隔线</legend>
         </fieldset>
 
         <blockquote class="layui-elem-quote">
-            Tips：Redis_Set
+            Tips：Redis_Set--不重复列表，求交并补
         </blockquote>
         <button data-method="Redis_Set" class="layui-btn layui-btn-danger">Redis_Set_普通用法</button>
 
@@ -35,7 +37,7 @@
         </fieldset>
 
         <blockquote class="layui-elem-quote">
-            Tips：Redis_ZSet
+            Tips：Redis_ZSet--不重复列表，求交并补-带分数，可设置分数
         </blockquote>
         <button data-method="Redis_ZSet" class="layui-btn layui-btn-normal">Redis_ZSet_普通用法</button>
 
@@ -44,9 +46,12 @@
         </fieldset>
 
         <blockquote class="layui-elem-quote">
-            Tips：Redis_List
+            Tips：Redis_List--添加速度最快，消息队列（使用RabbitMQ好，功能丰富），发布订阅，分页数据
         </blockquote>
         <button data-method="Redis_List" class="layui-btn layui-btn-warm">Redis_List_普通用法</button>
+        <button data-method="Redis_List_Queue" class="layui-btn layui-btn-warm">Redis_List_Queue_消息队列</button>
+        <button data-method="Redis_List_Subscription" class="layui-btn layui-btn-warm">Redis_List_Subscription_消息发布订阅</button>
+        <button data-method="Redis_List_Page" class="layui-btn layui-btn-warm">Redis_List_Page_分页</button>
 
     </div>
 </div>
@@ -63,9 +68,15 @@
             var active = {
                 Redis_String: function () {
                     active.baseAjax("Redis_String");
+                },
+                Redis_String_OverSelling: function () {
+                    active.baseAjax("Redis_String_OverSelling");
                 }
                 , Redis_Hash: function () {
                     active.baseAjax("Redis_Hash");
+                }
+                , Redis_Hash_Model: function () {
+                    active.baseAjax("Redis_Hash_Model");
                 }
                 , Redis_Set: function () {
                     active.baseAjax("Redis_Set");
@@ -75,6 +86,15 @@
                 }
                 , Redis_List: function () {
                     active.baseAjax("Redis_List");
+                }
+                , Redis_List_Queue: function () {
+                    active.baseAjax("Redis_List_Queue");
+                }
+                , Redis_List_Subscription: function () {
+                    active.baseAjax("Redis_List_Subscription");
+                }
+                , Redis_List_Page: function () {
+                    active.baseAjax("Redis_List_Page");
                 }
                 , baseAjax: function (method) {
                     var loading = parent.layer.load(0, { shade: false, time: 2 * 1000 });

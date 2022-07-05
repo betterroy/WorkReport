@@ -17,7 +17,7 @@ namespace WorkReport.Commons.RedisHelper.Service
     {
         #region 赋值
         /// <summary>
-        /// 从左侧向list中添加值
+        /// 从左侧向list中添加值(从队列最后插入)
         /// </summary>
         public void LPush(string key, string value)
         {
@@ -41,7 +41,7 @@ namespace WorkReport.Commons.RedisHelper.Service
             base.IClient.ExpireEntryIn(key, sp);
         }
         /// <summary>
-        /// 从右侧向list中添加值
+        /// 从右侧向list中添加值(从队列最前插入)
         /// </summary>
         public void RPush(string key, string value)
         {
@@ -64,7 +64,7 @@ namespace WorkReport.Commons.RedisHelper.Service
             base.IClient.ExpireEntryIn(key, sp);
         }
         /// <summary>
-        /// 添加key/value
+        /// 添加key/value(从队列最前插入，同LPush)
         /// </summary>     
         public void Add(string key, string value)
         {
