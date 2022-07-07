@@ -63,7 +63,8 @@ namespace WorkReport.Utility.Filters.Attributes
                     CreatorId = creatorId
                 };
 
-                _ISUserService.Insert(sLog);
+                //_ISUserService.Insert(sLog);
+                _iLogger.LogInformation(JsonConvert.SerializeObject(sLog));
             }
         }
     }

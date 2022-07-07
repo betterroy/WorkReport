@@ -170,7 +170,7 @@ namespace WorkReport.Commons.EmailHelper
         /// <returns></returns>
         public static string CreateMailLog()
         {
-            string directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            string directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logEmails");
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
