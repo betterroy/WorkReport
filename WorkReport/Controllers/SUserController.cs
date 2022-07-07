@@ -202,6 +202,21 @@ namespace WorkReport.Controllers
             });
         }
 
+        /// <summary>
+        /// 下载全部用户
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ExportUserExcel()
+        {
+            var values = _ISUserService.GetSUserList();
+            var memoryStream = new MemoryStream();
+            memoryStream.SaveAs(values);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            return new FileStreamResult(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                FileDownloadName = "用户列表.xlsx"
+            };
+        }
 
         public class user
         {
