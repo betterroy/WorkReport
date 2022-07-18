@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using WorkReport.Commons.Attributes;
 using WorkReport.Commons.EmailHelper;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Models.Query;
@@ -55,6 +56,7 @@ namespace WorkReport.Controllers
             return new JsonResult(result);
         }
 
+        [CustomAuthenticationRemark(ActionRemark="发送邮件")]
         public IActionResult SendEmail([FromBody]SEmailQuery sEmailQuery)
         {
             sEmailQuery.recipients = sEmailQuery.recipients.Replace("，", ",");

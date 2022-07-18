@@ -8,9 +8,12 @@ using WorkReport.Models.ViewModel;
 using WorkReport.Interface.IRepositories;
 using WorkReport.Models.Query;
 using WorkReport.Repositories.Models;
+using Autofac.Extras.DynamicProxy;
+using WorkReport.Interface.AopExtension;
 
 namespace WorkReport.Interface.IService
 {
+    [Intercept(typeof(CustomAutofacUReportAop))]
     public interface IUReportService : IBaseService
     {
 

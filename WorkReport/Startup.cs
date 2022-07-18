@@ -17,7 +17,6 @@ using WorkReport.Utility.Filters.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using WorkReport.Utility.Filters.Policy;
 using WorkReport.Commons.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.AopExtension;
@@ -195,8 +194,10 @@ namespace WorkReport
             builder.RegisterType<RedisListService>();
             builder.RegisterType(typeof(CustomAutofacSUserAop));
             builder.RegisterType(typeof(CustomAutofacSMenuAop));
+            builder.RegisterType(typeof(CustomAutofacUReportAop));
             builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();
             builder.RegisterType<SMenuService>().As<ISMenuService>().EnableClassInterceptors();
+            //builder.RegisterType<UReportService>().As<IUReportService>().EnableClassInterceptors();
             //builder.RegisterModule(new AutofacModule());
 
             //系统加载时，初始化权限至redis，永不过期，权限更改时，对权限进行更新。(也可以在需要的时候判断一下没有，没有则进行添加。)

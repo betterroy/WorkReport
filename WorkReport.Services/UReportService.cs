@@ -27,7 +27,7 @@ namespace WorkReport.Services
             _iSUserService = iSUserService;
         }
 
-        public HttpResponseResult GetUReport(UReportPageQuery queryWhere)
+        public virtual HttpResponseResult GetUReport(UReportPageQuery queryWhere)
         {
             var res = Query<UReport>(c => c.CreateTime >= queryWhere.stime && c.CreateTime <= queryWhere.etime && (c.UserId == queryWhere.userID || queryWhere.userID == null))
                 .OrderByDescending(u => u.ReportTime).ThenByDescending(u => u.CreateTime)
@@ -39,8 +39,28 @@ namespace WorkReport.Services
                     a.ID,
                     a.ReportTime,
                     a.User.Name
-                });
-            return new HttpResponseResult() { Data = res };
+                }).ToList();
+
+            List<UReportViewModel> uReportViewModelList = new List<UReportViewModel>(res.Count);
+
+            if (res != null && res.Count > 0)
+            {
+                foreach (var uReport in res)
+                {
+                    UReportViewModel uReportViewModel = new UReportViewModel()
+                    {
+                        UserId = uReport.UserId,
+                        CreateTime = uReport.CreateTime,
+                        Content = uReport.Content,
+                        ID = uReport.ID,
+                        ReportTime = uReport.ReportTime,
+                        Name = uReport.Name
+                    };
+                    uReportViewModelList.Add(uReportViewModel);
+                }
+            }
+
+            return new HttpResponseResult() { Data = uReportViewModelList };
         }
 
         public HttpResponseResult GetUReportLinq(UReportPageQuery queryWhere)

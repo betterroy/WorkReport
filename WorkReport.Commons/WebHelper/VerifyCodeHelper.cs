@@ -1,7 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Text;
 
-namespace WorkReport.Utility.Filters.WebHelper
+namespace WorkReport.Commons.WebHelper
 {
     public class VerifyCodeHelper
     {

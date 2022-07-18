@@ -30,5 +30,12 @@ namespace WorkReport.Commons.CacheHelper
         /// <returns></returns>
         public static string GetCurrentUserRoleMenuUrlKeyConstant(string roleId) => $"user_{roleId}_menu";
 
+        /// <summary>
+        /// 日志
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string GetCurrentUReportKeyConstant() => $"user_report";
+
     }
 }

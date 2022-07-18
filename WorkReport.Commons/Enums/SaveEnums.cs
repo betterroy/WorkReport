@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkReport.Commons.Enums
 {
-    public enum SaveType
+    public enum SaveEnums
     {
         Add,
         Edit
