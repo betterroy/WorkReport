@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WorkReport.Commons.Api;
+using WorkReport.Commons.CacheHelper;
 using WorkReport.Commons.MvcResult;
+using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.IService;
 using WorkReport.Models.Query;
+using WorkReport.Models.ViewModel;
 using WorkReport.Repositories.Models;
+using WorkReport.Services;
 
 namespace WorkReport.Controllers
 {
@@ -13,14 +19,16 @@ namespace WorkReport.Controllers
     {
 
         private readonly IUReportService _IUReportService;
+        private readonly RedisListService _RedisListService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="iCommentService"></param>
-        public UReportController(IUReportService iUReportService)
+        public UReportController(IUReportService iUReportService, RedisListService redisListService)
         {
             _IUReportService = iUReportService;
+            _RedisListService = redisListService;
         }
 
         public IActionResult Index()
@@ -76,19 +84,45 @@ namespace WorkReport.Controllers
         {
             HttpResponseCode doResult = HttpResponseCode.Failed;
 
+            string uReportListKey = CacheKeyConstant.GetCurrentUReportKeyConstant();   //当前日志集合
+
             try
             {
+                var sUser = _IUReportService.Query<SUser>(s => s.ID == uReport.UserId).FirstOrDefault();
+                UReportViewModel uReportViewModel = new UReportViewModel()
+                {
+                    UserId = uReport.UserId,
+                    CreateTime = uReport.CreateTime,
+                    Content = uReport.Content,
+                    ReportTime = uReport.ReportTime,
+                    Name = sUser?.Name
+                };
+
                 if (uReport.ID > 0)
                 {
                     _IUReportService.Update(uReport);
+
+                    RemoveUReport(uReportListKey, uReport.ID);
                 }
                 else
                 {
                     _IUReportService.Insert(uReport);
+
+                    long uReportListCount = _RedisListService.Count(uReportListKey);
+                    if (uReportListCount >= 3)
+                    {
+                        var aa = _RedisListService.RemoveEndFromList(uReportListKey);
+                    }
                 }
+
+
+                uReportViewModel.ID = uReport.ID;
+
+                _RedisListService.RPush(uReportListKey, JsonConvert.SerializeObject(uReportViewModel));
+
                 doResult = HttpResponseCode.Success;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 doResult = HttpResponseCode.Failed;
             }
@@ -107,6 +141,8 @@ namespace WorkReport.Controllers
         [HttpDelete]
         public IActionResult DeleteUReport(int ID)
         {
+            string uReportListKey = CacheKeyConstant.GetCurrentUReportKeyConstant();   //当前日志集合
+            RemoveUReport(uReportListKey, ID);
             _IUReportService.Delete<UReport>(ID);
             return Json(new HttpResponseResult()
             {
@@ -115,5 +151,16 @@ namespace WorkReport.Controllers
             });
         }
 
+        /// <summary>
+        /// 删除或修改时，从List中移除
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void RemoveUReport(string key, int? ID)
+        {
+            var reportList = _RedisListService.Get(key);
+            var uReport = reportList.Where(r => JsonConvert.DeserializeObject<UReportViewModel>(r).ID == ID).FirstOrDefault();
+            var removeCount = _RedisListService.RemoveItemFromList(key, uReport);
+        }
     }
 }

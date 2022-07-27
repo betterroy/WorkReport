@@ -197,7 +197,7 @@ namespace WorkReport
             builder.RegisterType(typeof(CustomAutofacUReportAop));
             builder.RegisterType<SUserService>().As<ISUserService>().EnableClassInterceptors();
             builder.RegisterType<SMenuService>().As<ISMenuService>().EnableClassInterceptors();
-            //builder.RegisterType<UReportService>().As<IUReportService>().EnableClassInterceptors();
+            builder.RegisterType<UReportService>().As<IUReportService>().EnableClassInterceptors();
             //builder.RegisterModule(new AutofacModule());
 
             //系统加载时，初始化权限至redis，永不过期，权限更改时，对权限进行更新。(也可以在需要的时候判断一下没有，没有则进行添加。)

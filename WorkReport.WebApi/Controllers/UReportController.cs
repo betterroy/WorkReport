@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using WorkReport.Commons.Api;
+using WorkReport.Commons.RabbitMQHelper;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.IService;
 using WorkReport.Repositories.Models;
@@ -42,6 +43,36 @@ namespace WorkReport.WebApi.Controllers
             }
             var role = claim.Value;
             return new JsonResult(role);
+        }
+
+        /// <summary>
+        /// 添加修改日志至RabbitMQ
+        /// </summary>
+        /// <param name="query">分页需要的参数和关键字</param>
+        /// <returns></returns>
+        [Route("SaveReport")]
+        [HttpPost]
+        [Authorize]
+        public IActionResult SaveReportToRabbitMQ(UReport uReport)
+        {
+            HttpResponseResult httpResponseResult = new HttpResponseResult();
+            httpResponseResult.Code = HttpResponseCode.Failed;
+
+            try
+            {
+
+                RabbitMQInvoker rabbitMQInvoker = new RabbitMQInvoker();
+                string message = Newtonsoft.Json.JsonConvert.SerializeObject(uReport);
+                rabbitMQInvoker.Send(RabbitMQExchangeQueueName.UReportListExchange, message);
+
+                httpResponseResult.Code = HttpResponseCode.Success;
+            }
+            catch (Exception ex)
+            {
+                httpResponseResult.Msg = ex.Message;
+            }
+
+            return new JsonResult(httpResponseResult);
         }
 
         /// <summary>
