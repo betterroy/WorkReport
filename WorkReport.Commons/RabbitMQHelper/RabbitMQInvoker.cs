@@ -40,7 +40,9 @@ namespace WorkReport.Commons.RabbitMQHelper
         #endregion
 
         #region Init
+
         private static object RabbitMQInvoker_BindQueueLock = new object();
+
         private static Dictionary<string, bool> RabbitMQInvoker_ExchangeQueue = new Dictionary<string, bool>();
         private void InitBindQueue(RabbitMQConsumerModel rabbitMQConsumerModel)
         {

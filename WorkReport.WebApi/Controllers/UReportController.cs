@@ -21,10 +21,12 @@ namespace WorkReport.WebApi.Controllers
 
         private readonly RedisStringService _RedisStringService = null;
 
-        public UReportController(RedisStringService redisStringService, IUReportService iUReportService)
+        private readonly RabbitMQClient _RabbitMQClient = null;
+
+        public UReportController(RedisStringService redisStringService, RabbitMQClient rabbitMQClient)
         {
             _RedisStringService = redisStringService;
-            _IUReportService = iUReportService;
+            _RabbitMQClient = rabbitMQClient;
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace WorkReport.WebApi.Controllers
         /// </summary>
         /// <param name="query">分页需要的参数和关键字</param>
         /// <returns></returns>
-        [Route("SaveReport")]
+        [Route("SaveReportToRabbitMQ")]
         [HttpPost]
         [Authorize]
         public IActionResult SaveReportToRabbitMQ(UReport uReport)
@@ -61,9 +63,12 @@ namespace WorkReport.WebApi.Controllers
             try
             {
 
-                RabbitMQInvoker rabbitMQInvoker = new RabbitMQInvoker();
                 string message = Newtonsoft.Json.JsonConvert.SerializeObject(uReport);
-                rabbitMQInvoker.Send(RabbitMQExchangeQueueName.UReportListExchange, message);
+
+                //RabbitMQInvoker rabbitMQInvoker = new RabbitMQInvoker();
+                //rabbitMQInvoker.Send(RabbitMQExchangeQueueName.UReportListExchange, message);
+
+                _RabbitMQClient.PushMessage(RabbitMQExchangeQueueName.UReportListRouting, message);
 
                 httpResponseResult.Code = HttpResponseCode.Success;
             }

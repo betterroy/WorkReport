@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using WorkReport.Commons.JWTHelper.Model;
+using WorkReport.Commons.RabbitMQHelper;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.Automapping;
 using WorkReport.Interface.IService;
@@ -10,6 +11,7 @@ using WorkReport.Repositories.Extend;
 using WorkReport.WebApi.Utility.Extensions;
 using WorkReport.WebApi.Utility.Filter;
 using WorkReport.WebApi.Utility.ServiceExtension;
+using static WorkReport.WebApi.Utility.Extensions.RBMQListerExtension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,8 @@ builder.Services.AddSwaggerGen();
     builder.Services.Configure<DBConnectionOption>(configuration.GetSection("SqlServerConnections"));
     builder.Services.Configure<JWTTokenOptions>(configuration.GetSection("JWTTokenOptions"));
 
+    builder.Services.AddSingleton<RabbitMQClient, RabbitMQClient>();
+    builder.Services.AddHostedService<RBMQListerExtension>();
     //鉴权授权的全套
     builder.Services.AuthenticationService(configuration);
 }
