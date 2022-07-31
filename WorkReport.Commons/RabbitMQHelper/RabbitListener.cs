@@ -25,13 +25,13 @@ namespace WorkReport.Commons.RabbitMQHelper
                 var HostName = options.Value.RabbitHost ?? "localhost";
                 var UserName = options.Value.RabbitUserName ?? "guest";
                 var Password = options.Value.RabbitPassword ?? "guest";
-                var Port = options.Value.RabbitPort == 0 ? 15672 : options.Value.RabbitPort;
+                var Port = options.Value.RabbitPort == 0 ? 5672 : options.Value.RabbitPort;
                 var factory = new ConnectionFactory()
                 {
                     HostName = HostName,
                     UserName = UserName,
                     Password = Password,
-                    //Port = Port
+                    Port = Port
                 };
                 this.connection = factory.CreateConnection();
                 this.channel = connection.CreateModel();

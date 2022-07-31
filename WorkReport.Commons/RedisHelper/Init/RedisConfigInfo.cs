@@ -15,11 +15,13 @@ namespace WorkReport.Commons.RedisHelper.Init
         /// 默认6379端口
         /// </summary>
         public string WriteServerList = "127.0.0.1:6379";
+        //public string WriteServerList = "192.168.153.153:6379";
         /// <summary>
         /// 可读的Redis链接地址
         /// format:ip1,ip2
         /// </summary>
         public string ReadServerList = "127.0.0.1:6379";
+        //public string ReadServerList = "192.168.153.153:6379";
         /// <summary>
         /// 最大写链接数
         /// </summary>

@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Threading.Channels;
 using WorkReport.Commons.Api;
 using WorkReport.Commons.RabbitMQHelper;
 using WorkReport.Commons.RedisHelper.Service;
 using WorkReport.Interface.IService;
 using WorkReport.Repositories.Models;
+using WorkReport.Services;
 
 namespace WorkReport.WebApi.Controllers
 {
@@ -23,10 +26,11 @@ namespace WorkReport.WebApi.Controllers
 
         private readonly RabbitMQClient _RabbitMQClient = null;
 
-        public UReportController(RedisStringService redisStringService, RabbitMQClient rabbitMQClient)
+        public UReportController(RedisStringService redisStringService, RabbitMQClient rabbitMQClient, IUReportService iUReportService)
         {
             _RedisStringService = redisStringService;
             _RabbitMQClient = rabbitMQClient;
+            _IUReportService = iUReportService;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace WorkReport.WebApi.Controllers
         /// <returns></returns>
         [Route("SaveReportToRabbitMQ")]
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult SaveReportToRabbitMQ(UReport uReport)
         {
             HttpResponseResult httpResponseResult = new HttpResponseResult();
@@ -63,12 +67,11 @@ namespace WorkReport.WebApi.Controllers
             try
             {
 
-                string message = Newtonsoft.Json.JsonConvert.SerializeObject(uReport);
-
                 //RabbitMQInvoker rabbitMQInvoker = new RabbitMQInvoker();
                 //rabbitMQInvoker.Send(RabbitMQExchangeQueueName.UReportListExchange, message);
 
-                _RabbitMQClient.PushMessage(RabbitMQExchangeQueueName.UReportListRouting, message);
+                //自宿主启动消费消息。
+                _RabbitMQClient.PushMessage(RabbitMQExchangeQueueName.UReportListRouting, uReport);
 
                 httpResponseResult.Code = HttpResponseCode.Success;
             }

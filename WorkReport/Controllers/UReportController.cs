@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WorkReport.Commons.Api;
+using WorkReport.Commons.Attributes;
 using WorkReport.Commons.CacheHelper;
 using WorkReport.Commons.MvcResult;
 using WorkReport.Commons.RedisHelper.Service;
@@ -80,6 +81,7 @@ namespace WorkReport.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize(policy: "customPolicy")]
+        [CustomAllowAnonymousAttribute] //移除权限控制
         public IActionResult SaveReport([FromBody] UReport uReport)
         {
             HttpResponseCode doResult = HttpResponseCode.Failed;

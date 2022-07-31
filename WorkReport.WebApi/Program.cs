@@ -29,6 +29,10 @@ builder.Services.AddSwaggerGen();
     builder.Services.AddTransient<ICustomDbContextFactory, CustomDbContextFactory>();
     builder.Services.AddTransient<DbContext, WorkReportContext>();
     builder.Services.AddTransient<RedisStringService>();
+    builder.Services.AddTransient<RedisHashService>();
+    builder.Services.AddTransient<RedisSetService>();
+    builder.Services.AddTransient<RedisZSetService>();
+    builder.Services.AddTransient<RedisListService>();
     /// π”√AutoMapper
     builder.Services.AddAutoMapper(typeof(ServiceProfile));
 

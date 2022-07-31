@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace WorkReport.Commons.RabbitMQHelper
@@ -53,9 +54,16 @@ namespace WorkReport.Commons.RabbitMQHelper
                                         arguments: null);
             string msgJson = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(msgJson);
+
+
+            // 把放入队列消息进行持久化
+            var properties = _channel.CreateBasicProperties();
+            properties.Persistent = true;
+
             _channel.BasicPublish(exchange: RabbitMQExchangeQueueName.UReportListExchange,
                                     routingKey: routingKey,
-                                    basicProperties: null,
+                                    //basicProperties: null,
+                                    basicProperties: properties,
                                     body: body);
         }
     }
