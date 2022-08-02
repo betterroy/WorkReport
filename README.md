@@ -16,6 +16,10 @@ Asp.NetCore MVC、EF Core、Autofac、Log4Net、AutoMapper。
 
 Layui为主。
 
+## 第三方中间件
+
+Redis、RabbitMQ。
+
 # 核心功能
 - **登陆鉴权**、
 - **异常日志**中间件
